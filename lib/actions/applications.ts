@@ -7,7 +7,6 @@ import type {
   JobApplication,
   ApplicationStatus,
   ResumeVariant,
-  MasterResume,
 } from '@/types';
 
 async function getAuthUserId(): Promise<string> {
@@ -176,7 +175,44 @@ export async function getResumeVariant(
   if (error && error.code !== 'PGRST116') {
     throw new Error(error.message);
   }
-  return data as ResumeVariant | null;
+
+  if (data) {
+    return data as ResumeVariant;
+  }
+
+  // No variant exists yet — try to create one from the master resume
+  const { data: masterResume } = await supabase
+    .from('master_resume')
+    .select('*')
+    .eq('user_id', userId)
+    .single();
+
+  if (!masterResume) {
+    return null;
+  }
+
+  const { data: newVariant, error: insertError } = await supabase
+    .from('resume_variant')
+    .insert({
+      job_application_id: jobApplicationId,
+      user_id: userId,
+      template_id: 'classic',
+      personal_info: masterResume.personal_info,
+      experience: masterResume.experience,
+      education: masterResume.education,
+      skills: masterResume.skills,
+      languages: masterResume.languages,
+      certifications: masterResume.certifications,
+      projects: masterResume.projects,
+    })
+    .select()
+    .single();
+
+  if (insertError) {
+    throw new Error(insertError.message);
+  }
+
+  return newVariant as ResumeVariant;
 }
 
 export async function saveResumeVariant(

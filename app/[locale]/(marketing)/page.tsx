@@ -28,12 +28,18 @@ export default async function LandingPage({
   ];
 
   const features = [
-    { icon: Brain, title: 'AI Analysis', desc: 'GPT-4o analyzes your resume against any job description' },
-    { icon: Target, title: 'ATS Scoring', desc: 'Instant ATS score so you know where you stand' },
-    { icon: FileText, title: 'One-Click Optimize', desc: 'Accept AI rewrites with a single click' },
-    { icon: Download, title: 'PDF Export', desc: 'Download a polished resume in seconds' },
-    { icon: Briefcase, title: 'Application Tracking', desc: 'Track every application from bookmarked to accepted' },
-    { icon: LayoutTemplate, title: 'Multiple Templates', desc: 'Choose from Classic, Modern, or Minimal layouts' },
+    { icon: Brain, title: t('featureAiTitle'), desc: t('featureAiDesc') },
+    { icon: Target, title: t('featureAtsTitle'), desc: t('featureAtsDesc') },
+    { icon: FileText, title: t('featureOptimizeTitle'), desc: t('featureOptimizeDesc') },
+    { icon: Download, title: t('featurePdfTitle'), desc: t('featurePdfDesc') },
+    { icon: Briefcase, title: t('featureTrackTitle'), desc: t('featureTrackDesc') },
+    { icon: LayoutTemplate, title: t('featureTemplatesTitle'), desc: t('featureTemplatesDesc') },
+  ];
+
+  const stats = [
+    { value: t('stat1Value'), label: t('stat1Label') },
+    { value: t('stat2Value'), label: t('stat2Label') },
+    { value: t('stat3Value'), label: t('stat3Label') },
   ];
 
   return (
@@ -41,7 +47,7 @@ export default async function LandingPage({
       {/* Hero */}
       <section className="py-20 md:py-32 px-6 text-center">
         <div className="mx-auto max-w-3xl space-y-6">
-          <Badge variant="secondary" className="mb-2">AI-Powered</Badge>
+          <Badge variant="secondary" className="mb-2">{t('badge')}</Badge>
           <h1 className="text-4xl font-bold tracking-tight md:text-6xl">
             {t('heroTitle')}
           </h1>
@@ -62,7 +68,7 @@ export default async function LandingPage({
       {/* How It Works */}
       <section id="how-it-works" className="py-20 px-6 bg-muted/30">
         <div className="mx-auto max-w-4xl">
-          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">{t('howItWorks')}</h2>
           <div className="grid gap-8 md:grid-cols-3">
             {steps.map(({ title, desc, step }) => (
               <div key={step} className="flex flex-col items-center text-center gap-4">
@@ -80,7 +86,7 @@ export default async function LandingPage({
       {/* Features */}
       <section className="py-20 px-6">
         <div className="mx-auto max-w-5xl">
-          <h2 className="text-3xl font-bold text-center mb-12">Everything you need</h2>
+          <h2 className="text-3xl font-bold text-center mb-12">{t('featuresHeading')}</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {features.map(({ icon: Icon, title, desc }) => (
               <Card key={title}>
@@ -94,6 +100,21 @@ export default async function LandingPage({
                   <CardDescription>{desc}</CardDescription>
                 </CardContent>
               </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Social proof / stats */}
+      <section className="py-20 px-6 bg-muted/30">
+        <div className="mx-auto max-w-4xl">
+          <h2 className="text-3xl font-bold text-center mb-12">{t('statsHeading')}</h2>
+          <div className="grid gap-8 md:grid-cols-3">
+            {stats.map(({ value, label }) => (
+              <div key={label} className="text-center">
+                <p className="text-4xl font-bold text-primary">{value}</p>
+                <p className="text-muted-foreground mt-2">{label}</p>
+              </div>
             ))}
           </div>
         </div>
