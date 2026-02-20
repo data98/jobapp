@@ -22,7 +22,8 @@
     "required": "This field is required",
     "all": "All",
     "date": "Date",
-    "status": "Status"
+    "status": "Status",
+    "allRightsReserved": "All rights reserved."
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -54,7 +55,29 @@
     "step2Title": "Paste a job description",
     "step2Desc": "Add the job you're targeting",
     "step3Title": "Get AI-optimized resume",
-    "step3Desc": "Receive tailored suggestions and one-click rewrites"
+    "step3Desc": "Receive tailored suggestions and one-click rewrites",
+    "badge": "AI-Powered",
+    "howItWorks": "How It Works",
+    "featuresHeading": "Everything you need",
+    "featureAiTitle": "AI Analysis",
+    "featureAiDesc": "GPT-4o analyzes your resume against any job description",
+    "featureAtsTitle": "ATS Scoring",
+    "featureAtsDesc": "Instant ATS score so you know where you stand",
+    "featureOptimizeTitle": "One-Click Optimize",
+    "featureOptimizeDesc": "Accept AI rewrites with a single click",
+    "featurePdfTitle": "PDF Export",
+    "featurePdfDesc": "Download a polished resume in seconds",
+    "featureTrackTitle": "Application Tracking",
+    "featureTrackDesc": "Track every application from bookmarked to accepted",
+    "featureTemplatesTitle": "Multiple Templates",
+    "featureTemplatesDesc": "Choose from Classic, Modern, or Minimal layouts",
+    "statsHeading": "Trusted by job seekers",
+    "stat1Value": "10,000+",
+    "stat1Label": "Resumes optimized",
+    "stat2Value": "85%",
+    "stat2Label": "Average ATS score improvement",
+    "stat3Value": "3x",
+    "stat3Label": "More interview callbacks"
   },
   "dashboard": {
     "title": "Dashboard",

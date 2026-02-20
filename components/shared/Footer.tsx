@@ -8,7 +8,7 @@ export function Footer() {
   return (
     <footer className="border-t py-8 mt-auto">
       <div className="container mx-auto flex flex-col items-center gap-4 text-sm text-muted-foreground sm:flex-row sm:justify-between">
-        <p>© {year} {t('appName')}. All rights reserved.</p>
+        <p>© {year} {t('appName')}. {t('allRightsReserved')}</p>
         <div className="flex gap-4">
           <Link href="/" className="hover:text-foreground transition-colors">
             {t('appName')}
