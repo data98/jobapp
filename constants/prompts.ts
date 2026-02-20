@@ -21,7 +21,7 @@ Return ONLY valid JSON matching this exact schema:
     }
   ],
   "skills": [
-    { "id": "<uuid>", "category": "", "items": [] }
+    { "id": "<uuid>", "name": "" }
   ],
   "languages": [
     { "id": "<uuid>", "language": "", "proficiency": "" }

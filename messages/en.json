@@ -145,8 +145,7 @@
     "degree": "Degree",
     "fieldOfStudy": "Field of Study",
     "gpa": "GPA",
-    "category": "Category",
-    "skillItems": "Skills (comma-separated)",
+    "skillName": "Skill",
     "language": "Language",
     "proficiency": "Proficiency",
     "certName": "Certification Name",
@@ -177,6 +176,12 @@
     "analyzing": "Analyzing your resume...",
     "priorityHigh": "High priority",
     "priorityMedium": "Medium priority",
-    "priorityLow": "Low priority"
+    "priorityLow": "Low priority",
+    "noAnalysis": "No analysis yet",
+    "runAnalysis": "Run AI Analysis",
+    "noJobDescription": "Add a job description before analyzing",
+    "noResume": "Create a master resume before analyzing",
+    "accepted": "Accepted",
+    "keywordsAddressed": "Keywords addressed"
   }
 }

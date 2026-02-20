@@ -16,7 +16,7 @@ import type {
   PersonalInfo,
   ExperienceEntry,
   EducationEntry,
-  SkillGroup,
+  SkillEntry,
   LanguageEntry,
   CertificationEntry,
   ProjectEntry,
@@ -55,7 +55,7 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
   const [education, setEducation] = useState<EducationEntry[]>(
     initialData?.education ?? []
   );
-  const [skills, setSkills] = useState<SkillGroup[]>(
+  const [skills, setSkills] = useState<SkillEntry[]>(
     initialData?.skills ?? []
   );
   const [languages, setLanguages] = useState<LanguageEntry[]>(
@@ -154,15 +154,15 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
   };
 
   // --- Skills helpers ---
-  const addSkillGroup = () => {
-    setSkills((prev) => [...prev, { id: generateId(), category: '', items: [] }]);
+  const addSkill = () => {
+    setSkills((prev) => [...prev, { id: generateId(), name: '' }]);
   };
 
-  const updateSkillGroup = (index: number, field: 'category' | 'items', value: string | string[]) => {
-    setSkills((prev) => prev.map((s, i) => (i === index ? { ...s, [field]: value } : s)));
+  const updateSkill = (index: number, value: string) => {
+    setSkills((prev) => prev.map((s, i) => (i === index ? { ...s, name: value } : s)));
   };
 
-  const removeSkillGroup = (index: number) => {
+  const removeSkill = (index: number) => {
     setSkills((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -516,50 +516,20 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>{t('skills')}</CardTitle>
-              <Button variant="outline" size="sm" onClick={addSkillGroup}>
-                <Plus className="mr-2 h-4 w-4" />
-                {t('addEntry', { section: t('skills') })}
-              </Button>
             </CardHeader>
-            <CardContent className="space-y-6">
-              {skills.map((group, gIdx) => (
-                <div key={group.id} className="space-y-4 rounded-lg border p-4">
-                  <div className="flex justify-between items-start">
-                    <span className="text-sm font-medium text-muted-foreground">
-                      #{gIdx + 1}
-                    </span>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeSkillGroup(gIdx)}
-                    >
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
+            <CardContent className="space-y-3">
+              {skills.map((skill, sIdx) => (
+                <div key={skill.id} className="flex gap-4 items-end rounded-lg border p-4">
+                  <div className="flex-1 space-y-2">
+                    <Label>{t('skillName')}</Label>
+                    <Input
+                      value={skill.name}
+                      onChange={(e) => updateSkill(sIdx, e.target.value)}
+                    />
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label>{t('category')}</Label>
-                      <Input
-                        value={group.category}
-                        onChange={(e) => updateSkillGroup(gIdx, 'category', e.target.value)}
-                        placeholder="e.g. Programming, Design"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>{t('skillItems')}</Label>
-                      <Input
-                        value={group.items.join(', ')}
-                        onChange={(e) =>
-                          updateSkillGroup(
-                            gIdx,
-                            'items',
-                            e.target.value.split(',').map((s) => s.trim()).filter(Boolean)
-                          )
-                        }
-                        placeholder="Python, TypeScript, React"
-                      />
-                    </div>
-                  </div>
+                  <Button variant="ghost" size="icon" onClick={() => removeSkill(sIdx)}>
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
                 </div>
               ))}
               {skills.length === 0 && (
@@ -567,6 +537,10 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
                   {t('addEntry', { section: t('skills') })}
                 </p>
               )}
+              <Button className="w-full space-y-3" variant="outline" size="sm" onClick={addSkill}>
+                <Plus className="mr-2 h-4 w-4" />
+                {t('addEntry', { section: t('skills') })}
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>
