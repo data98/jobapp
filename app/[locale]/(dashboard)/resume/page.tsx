@@ -1,5 +1,6 @@
-import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
+import { getMasterResume } from '@/lib/actions/resume';
+import { ResumeForm } from '@/components/resume/ResumeForm';
 
 export default async function ResumePage({
   params,
@@ -8,12 +9,8 @@ export default async function ResumePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations('resume');
 
-  return (
-    <div>
-      <h1 className="text-2xl font-semibold mb-6">{t('title')}</h1>
-      <p className="text-muted-foreground">Master Resume editor — coming in Phase 3.</p>
-    </div>
-  );
+  const masterResume = await getMasterResume();
+
+  return <ResumeForm initialData={masterResume} />;
 }
