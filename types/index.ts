@@ -31,10 +31,9 @@ export interface EducationEntry {
   gpa: string;
 }
 
-export interface SkillGroup {
+export interface SkillEntry {
   id: string;
-  category: string;
-  items: string[];
+  name: string;
 }
 
 export interface LanguageEntry {
@@ -65,7 +64,7 @@ export interface MasterResume {
   personal_info: PersonalInfo;
   experience: ExperienceEntry[];
   education: EducationEntry[];
-  skills: SkillGroup[];
+  skills: SkillEntry[];
   languages: LanguageEntry[];
   certifications: CertificationEntry[];
   projects: ProjectEntry[];
@@ -124,7 +123,7 @@ export interface ResumeVariant {
   personal_info: PersonalInfo;
   experience: ExperienceEntry[];
   education: EducationEntry[];
-  skills: SkillGroup[];
+  skills: SkillEntry[];
   languages: LanguageEntry[];
   certifications: CertificationEntry[];
   projects: ProjectEntry[];

@@ -8,7 +8,7 @@ import type {
   PersonalInfo,
   ExperienceEntry,
   EducationEntry,
-  SkillGroup,
+  SkillEntry,
   LanguageEntry,
   CertificationEntry,
   ProjectEntry,
@@ -43,7 +43,7 @@ export async function saveMasterResume(resumeData: {
   personal_info: PersonalInfo;
   experience: ExperienceEntry[];
   education: EducationEntry[];
-  skills: SkillGroup[];
+  skills: SkillEntry[];
   languages: LanguageEntry[];
   certifications: CertificationEntry[];
   projects: ProjectEntry[];
