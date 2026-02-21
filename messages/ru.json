@@ -127,7 +127,15 @@
     "noDescription": "Описание вакансии не указано.",
     "statusUpdated": "Статус обновлён",
     "applicationDeleted": "Заявка удалена",
-    "applicationCreated": "Заявка создана"
+    "applicationCreated": "Заявка создана",
+    "pasteUrl": "Вставьте ссылку на вакансию",
+    "pasteUrlPlaceholder": "https://...",
+    "fetchAndFill": "Загрузить данные",
+    "fetchingJob": "Анализируем вакансию...",
+    "fetchSuccess": "Данные извлечены! Проверьте и отправьте.",
+    "fetchError": "Не удалось извлечь данные по этой ссылке. Заполните вручную.",
+    "orEnterManually": "Или заполните вручную",
+    "urlSection": "Быстрое добавление по ссылке"
   },
   "resume": {
     "title": "Основное резюме",

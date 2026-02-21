@@ -8,9 +8,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
 import {
   Select,
   SelectContent,
@@ -52,7 +50,6 @@ export function ApplicationDetail({ application }: ApplicationDetailProps) {
     contact_name: app.contact_name ?? '',
     contact_email: app.contact_email ?? '',
     contact_phone: app.contact_phone ?? '',
-    notes: app.notes ?? '',
   });
 
   const handleStatusChange = async (newStatus: ApplicationStatus) => {
@@ -77,7 +74,6 @@ export function ApplicationDetail({ application }: ApplicationDetailProps) {
         contact_name: editForm.contact_name || null,
         contact_email: editForm.contact_email || null,
         contact_phone: editForm.contact_phone || null,
-        notes: editForm.notes || null,
       });
       setApp(updated);
       setEditing(false);
@@ -199,19 +195,6 @@ export function ApplicationDetail({ application }: ApplicationDetailProps) {
             </CardContent>
           </Card>
 
-          {/* Notes */}
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('notes')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {app.notes ? (
-                <div className="whitespace-pre-wrap text-sm">{app.notes}</div>
-              ) : (
-                <p className="text-sm text-muted-foreground">{t('noNotes')}</p>
-              )}
-            </CardContent>
-          </Card>
         </TabsContent>
 
         <TabsContent value="contact" className="mt-4">
@@ -257,17 +240,6 @@ export function ApplicationDetail({ application }: ApplicationDetailProps) {
                         }
                       />
                     </div>
-                  </div>
-                  <Separator />
-                  <div className="space-y-2">
-                    <Label>{t('notes')}</Label>
-                    <Textarea
-                      rows={4}
-                      value={editForm.notes}
-                      onChange={(e) =>
-                        setEditForm({ ...editForm, notes: e.target.value })
-                      }
-                    />
                   </div>
                   <div className="flex gap-3 justify-end">
                     <Button variant="outline" onClick={() => setEditing(false)}>

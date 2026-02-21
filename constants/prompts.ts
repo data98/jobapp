@@ -74,3 +74,18 @@ JOB DESCRIPTION:
 
 RESUME:
 {{resume_json}}`;
+
+export const JOB_URL_PARSE_PROMPT = `You are a job posting parser. Extract structured data from the following job posting text.
+Return ONLY valid JSON matching this exact schema:
+{
+  "job_title": "string",
+  "company": "string",
+  "location": "string or null",
+  "salary_range": "string or null",
+  "job_description": "string (the full job description, preserve structure using newlines for paragraphs and '- ' prefix for bullet points)"
+}
+
+If a field cannot be determined, set it to null.
+
+Job posting text:
+{{extracted_text}}`;
