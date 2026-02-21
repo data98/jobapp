@@ -127,7 +127,15 @@
     "noDescription": "No job description provided.",
     "statusUpdated": "Status updated",
     "applicationDeleted": "Application deleted",
-    "applicationCreated": "Application created"
+    "applicationCreated": "Application created",
+    "pasteUrl": "Paste a job posting URL",
+    "pasteUrlPlaceholder": "https://...",
+    "fetchAndFill": "Fetch & Fill",
+    "fetchingJob": "Analyzing job posting...",
+    "fetchSuccess": "Job details extracted! Review and submit.",
+    "fetchError": "Couldn't extract details from this URL. Please fill in manually.",
+    "orEnterManually": "Or enter details manually",
+    "urlSection": "Quick Add from URL"
   },
   "resume": {
     "title": "Master Resume",
