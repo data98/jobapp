@@ -91,7 +91,6 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
   // --- Experience helpers ---
   const addExperience = () => {
     setExperience((prev) => [
-      ...prev,
       {
         id: generateId(),
         company: '',
@@ -102,6 +101,7 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
         location: '',
         bullets: [''],
       },
+      ...prev,
     ]);
   };
 
@@ -140,8 +140,8 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
   // --- Education helpers ---
   const addEducation = () => {
     setEducation((prev) => [
-      ...prev,
       { id: generateId(), institution: '', degree: '', field: '', startDate: '', endDate: '', gpa: '' },
+      ...prev,
     ]);
   };
 
@@ -155,7 +155,7 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
 
   // --- Skills helpers ---
   const addSkill = () => {
-    setSkills((prev) => [...prev, { id: generateId(), name: '' }]);
+    setSkills((prev) => [{ id: generateId(), name: '' }, ...prev]);
   };
 
   const updateSkill = (index: number, value: string) => {
@@ -168,7 +168,7 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
 
   // --- Languages helpers ---
   const addLanguage = () => {
-    setLanguages((prev) => [...prev, { id: generateId(), language: '', proficiency: '' }]);
+    setLanguages((prev) => [{ id: generateId(), language: '', proficiency: '' }, ...prev]);
   };
 
   const updateLanguage = (index: number, field: keyof LanguageEntry, value: string) => {
@@ -182,8 +182,8 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
   // --- Certifications helpers ---
   const addCertification = () => {
     setCertifications((prev) => [
-      ...prev,
       { id: generateId(), name: '', issuer: '', date: '', url: '' },
+      ...prev,
     ]);
   };
 
@@ -198,8 +198,8 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
   // --- Projects helpers ---
   const addProject = () => {
     setProjects((prev) => [
-      ...prev,
       { id: generateId(), name: '', description: '', url: '', bullets: [''] },
+      ...prev,
     ]);
   };
 
@@ -516,17 +516,19 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>{t('skills')}</CardTitle>
+              <Button variant="outline" size="sm" onClick={addSkill}>
+                <Plus className="mr-2 h-4 w-4" />
+                {t('addEntry', { section: t('skills') })}
+              </Button>
             </CardHeader>
             <CardContent className="space-y-3">
               {skills.map((skill, sIdx) => (
-                <div key={skill.id} className="flex gap-4 items-end rounded-lg border p-4">
-                  <div className="flex-1 space-y-2">
-                    <Label>{t('skillName')}</Label>
-                    <Input
-                      value={skill.name}
-                      onChange={(e) => updateSkill(sIdx, e.target.value)}
-                    />
-                  </div>
+                <div key={skill.id} className="flex gap-2 items-center">
+                  <Input
+                    value={skill.name}
+                    onChange={(e) => updateSkill(sIdx, e.target.value)}
+                    placeholder={t('skillName')}
+                  />
                   <Button variant="ghost" size="icon" onClick={() => removeSkill(sIdx)}>
                     <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
@@ -537,10 +539,6 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
                   {t('addEntry', { section: t('skills') })}
                 </p>
               )}
-              <Button className="w-full space-y-3" variant="outline" size="sm" onClick={addSkill}>
-                <Plus className="mr-2 h-4 w-4" />
-                {t('addEntry', { section: t('skills') })}
-              </Button>
             </CardContent>
           </Card>
         </TabsContent>
