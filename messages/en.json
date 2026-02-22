@@ -188,7 +188,14 @@
     "projectUrl": "URL",
     "noResume": "You haven't created your master resume yet.",
     "getStarted": "Start building your career profile by filling in your information below.",
-    "resumeSaved": "Resume saved successfully"
+    "resumeSaved": "Resume saved successfully",
+    "uploadSection": "Quick Import from PDF",
+    "uploadHint": "PDF format, up to 5MB",
+    "selectFile": "Select PDF",
+    "parsing": "Analyzing your resume...",
+    "parseError": "Couldn't extract data from this file. Please fill in manually.",
+    "uploadPdfOnly": "Only PDF files are supported",
+    "uploadTooLarge": "File is too large (max 5MB)"
   },
   "analysis": {
     "title": "AI Analysis",
