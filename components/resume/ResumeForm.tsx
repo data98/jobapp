@@ -251,26 +251,29 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">{t('title')}</h1>
-        <Button onClick={handleSave} disabled={saving}>
-          <Save className="mr-2 h-4 w-4" />
-          {saving ? tc('saving') : tc('save')}
-        </Button>
-      </div>
+
 
       <ResumeUploader onParsed={handleParsed} />
 
       <Tabs defaultValue="personal" className="space-y-4">
-        <TabsList className="flex flex-wrap h-auto gap-1">
-          <TabsTrigger value="personal">{t('personalInfo')}</TabsTrigger>
-          <TabsTrigger value="experience">{t('experience')}</TabsTrigger>
-          <TabsTrigger value="education">{t('education')}</TabsTrigger>
-          <TabsTrigger value="skills">{t('skills')}</TabsTrigger>
-          <TabsTrigger value="languages">{t('languages')}</TabsTrigger>
-          <TabsTrigger value="certifications">{t('certifications')}</TabsTrigger>
-          <TabsTrigger value="projects">{t('projects')}</TabsTrigger>
-        </TabsList>
+        <div className="flex items-center justify-between">
+          <TabsList className="flex flex-wrap h-auto gap-1">
+            <TabsTrigger value="personal">{t('personalInfo')}</TabsTrigger>
+            <TabsTrigger value="experience">{t('experience')}</TabsTrigger>
+            <TabsTrigger value="education">{t('education')}</TabsTrigger>
+            <TabsTrigger value="skills">{t('skills')}</TabsTrigger>
+            <TabsTrigger value="languages">{t('languages')}</TabsTrigger>
+            <TabsTrigger value="certifications">{t('certifications')}</TabsTrigger>
+            <TabsTrigger value="projects">{t('projects')}</TabsTrigger>
+          </TabsList>
+          <div className="flex items-center justify-end">
+            <Button onClick={handleSave} disabled={saving}>
+              <Save className="mr-2 h-4 w-4" />
+              {saving ? tc('saving') : tc('save')}
+            </Button>
+          </div>
+        </div>
+
 
         {/* Personal Info */}
         <TabsContent value="personal">

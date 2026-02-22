@@ -135,9 +135,9 @@ export function VariantEditor({ variant, jobApplicationId, labels }: VariantEdit
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
       {/* Left: Editor */}
-      <div className="space-y-4 overflow-y-auto max-h-[calc(100vh-12rem)]">
+      <div className="space-y-4 overflow-y-auto max-h-[calc(100vh-7rem)]">
         {/* Action buttons */}
         <div className="flex flex-wrap gap-2">
           <Button onClick={handleSave} disabled={saving} size="sm">
@@ -368,7 +368,7 @@ export function VariantEditor({ variant, jobApplicationId, labels }: VariantEdit
       </div>
 
       {/* Right: Live Preview */}
-      <div className="overflow-y-auto max-h-[calc(100vh-12rem)] border rounded-lg bg-gray-50 p-4">
+      <div className="overflow-y-auto max-h-[calc(100vh-7rem)] border rounded-lg bg-gray-50 p-4">
         <ResumePreview data={currentData} labels={labels} />
       </div>
     </div>

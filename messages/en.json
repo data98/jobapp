@@ -102,6 +102,7 @@
   },
   "applications": {
     "title": "Applications",
+    "detail": "Application",
     "new": "New Application",
     "jobTitle": "Job Title",
     "company": "Company",

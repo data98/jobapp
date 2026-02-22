@@ -18,7 +18,6 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  ArrowLeft,
   ExternalLink,
   Pencil,
   Trash2,
@@ -96,18 +95,23 @@ export function ApplicationDetail({ application }: ApplicationDetailProps) {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex items-start justify-between">
-        <div className="space-y-1">
-          <Link
-            href="/applications"
-            className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="mr-1 h-4 w-4" />
-            {tc('back')}
+        {/* Quick actions */}
+        <div className="flex gap-3">
+          <Link href={`/applications/${app.id}/analysis`}>
+            <Button variant="outline">
+              <Brain className="mr-2 h-4 w-4" />
+              {t('analyze')}
+            </Button>
           </Link>
-          <h1 className="text-2xl font-semibold">{app.job_title}</h1>
-          <p className="text-lg text-muted-foreground">{app.company}</p>
+          <Link href={`/applications/${app.id}/resume`}>
+            <Button variant="outline">
+              <FileText className="mr-2 h-4 w-4" />
+              {t('viewResume')}
+            </Button>
+          </Link>
+        </div>
+        <div className="space-y-1">
           {app.location && (
             <p className="text-sm text-muted-foreground">{app.location}</p>
           )}
@@ -131,21 +135,6 @@ export function ApplicationDetail({ application }: ApplicationDetailProps) {
         </div>
       </div>
 
-      {/* Quick actions */}
-      <div className="flex gap-3">
-        <Link href={`/applications/${app.id}/analysis`}>
-          <Button variant="outline">
-            <Brain className="mr-2 h-4 w-4" />
-            {t('analyze')}
-          </Button>
-        </Link>
-        <Link href={`/applications/${app.id}/resume`}>
-          <Button variant="outline">
-            <FileText className="mr-2 h-4 w-4" />
-            {t('viewResume')}
-          </Button>
-        </Link>
-      </div>
 
       {/* Tabs */}
       <Tabs defaultValue="overview">

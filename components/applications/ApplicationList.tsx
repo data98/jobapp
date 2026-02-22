@@ -25,7 +25,7 @@ export function ApplicationList({ applications }: ApplicationListProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">{t('title')}</h1>
+        <StatusFilter value={statusFilter} onChange={setStatusFilter} />
         <Link href="/applications/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
@@ -34,14 +34,12 @@ export function ApplicationList({ applications }: ApplicationListProps) {
         </Link>
       </div>
 
-      <StatusFilter value={statusFilter} onChange={setStatusFilter} />
-
       {filtered.length === 0 ? (
         <div className="rounded-lg border bg-card p-12 text-center">
           <p className="text-muted-foreground">{t('noApplications')}</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="flex flex-col gap-3">
           {filtered.map((app) => (
             <ApplicationCard key={app.id} application={app} />
           ))}

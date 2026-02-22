@@ -2,6 +2,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { getApplication } from '@/lib/actions/applications';
 import { ApplicationDetail } from '@/components/applications/ApplicationDetail';
+import { SetBreadcrumbLabel } from '@/components/shared/SetBreadcrumbLabel';
 
 export default async function ApplicationDetailPage({
   params,
@@ -14,5 +15,10 @@ export default async function ApplicationDetailPage({
   const application = await getApplication(id);
   if (!application) notFound();
 
-  return <ApplicationDetail application={application} />;
+  return (
+    <>
+      <SetBreadcrumbLabel label={`${application.job_title} · ${application.company}`} />
+      <ApplicationDetail application={application} />
+    </>
+  );
 }
