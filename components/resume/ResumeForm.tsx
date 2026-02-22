@@ -12,6 +12,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Plus, Trash2, Save } from 'lucide-react';
 import { saveMasterResume } from '@/lib/actions/resume';
+import { ResumeUploader } from './ResumeUploader';
+import type { ParsedResumeData } from './ResumeUploader';
 import type {
   PersonalInfo,
   ExperienceEntry,
@@ -67,6 +69,18 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
   const [projects, setProjects] = useState<ProjectEntry[]>(
     initialData?.projects ?? []
   );
+
+  const handleParsed = useCallback((data: ParsedResumeData) => {
+    // Regenerate all IDs to guarantee uniqueness — the AI may return
+    // placeholder strings like "uuid" instead of actual UUIDs.
+    setPersonalInfo(data.personal_info);
+    setExperience(data.experience.map((e) => ({ ...e, id: generateId() })));
+    setEducation(data.education.map((e) => ({ ...e, id: generateId() })));
+    setSkills(data.skills.map((s) => ({ ...s, id: generateId() })));
+    setLanguages(data.languages.map((l) => ({ ...l, id: generateId() })));
+    setCertifications(data.certifications.map((c) => ({ ...c, id: generateId() })));
+    setProjects(data.projects.map((p) => ({ ...p, id: generateId() })));
+  }, []);
 
   const handleSave = useCallback(async () => {
     setSaving(true);
@@ -244,6 +258,8 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
           {saving ? tc('saving') : tc('save')}
         </Button>
       </div>
+
+      <ResumeUploader onParsed={handleParsed} />
 
       <Tabs defaultValue="personal" className="space-y-4">
         <TabsList className="flex flex-wrap h-auto gap-1">

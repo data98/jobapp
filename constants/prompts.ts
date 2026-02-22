@@ -5,36 +5,65 @@ export const RESUME_PARSE_PROMPT = `You are a resume parser. Extract structured 
 Return ONLY valid JSON matching this exact schema:
 {
   "personal_info": {
-    "fullName": "", "email": "", "phone": "", "location": "",
-    "linkedIn": "", "portfolio": "", "summary": ""
+    "fullName": "string",
+    "email": "string",
+    "phone": "string (clean format, e.g. +1 234 567 8900)",
+    "location": "string (city, country)",
+    "linkedIn": "string (full URL or empty string)",
+    "portfolio": "string (full URL or empty string)",
+    "summary": "string (professional summary/objective, clean prose without bullet markers)"
   },
   "experience": [
     {
-      "id": "<uuid>", "company": "", "title": "", "startDate": "",
-      "endDate": "", "current": false, "location": "", "bullets": []
+      "id": "uuid",
+      "company": "string (company name only, no extra text)",
+      "title": "string (job title only)",
+      "startDate": "string (YYYY-MM format, e.g. 2022-01)",
+      "endDate": "string (YYYY-MM format or empty if current)",
+      "current": "boolean (true if this is the current role)",
+      "location": "string",
+      "bullets": ["string (clean bullet point text without leading dashes, dots, or markers)"]
     }
   ],
   "education": [
     {
-      "id": "<uuid>", "institution": "", "degree": "", "field": "",
-      "startDate": "", "endDate": "", "gpa": ""
+      "id": "uuid",
+      "institution": "string",
+      "degree": "string (e.g. Bachelor's, Master's, PhD)",
+      "field": "string (field of study)",
+      "startDate": "string (YYYY-MM format)",
+      "endDate": "string (YYYY-MM format)",
+      "gpa": "string (if mentioned, otherwise empty)"
     }
   ],
   "skills": [
-    { "id": "<uuid>", "name": "" }
+    { "id": "uuid", "name": "string (one skill per entry, no grouping)" }
   ],
   "languages": [
-    { "id": "<uuid>", "language": "", "proficiency": "" }
+    { "id": "uuid", "language": "string", "proficiency": "string (e.g. Native, Fluent, Intermediate, Basic)" }
   ],
   "certifications": [
-    { "id": "<uuid>", "name": "", "issuer": "", "date": "", "url": "" }
+    { "id": "uuid", "name": "string", "issuer": "string", "date": "string (YYYY-MM format)", "url": "string" }
   ],
   "projects": [
     {
-      "id": "<uuid>", "name": "", "description": "", "url": "", "bullets": []
+      "id": "uuid",
+      "name": "string",
+      "description": "string (brief description, clean prose)",
+      "url": "string",
+      "bullets": ["string (clean bullet text without leading markers)"]
     }
   ]
 }
+
+Rules:
+- Generate unique UUIDs for each id field
+- Use YYYY-MM format for all dates (e.g. 2022-01). If only a year is given, use YYYY-01
+- Remove all leading bullet markers (-, *, •, >, etc.) from bullet point text
+- Trim whitespace, remove redundant special characters
+- Each skill should be a separate entry (split comma-separated skill lists)
+- If a field cannot be determined, use an empty string (not null)
+- Order experience and education by date, most recent first
 
 Resume text:
 {{resume_text}}`;
