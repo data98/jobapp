@@ -93,7 +93,7 @@ export function ApplicationForm() {
   };
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="max-w-2xl space-y-6 mx-auto">
       {/* URL-first hero section */}
       <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-transparent">
         <CardHeader>

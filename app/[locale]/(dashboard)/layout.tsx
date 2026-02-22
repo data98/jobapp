@@ -1,9 +1,11 @@
 import { redirect } from 'next/navigation';
-import { headers } from 'next/headers';
+import { headers, cookies } from 'next/headers';
 import { auth } from '@/lib/auth';
-import { Sidebar } from '@/components/shared/Sidebar';
+import { AppSidebar } from '@/components/shared/AppSidebar';
 import { Navbar } from '@/components/shared/Navbar';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { Toaster } from '@/components/ui/sonner';
+import { BreadcrumbProvider } from '@/components/shared/BreadcrumbContext';
 
 export default async function DashboardLayout({
   children,
@@ -19,16 +21,21 @@ export default async function DashboardLayout({
     redirect(`/${locale}/login`);
   }
 
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get('sidebar_state')?.value === 'true';
+
   return (
-    <div className="flex h-screen overflow-hidden">
-      <Sidebar />
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <Navbar showUserMenu />
-        <main className="flex-1 overflow-y-auto bg-muted/30 p-6">
-          {children}
-        </main>
-      </div>
-      <Toaster />
-    </div>
+    <BreadcrumbProvider>
+      <SidebarProvider defaultOpen={defaultOpen}>
+        <AppSidebar />
+        <SidebarInset>
+          <Navbar />
+          <main className="flex-1 overflow-y-auto bg-muted/30 p-6">
+            {children}
+          </main>
+        </SidebarInset>
+        <Toaster />
+      </SidebarProvider>
+    </BreadcrumbProvider>
   );
 }
