@@ -2,7 +2,9 @@ import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { getApplication, getResumeVariant } from '@/lib/actions/applications';
-import { VariantEditor } from '@/components/resume/VariantEditor';
+import { getAnalysis } from '@/lib/actions/analysis';
+import { getMasterResume } from '@/lib/actions/resume';
+import { ResumeViewPage } from '@/components/resume-view/ResumeViewPage';
 import { SetBreadcrumbLabel } from '@/components/shared/SetBreadcrumbLabel';
 
 export default async function ResumeVariantPage({
@@ -16,7 +18,12 @@ export default async function ResumeVariantPage({
   const application = await getApplication(id);
   if (!application) notFound();
 
-  const variant = await getResumeVariant(id);
+  const [variant, analysis, masterResume] = await Promise.all([
+    getResumeVariant(id),
+    getAnalysis(id),
+    getMasterResume(),
+  ]);
+
   const t = await getTranslations('resume');
 
   const labels: Record<string, string> = {
@@ -30,12 +37,14 @@ export default async function ResumeVariantPage({
   };
 
   return (
-    <div className="space-y-4 max-h-full">
+    <div className="h-full">
       <SetBreadcrumbLabel label={`${application.job_title} · ${application.company}`} />
       {variant ? (
-        <VariantEditor
+        <ResumeViewPage
+          application={application}
           variant={variant}
-          jobApplicationId={id}
+          masterResume={masterResume}
+          analysis={analysis}
           labels={labels}
         />
       ) : (

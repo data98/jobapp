@@ -88,7 +88,7 @@ export function DashboardContent({ stats, recentApplications }: DashboardContent
               </Link>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="flex flex-col gap-3">
               {recentApplications.map((app) => (
                 <ApplicationCard key={app.id} application={app} />
               ))}
