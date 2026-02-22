@@ -229,6 +229,8 @@ export async function saveResumeVariant(
       | 'certifications'
       | 'projects'
       | 'included_sections'
+      | 'design_settings'
+      | 'section_order'
     >
   >
 ): Promise<ResumeVariant> {
