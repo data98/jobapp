@@ -9,9 +9,10 @@ import type { JobApplication } from '@/types';
 
 interface ApplicationCardProps {
   application: JobApplication;
+  atsScore?: number | null;
 }
 
-export function ApplicationCard({ application }: ApplicationCardProps) {
+export function ApplicationCard({ application, atsScore }: ApplicationCardProps) {
   const format = useFormatter();
 
   return (
@@ -29,7 +30,21 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
             </p>
           </div>
           <div className="flex flex-col items-end gap-1 shrink-0">
-            <StatusBadge status={application.status} />
+            <div className="flex items-center gap-2">
+              {atsScore != null && (
+                <span
+                  className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                    atsScore >= 75 ? 'bg-green-100 text-green-800' :
+                    atsScore >= 60 ? 'bg-yellow-100 text-yellow-800' :
+                    atsScore >= 40 ? 'bg-orange-100 text-orange-800' :
+                    'bg-red-100 text-red-800'
+                  }`}
+                >
+                  ATS {atsScore}
+                </span>
+              )}
+              <StatusBadge status={application.status} />
+            </div>
             <span className="text-xs text-muted-foreground">
               {format.dateTime(new Date(application.created_at), {
                 month: 'short',

@@ -86,7 +86,6 @@ export function ResumeViewPage({
   const [analysisData, setAnalysisData] = useState<AiAnalysis | null>(initialAnalysis);
   const [activeTab, setActiveTab] = useState('preview');
   const [isDirty, setIsDirty] = useState(false);
-  const [saving, setSaving] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [clientScores, setClientScores] = useState<ClientScoreResult | null>(null);
 
@@ -145,32 +144,6 @@ export function ResumeViewPage({
     return () => window.removeEventListener('beforeunload', handler);
   }, [isDirty]);
 
-  // ─── Save handler ──────────────────────────────────────────────────
-  const handleSave = useCallback(async () => {
-    setSaving(true);
-    try {
-      await saveResumeVariant(application.id, {
-        template_id: templateId,
-        personal_info: personalInfo,
-        experience,
-        education,
-        skills,
-        languages,
-        certifications,
-        projects,
-        included_sections: includedSections,
-        section_order: sectionOrder,
-        design_settings: designSettings,
-      });
-      setIsDirty(false);
-      toast.success(tc('saved'));
-    } catch {
-      toast.error(tc('error'));
-    } finally {
-      setSaving(false);
-    }
-  }, [application.id, templateId, personalInfo, experience, education, skills, languages, certifications, projects, includedSections, sectionOrder, designSettings, tc]);
-
   // ─── Reset handler ─────────────────────────────────────────────────
   const handleReset = useCallback(async () => {
     try {
@@ -188,9 +161,32 @@ export function ResumeViewPage({
     }
   }, [application.id, tc]);
 
-  const handleExport = useCallback(() => {
-    window.open(`/api/resume/export?id=${application.id}`, '_blank');
-  }, [application.id]);
+  const [exporting, setExporting] = useState(false);
+
+  const handleSaveAndExport = useCallback(async () => {
+    setExporting(true);
+    try {
+      await saveResumeVariant(application.id, {
+        template_id: templateId,
+        personal_info: personalInfo,
+        experience,
+        education,
+        skills,
+        languages,
+        certifications,
+        projects,
+        included_sections: includedSections,
+        section_order: sectionOrder,
+        design_settings: designSettings,
+      });
+      setIsDirty(false);
+      window.open(`/api/resume/export?id=${application.id}`, '_blank');
+    } catch {
+      toast.error(tc('error'));
+    } finally {
+      setExporting(false);
+    }
+  }, [application.id, templateId, personalInfo, experience, education, skills, languages, certifications, projects, includedSections, sectionOrder, designSettings, tc]);
 
   // ─── State setters that mark dirty ─────────────────────────────────
   const updatePersonalInfo = useCallback((v: PersonalInfo) => { setPersonalInfo(v); markDirty(); }, [markDirty]);
@@ -211,7 +207,7 @@ export function ResumeViewPage({
       <div className="flex items-center justify-between gap-4 pb-3 shrink-0">
         <div className="min-w-0">
           <h1 className="text-lg font-semibold truncate">
-            {application.job_title} <span className="text-muted-foreground font-normal">at</span> {application.company}
+            {application.job_title} <span className="text-muted-foreground font-normal">{t('preview.at')}</span> {application.company}
           </h1>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -220,9 +216,9 @@ export function ResumeViewPage({
               {t('preview.unsavedChanges')}
             </Badge>
           )}
-          <Button size="sm" variant="outline" onClick={handleExport}>
+          <Button size="sm" variant="outline" onClick={handleSaveAndExport} disabled={exporting}>
             <Download className="mr-1.5 h-3.5 w-3.5" />
-            {t('preview.save').includes('Save') ? 'Export PDF' : t('preview.save')}
+            {exporting ? tc('saving') : t('preview.saveAndExport')}
           </Button>
           {/* Mobile preview toggle */}
           <Button
@@ -261,7 +257,6 @@ export function ResumeViewPage({
                 sectionOrder={sectionOrder}
                 masterResume={masterResume}
                 analysisData={analysisData}
-                saving={saving}
                 onPersonalInfoChange={updatePersonalInfo}
                 onExperienceChange={updateExperience}
                 onEducationChange={updateEducation}
@@ -269,7 +264,6 @@ export function ResumeViewPage({
                 onLanguagesChange={updateLanguages}
                 onCertificationsChange={updateCertifications}
                 onProjectsChange={updateProjects}
-                onSave={handleSave}
                 onReset={handleReset}
               />
             </TabsContent>

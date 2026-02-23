@@ -225,20 +225,22 @@ export function AddFromMasterModal({
 }
 
 function SkillItem({ item, isMatch }: { item: SkillEntry; isMatch: boolean }) {
+  const t = useTranslations('resumeView.preview');
   return (
     <div className="flex items-center gap-2">
       <span className="text-sm">{item.name}</span>
-      {isMatch && <Badge variant="outline" className="text-[10px] text-green-600 border-green-300">keyword</Badge>}
+      {isMatch && <Badge variant="outline" className="text-[10px] text-green-600 border-green-300">{t('keyword')}</Badge>}
     </div>
   );
 }
 
 function ExperienceItem({ item, isKeywordMatch }: { item: ExperienceEntry; isKeywordMatch: (t: string) => boolean }) {
+  const t = useTranslations('resumeView.preview');
   return (
     <div className="space-y-1">
       <div className="text-sm font-medium">{item.title}</div>
       <div className="text-xs text-muted-foreground">
-        {item.company} · {item.startDate} – {item.current ? 'Present' : item.endDate}
+        {item.company} · {item.startDate} – {item.current ? t('present') : item.endDate}
       </div>
       {item.bullets.length > 0 && (
         <ul className="text-xs text-muted-foreground mt-1 space-y-0.5">
@@ -249,7 +251,7 @@ function ExperienceItem({ item, isKeywordMatch }: { item: ExperienceEntry; isKey
             </li>
           ))}
           {item.bullets.length > 3 && (
-            <li className="text-muted-foreground">+{item.bullets.length - 3} more</li>
+            <li className="text-muted-foreground">{t('moreItems', { count: item.bullets.length - 3 })}</li>
           )}
         </ul>
       )}
@@ -258,13 +260,14 @@ function ExperienceItem({ item, isKeywordMatch }: { item: ExperienceEntry; isKey
 }
 
 function CertItem({ item, isMatch }: { item: CertificationEntry; isMatch: boolean }) {
+  const t = useTranslations('resumeView.preview');
   return (
     <div className="flex items-center gap-2">
       <div>
         <span className="text-sm">{item.name}</span>
         {item.issuer && <span className="text-xs text-muted-foreground ml-1">({item.issuer})</span>}
       </div>
-      {isMatch && <Badge variant="outline" className="text-[10px] text-green-600 border-green-300">keyword</Badge>}
+      {isMatch && <Badge variant="outline" className="text-[10px] text-green-600 border-green-300">{t('keyword')}</Badge>}
     </div>
   );
 }

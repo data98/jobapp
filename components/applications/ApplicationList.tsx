@@ -11,9 +11,10 @@ import type { JobApplication, ApplicationStatus } from '@/types';
 
 interface ApplicationListProps {
   applications: JobApplication[];
+  atsScores?: Record<string, number>;
 }
 
-export function ApplicationList({ applications }: ApplicationListProps) {
+export function ApplicationList({ applications, atsScores }: ApplicationListProps) {
   const t = useTranslations('applications');
   const [statusFilter, setStatusFilter] = useState<ApplicationStatus | 'all'>('all');
 
@@ -41,7 +42,7 @@ export function ApplicationList({ applications }: ApplicationListProps) {
       ) : (
         <div className="flex flex-col gap-3">
           {filtered.map((app) => (
-            <ApplicationCard key={app.id} application={app} />
+            <ApplicationCard key={app.id} application={app} atsScore={atsScores?.[app.id] ?? null} />
           ))}
         </div>
       )}

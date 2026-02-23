@@ -172,6 +172,33 @@ export async function getIdealResume(
   return (data?.ideal_resume as IdealResume) ?? null;
 }
 
+export async function getAtsScoresForApplications(): Promise<Record<string, number>> {
+  const userId = await getAuthUserId();
+  const supabase = createServerClient();
+
+  const { data: apps } = await supabase
+    .from('job_application')
+    .select('id')
+    .eq('user_id', userId);
+
+  if (!apps?.length) return {};
+
+  const appIds = apps.map((a) => a.id);
+
+  const { data: analyses } = await supabase
+    .from('ai_analysis')
+    .select('job_application_id, ats_score')
+    .in('job_application_id', appIds);
+
+  const scores: Record<string, number> = {};
+  for (const a of analyses ?? []) {
+    if (a.ats_score != null) {
+      scores[a.job_application_id] = a.ats_score;
+    }
+  }
+  return scores;
+}
+
 // ─── V1: Legacy Actions (backward compatibility) ─────────────────────────────
 
 export async function acceptRewrite(

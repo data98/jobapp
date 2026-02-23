@@ -21,7 +21,6 @@ import {
   ExternalLink,
   Pencil,
   Trash2,
-  Brain,
   FileText,
 } from 'lucide-react';
 import { StatusBadge } from './StatusBadge';
@@ -34,9 +33,10 @@ import type { JobApplication, ApplicationStatus } from '@/types';
 
 interface ApplicationDetailProps {
   application: JobApplication;
+  atsScore: number | null;
 }
 
-export function ApplicationDetail({ application }: ApplicationDetailProps) {
+export function ApplicationDetail({ application, atsScore }: ApplicationDetailProps) {
   const t = useTranslations('applications');
   const ts = useTranslations('statuses');
   const tc = useTranslations('common');
@@ -97,19 +97,25 @@ export function ApplicationDetail({ application }: ApplicationDetailProps) {
     <div className="space-y-6">
       <div className="flex items-start justify-between">
         {/* Quick actions */}
-        <div className="flex gap-3">
-          <Link href={`/applications/${app.id}/analysis`}>
-            <Button variant="outline">
-              <Brain className="mr-2 h-4 w-4" />
-              {t('analyze')}
-            </Button>
-          </Link>
+        <div className="flex items-center gap-3">
           <Link href={`/applications/${app.id}/resume`}>
-            <Button variant="outline">
+            <Button>
               <FileText className="mr-2 h-4 w-4" />
-              {t('viewResume')}
+              {t('openResumeEditor')}
             </Button>
           </Link>
+          {atsScore != null && (
+            <span
+              className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                atsScore >= 75 ? 'bg-green-100 text-green-800' :
+                atsScore >= 60 ? 'bg-yellow-100 text-yellow-800' :
+                atsScore >= 40 ? 'bg-orange-100 text-orange-800' :
+                'bg-red-100 text-red-800'
+              }`}
+            >
+              ATS {atsScore}
+            </span>
+          )}
         </div>
         <div className="space-y-1">
           {app.location && (

@@ -250,7 +250,7 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-5xl mx-auto">
 
 
       <ResumeUploader onParsed={handleParsed} />

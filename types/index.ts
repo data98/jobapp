@@ -1,5 +1,7 @@
 // ─── Master Resume ────────────────────────────────────────────────────────────
 
+export type PersonalInfoField = 'fullName' | 'email' | 'phone' | 'location' | 'linkedIn' | 'portfolio' | 'summary';
+
 export interface PersonalInfo {
   fullName: string;
   email: string;
@@ -8,7 +10,10 @@ export interface PersonalInfo {
   linkedIn: string;
   portfolio: string;
   summary: string;
+  hiddenFields?: PersonalInfoField[];
 }
+
+export type ExperienceField = 'company' | 'title' | 'startDate' | 'endDate' | 'location' | 'description';
 
 export interface ExperienceEntry {
   id: string;
@@ -18,7 +23,11 @@ export interface ExperienceEntry {
   endDate: string;
   current: boolean;
   location: string;
+  description?: string;
   bullets: string[];
+  hidden?: boolean;
+  hiddenBullets?: number[];
+  hiddenFields?: ExperienceField[];
 }
 
 export interface EducationEntry {
@@ -29,17 +38,20 @@ export interface EducationEntry {
   startDate: string;
   endDate: string;
   gpa: string;
+  hidden?: boolean;
 }
 
 export interface SkillEntry {
   id: string;
   name: string;
+  hidden?: boolean;
 }
 
 export interface LanguageEntry {
   id: string;
   language: string;
   proficiency: string;
+  hidden?: boolean;
 }
 
 export interface CertificationEntry {
@@ -48,6 +60,7 @@ export interface CertificationEntry {
   issuer: string;
   date: string;
   url: string;
+  hidden?: boolean;
 }
 
 export interface ProjectEntry {
@@ -56,6 +69,8 @@ export interface ProjectEntry {
   description: string;
   url: string;
   bullets: string[];
+  hidden?: boolean;
+  hiddenBullets?: number[];
 }
 
 export interface MasterResume {

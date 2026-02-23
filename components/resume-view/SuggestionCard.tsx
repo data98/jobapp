@@ -30,6 +30,7 @@ function SuggestionIcon({ type }: { type: string }) {
 
 export function SuggestionCard({ suggestion, onAccept, onDismiss, isAccepted }: SuggestionCardProps) {
   const t = useTranslations('resumeView.matching');
+  const tc = useTranslations('common');
   const [editing, setEditing] = useState(false);
   const [editText, setEditText] = useState(suggestion.suggested_text ?? '');
 
@@ -70,11 +71,11 @@ export function SuggestionCard({ suggestion, onAccept, onDismiss, isAccepted }: 
         {suggestion.original_text && suggestion.suggested_text && (
           <div className="space-y-2">
             <div className="bg-muted/50 rounded p-2">
-              <p className="text-xs text-muted-foreground mb-0.5">{t('accept').includes('Accept') ? 'Original' : ''}</p>
-              <p className="text-xs line-through text-muted-foreground">{suggestion.original_text}</p>
+              <p className="text-xs text-muted-foreground mb-0.5">{t('original')}</p>
+              <p className="text-xs text-muted-foreground">{suggestion.original_text}</p>
             </div>
             {!editing ? (
-              <div className="bg-green-50 border border-green-200 rounded p-2">
+              <div className="bg-green-600 border border-green-200 rounded p-2">
                 <p className="text-xs">{suggestion.suggested_text}</p>
               </div>
             ) : (
@@ -106,7 +107,7 @@ export function SuggestionCard({ suggestion, onAccept, onDismiss, isAccepted }: 
                 {t('accept')}
               </Button>
               <Button size="sm" variant="outline" onClick={() => setEditing(false)}>
-                {t('dismiss').includes('Dismiss') ? 'Cancel' : t('dismiss')}
+                {tc('cancel')}
               </Button>
             </>
           ) : (

@@ -116,6 +116,7 @@
     "notes": "Notes",
     "analyze": "Analyze with AI",
     "viewResume": "View Tailored Resume",
+    "openResumeEditor": "Open Resume Editor",
     "appliedOn": "Applied on {date}",
     "noApplications": "No applications yet. Start tracking your job search!",
     "overview": "Overview",
@@ -256,8 +257,10 @@
     "matching": {
       "atsScore": "ATS Score",
       "maxAchievable": "Max Achievable",
+      "keywords": "Keywords",
       "keywordUsage": "Keyword Usage",
       "measurableResults": "Measurable Results",
+      "structure": "Structure",
       "resumeStructure": "Resume Structure",
       "suggestions": "Suggestions",
       "filterAll": "All",
@@ -289,6 +292,7 @@
       "wellQualified": "You're well-qualified — focus on optimization",
       "noJobDescription": "Add a job description to analyze your resume",
       "staleScores": "Scores may have changed — re-analyze for updated suggestions",
+      "original": "Original",
       "noMoreSuggestions": "Great work! No more suggestions.",
       "synonymMatch": "Matched as synonym",
       "weight": "Weight: {weight}%",
@@ -328,7 +332,15 @@
       "wordCount": "{count} words",
       "selectItems": "Select items to add",
       "addSelected": "Add Selected",
-      "noItemsToAdd": "All items are already in your resume"
+      "noItemsToAdd": "All items are already in your resume",
+      "exportPdf": "Export PDF",
+      "saveAndExport": "Save & Export PDF",
+      "present": "Present",
+      "keyword": "keyword",
+      "moreItems": "+{count} more",
+      "at": "at",
+      "includeInResume": "Include in resume",
+      "hiddenFromResume": "Hidden from resume"
     }
   }
 }
