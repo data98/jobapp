@@ -1,5 +1,6 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getApplications } from '@/lib/actions/applications';
+import { getAtsScoresForApplications } from '@/lib/actions/analysis';
 import { ApplicationList } from '@/components/applications/ApplicationList';
 
 export default async function ApplicationsPage({
@@ -10,7 +11,10 @@ export default async function ApplicationsPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const applications = await getApplications();
+  const [applications, atsScores] = await Promise.all([
+    getApplications(),
+    getAtsScoresForApplications(),
+  ]);
 
-  return <ApplicationList applications={applications} />;
+  return <ApplicationList applications={applications} atsScores={atsScores} />;
 }

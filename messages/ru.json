@@ -116,6 +116,7 @@
     "notes": "Заметки",
     "analyze": "Анализ с ИИ",
     "viewResume": "Посмотреть адаптированное резюме",
+    "openResumeEditor": "Открыть редактор резюме",
     "appliedOn": "Отправлено {date}",
     "noApplications": "Заявок пока нет. Начните отслеживать свой поиск работы!",
     "overview": "Обзор",
@@ -256,8 +257,10 @@
     "matching": {
       "atsScore": "ATS-рейтинг",
       "maxAchievable": "Максимально достижимый",
+      "keywords": "Ключевые слова",
       "keywordUsage": "Использование ключевых слов",
       "measurableResults": "Измеримые результаты",
+      "structure": "Структура",
       "resumeStructure": "Структура резюме",
       "suggestions": "Рекомендации",
       "filterAll": "Все",
@@ -289,6 +292,7 @@
       "wellQualified": "Вы хорошо подходите — сосредоточьтесь на оптимизации",
       "noJobDescription": "Добавьте описание вакансии для анализа резюме",
       "staleScores": "Оценки могли измениться — повторите анализ для обновлённых рекомендаций",
+      "original": "Оригинал",
       "noMoreSuggestions": "Отличная работа! Больше рекомендаций нет.",
       "synonymMatch": "Совпадение по синониму",
       "weight": "Вес: {weight}%",
@@ -328,7 +332,15 @@
       "wordCount": "{count} слов",
       "selectItems": "Выберите элементы для добавления",
       "addSelected": "Добавить выбранное",
-      "noItemsToAdd": "Все элементы уже добавлены в резюме"
+      "noItemsToAdd": "Все элементы уже добавлены в резюме",
+      "exportPdf": "Экспорт в PDF",
+      "saveAndExport": "Сохранить и экспорт в PDF",
+      "present": "По настоящее время",
+      "keyword": "ключевое слово",
+      "moreItems": "+{count} ещё",
+      "at": "в",
+      "includeInResume": "Включить в резюме",
+      "hiddenFromResume": "Скрыто из резюме"
     }
   }
 }

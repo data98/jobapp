@@ -49,7 +49,7 @@ export function BottomScoreBar({
           <span className="text-xs text-muted-foreground">{t('atsScore')}</span>
           {isEstimate && (
             <Badge variant="outline" className="text-[10px] px-1 py-0">
-              {t('estimated')}
+              {t('estimatedScore')}
             </Badge>
           )}
           {scoresStale && (

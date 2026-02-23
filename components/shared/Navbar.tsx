@@ -28,8 +28,6 @@ function useBreadcrumbs(): BreadcrumbEntry[] {
   const tNav = useTranslations('nav');
   const tApps = useTranslations('applications');
   const tResume = useTranslations('resume');
-  const tAnalysis = useTranslations('analysis');
-
   const path = pathname.replace(/\/$/, '') || '/';
   const appLabel = dynamicLabel || tApps('detail');
 
@@ -53,16 +51,6 @@ function useBreadcrumbs(): BreadcrumbEntry[] {
     return [
       { label: tApps('title'), href: '/applications' },
       { label: appLabel },
-    ];
-  }
-
-  // /applications/[id]/analysis
-  const analysisMatch = path.match(/^\/applications\/([^/]+)\/analysis$/);
-  if (analysisMatch) {
-    return [
-      { label: tApps('title'), href: '/applications' },
-      { label: appLabel, href: `/applications/${analysisMatch[1]}` },
-      { label: tAnalysis('title') },
     ];
   }
 

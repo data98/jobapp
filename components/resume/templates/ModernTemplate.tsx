@@ -37,15 +37,16 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
 
   const renderSidebarSection = (s: ResumeSection) => {
     switch (s) {
-      case 'skills':
-        if (!data.skills.length) return null;
+      case 'skills': {
+        const visibleSkills = data.skills.filter(sk => !sk.hidden);
+        if (!visibleSkills.length) return null;
         return (
           <div key={s}>
             <h2 className="font-bold uppercase tracking-wider mb-2" style={{ fontSize: '0.75em', color: `${accentColor}99` }}>
               {labels.skills}
             </h2>
             <div className="flex flex-wrap gap-1.5">
-              {data.skills.map((skill) => (
+              {visibleSkills.map((skill) => (
                 <span key={skill.id} className="rounded" style={{ fontSize: '0.75em', backgroundColor: `${accentColor}20`, padding: '1px 8px' }}>
                   {skill.name}
                 </span>
@@ -53,29 +54,33 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
             </div>
           </div>
         );
-      case 'languages':
-        if (!data.languages.length) return null;
+      }
+      case 'languages': {
+        const visibleLangs = data.languages.filter(l => !l.hidden);
+        if (!visibleLangs.length) return null;
         return (
           <div key={s}>
             <h2 className="font-bold uppercase tracking-wider mb-2" style={{ fontSize: '0.75em', color: `${accentColor}99` }}>
               {labels.languages}
             </h2>
             <div className="space-y-1" style={{ fontSize: '0.75em' }}>
-              {data.languages.map((l) => (
+              {visibleLangs.map((l) => (
                 <p key={l.id}>{l.language} <span style={{ opacity: 0.7 }}>— {l.proficiency}</span></p>
               ))}
             </div>
           </div>
         );
-      case 'certifications':
-        if (!data.certifications.length) return null;
+      }
+      case 'certifications': {
+        const visibleCerts = data.certifications.filter(c => !c.hidden);
+        if (!visibleCerts.length) return null;
         return (
           <div key={s}>
             <h2 className="font-bold uppercase tracking-wider mb-2" style={{ fontSize: '0.75em', color: `${accentColor}99` }}>
               {labels.certifications}
             </h2>
             <div className="space-y-1.5" style={{ fontSize: '0.75em' }}>
-              {data.certifications.map((cert) => (
+              {visibleCerts.map((cert) => (
                 <div key={cert.id}>
                   <p className="font-semibold">{cert.name}</p>
                   {cert.issuer && <p style={{ opacity: 0.7 }}>{cert.issuer}</p>}
@@ -84,45 +89,72 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
             </div>
           </div>
         );
+      }
       default: return null;
     }
   };
 
   const renderMainSection = (s: ResumeSection) => {
     switch (s) {
-      case 'experience':
-        if (!data.experience.length) return null;
+      case 'experience': {
+        const visibleExp = data.experience.filter(e => !e.hidden);
+        if (!visibleExp.length) return null;
         return (
           <div key={s}>
             <h2 className="font-bold uppercase tracking-wider mb-3" style={{ fontSize: '0.75em', color: '#64748b' }}>
               {labels.experience}
             </h2>
-            {data.experience.map((exp) => (
-              <div key={exp.id} className="mb-3">
-                <div className="flex justify-between items-baseline">
-                  <span className="font-bold" style={{ fontSize: '1em' }}>{exp.title}</span>
-                  <span style={{ fontSize: '0.75em', color: '#9ca3af' }}>
-                    {exp.startDate} — {exp.current ? 'Present' : exp.endDate}
-                  </span>
+            {visibleExp.map((exp) => {
+              const visibleBullets = exp.bullets.filter((b, i) => Boolean(b) && !exp.hiddenBullets?.includes(i));
+              return (
+                <div key={exp.id} className="mb-3">
+                  {(() => {
+                    const hf = exp.hiddenFields ?? [];
+                    const showTitle = !hf.includes('title');
+                    const showDates = !hf.includes('startDate') || !hf.includes('endDate');
+                    const showCompany = !hf.includes('company');
+                    const showLocation = !hf.includes('location') && exp.location;
+                    const showDesc = !hf.includes('description') && exp.description;
+                    const companyLocation = [showCompany ? exp.company : '', showLocation ? exp.location : ''].filter(Boolean).join(' · ');
+                    return (
+                      <>
+                        {(showTitle || showDates) && (
+                          <div className="flex justify-between items-baseline">
+                            {showTitle && <span className="font-bold" style={{ fontSize: '1em' }}>{exp.title}</span>}
+                            {showDates && (
+                              <span style={{ fontSize: '0.75em', color: '#9ca3af' }}>
+                                {!hf.includes('startDate') ? exp.startDate : ''}{!hf.includes('startDate') && !hf.includes('endDate') ? ' — ' : ''}{!hf.includes('endDate') ? (exp.current ? 'Present' : exp.endDate) : ''}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                        {companyLocation && <p style={{ fontSize: '0.75em', color: '#6b7280' }}>{companyLocation}</p>}
+                        {showDesc && (
+                          <p className="mt-1" style={{ fontSize: '0.75em', color: '#374151' }}>{exp.description}</p>
+                        )}
+                      </>
+                    );
+                  })()}
+                  {visibleBullets.length > 0 && (
+                    <ul className="list-disc list-outside ml-4 mt-1 space-y-0.5" style={{ ...listStyle, fontSize: '0.75em', color: '#374151' }}>
+                      {visibleBullets.map((b, i) => <li key={i}>{b}</li>)}
+                    </ul>
+                  )}
                 </div>
-                <p style={{ fontSize: '0.75em', color: '#6b7280' }}>{exp.company}{exp.location ? ` · ${exp.location}` : ''}</p>
-                {exp.bullets.length > 0 && (
-                  <ul className="list-disc list-outside ml-4 mt-1 space-y-0.5" style={{ ...listStyle, fontSize: '0.75em', color: '#374151' }}>
-                    {exp.bullets.filter(Boolean).map((b, i) => <li key={i}>{b}</li>)}
-                  </ul>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         );
-      case 'education':
-        if (!data.education.length) return null;
+      }
+      case 'education': {
+        const visibleEdu = data.education.filter(e => !e.hidden);
+        if (!visibleEdu.length) return null;
         return (
           <div key={s}>
             <h2 className="font-bold uppercase tracking-wider mb-3" style={{ fontSize: '0.75em', color: '#64748b' }}>
               {labels.education}
             </h2>
-            {data.education.map((edu) => (
+            {visibleEdu.map((edu) => (
               <div key={edu.id} className="mb-2">
                 <div className="flex justify-between items-baseline">
                   <span className="font-bold">{edu.degree} — {edu.field}</span>
@@ -133,26 +165,32 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
             ))}
           </div>
         );
-      case 'projects':
-        if (!data.projects.length) return null;
+      }
+      case 'projects': {
+        const visibleProjects = data.projects.filter(p => !p.hidden);
+        if (!visibleProjects.length) return null;
         return (
           <div key={s}>
             <h2 className="font-bold uppercase tracking-wider mb-3" style={{ fontSize: '0.75em', color: '#64748b' }}>
               {labels.projects}
             </h2>
-            {data.projects.map((proj) => (
-              <div key={proj.id} className="mb-2">
-                <span className="font-bold" style={{ fontSize: '0.75em' }}>{proj.name}</span>
-                {proj.description && <p style={{ fontSize: '0.75em', color: '#4b5563' }} className="mt-0.5">{proj.description}</p>}
-                {proj.bullets.length > 0 && (
-                  <ul className="list-disc list-outside ml-4 mt-1 space-y-0.5" style={{ ...listStyle, fontSize: '0.75em', color: '#374151' }}>
-                    {proj.bullets.filter(Boolean).map((b, i) => <li key={i}>{b}</li>)}
-                  </ul>
-                )}
-              </div>
-            ))}
+            {visibleProjects.map((proj) => {
+              const visibleBullets = proj.bullets.filter((b, i) => Boolean(b) && !proj.hiddenBullets?.includes(i));
+              return (
+                <div key={proj.id} className="mb-2">
+                  <span className="font-bold" style={{ fontSize: '0.75em' }}>{proj.name}</span>
+                  {proj.description && <p style={{ fontSize: '0.75em', color: '#4b5563' }} className="mt-0.5">{proj.description}</p>}
+                  {visibleBullets.length > 0 && (
+                    <ul className="list-disc list-outside ml-4 mt-1 space-y-0.5" style={{ ...listStyle, fontSize: '0.75em', color: '#374151' }}>
+                      {visibleBullets.map((b, i) => <li key={i}>{b}</li>)}
+                    </ul>
+                  )}
+                </div>
+              );
+            })}
           </div>
         );
+      }
       default: return null;
     }
   };
@@ -161,27 +199,32 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
     <div className="bg-white max-w-[210mm] mx-auto shadow-lg flex" style={containerStyle}>
       {/* Sidebar */}
       <div className="w-1/3 text-white p-6 space-y-5" style={{ backgroundColor: accentColor }}>
-        {show('personal_info') && (
-          <div>
-            <h1 className="text-xl font-bold leading-tight">
-              {data.personal_info.fullName}
-            </h1>
-            <div className="mt-3 space-y-1" style={{ fontSize: '0.75em', opacity: 0.8 }}>
-              {data.personal_info.email && <p>{data.personal_info.email}</p>}
-              {data.personal_info.phone && <p>{data.personal_info.phone}</p>}
-              {data.personal_info.location && <p>{data.personal_info.location}</p>}
-              {data.personal_info.linkedIn && <p>{data.personal_info.linkedIn}</p>}
-              {data.personal_info.portfolio && <p>{data.personal_info.portfolio}</p>}
+        {show('personal_info') && (() => {
+          const h = data.personal_info.hiddenFields ?? [];
+          return (
+            <div>
+              {!h.includes('fullName') && (
+                <h1 className="text-xl font-bold leading-tight">
+                  {data.personal_info.fullName}
+                </h1>
+              )}
+              <div className="mt-3 space-y-1" style={{ fontSize: '0.75em', opacity: 0.8 }}>
+                {!h.includes('email') && data.personal_info.email && <p>{data.personal_info.email}</p>}
+                {!h.includes('phone') && data.personal_info.phone && <p>{data.personal_info.phone}</p>}
+                {!h.includes('location') && data.personal_info.location && <p>{data.personal_info.location}</p>}
+                {!h.includes('linkedIn') && data.personal_info.linkedIn && <p>{data.personal_info.linkedIn}</p>}
+                {!h.includes('portfolio') && data.personal_info.portfolio && <p>{data.personal_info.portfolio}</p>}
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {sidebarOrder.map(renderSidebarSection)}
       </div>
 
       {/* Main content */}
       <div className="flex-1 p-6 space-y-5">
-        {show('personal_info') && data.personal_info.summary && (
+        {show('personal_info') && !(data.personal_info.hiddenFields ?? []).includes('summary') && data.personal_info.summary && (
           <div>
             <h2 className="font-bold uppercase tracking-wider mb-2" style={{ fontSize: '0.75em', color: '#64748b' }}>
               {labels.summary}
