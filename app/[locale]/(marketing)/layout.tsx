@@ -1,5 +1,5 @@
-import { Navbar } from '@/components/shared/Navbar';
-import { Footer } from '@/components/shared/Footer';
+import { LandingNavbar } from '@/components/landing/LandingNavbar';
+import { LandingFooter } from '@/components/landing/LandingFooter';
 
 export default function MarketingLayout({
   children,
@@ -8,9 +8,9 @@ export default function MarketingLayout({
 }) {
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar showSidebarTrigger={false} />
+      <LandingNavbar />
       <main className="flex-1">{children}</main>
-      <Footer />
+      <LandingFooter />
     </div>
   );
 }
