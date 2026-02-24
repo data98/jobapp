@@ -203,6 +203,16 @@ export async function getResumeVariant(
     return null;
   }
 
+  const allSections: ResumeSection[] = [
+    'personal_info',
+    'experience',
+    'education',
+    'skills',
+    'languages',
+    'certifications',
+    'projects',
+  ];
+
   const { data: newVariant, error: insertError } = await supabase
     .from('resume_variant')
     .insert({
@@ -216,6 +226,8 @@ export async function getResumeVariant(
       languages: masterResume.languages,
       certifications: masterResume.certifications,
       projects: masterResume.projects,
+      included_sections: allSections,
+      section_order: allSections,
     })
     .select()
     .single();

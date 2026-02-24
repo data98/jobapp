@@ -61,26 +61,28 @@ export function ResumeViewPage({
   const [certifications, setCertifications] = useState<CertificationEntry[]>(variant.certifications);
   const [projects, setProjects] = useState<ProjectEntry[]>(variant.projects);
   const [includedSections, setIncludedSections] = useState<ResumeSection[]>(
-    variant.included_sections ?? ['personal_info', 'experience', 'education', 'skills']
+    variant.included_sections ?? ['personal_info', 'experience', 'education', 'skills', 'languages', 'certifications', 'projects']
   );
-  const [sectionOrder, setSectionOrder] = useState<ResumeSection[]>(
-    variant.section_order?.length
-      ? variant.section_order
-      : variant.included_sections ?? ['personal_info', 'experience', 'education', 'skills', 'languages', 'certifications', 'projects']
-  );
+  const ALL_SECTIONS: ResumeSection[] = ['personal_info', 'experience', 'education', 'skills', 'languages', 'certifications', 'projects'];
+  const [sectionOrder, setSectionOrder] = useState<ResumeSection[]>(() => {
+    const saved = variant.section_order?.length ? variant.section_order : variant.included_sections ?? ALL_SECTIONS;
+    // Append any sections that exist but are missing from the saved order
+    const missing = ALL_SECTIONS.filter(s => !saved.includes(s));
+    return [...saved, ...missing];
+  });
   const [designSettings, setDesignSettings] = useState<DesignSettings>(
     variant.design_settings && Object.keys(variant.design_settings).length > 0
       ? variant.design_settings
       : {
-          font_family: 'Georgia',
-          font_size: 10,
-          line_height: 1.4,
-          list_line_height: 1.2,
-          accent_color: '#2E75B6',
-          text_color: '#000000',
-          section_spacing: 'normal',
-          margins: { top: 40, bottom: 40, left: 40, right: 40 },
-        }
+        font_family: 'Georgia',
+        font_size: 10,
+        line_height: 1.4,
+        list_line_height: 1.2,
+        accent_color: '#2E75B6',
+        text_color: '#000000',
+        section_spacing: 'normal',
+        margins: { top: 40, bottom: 40, left: 40, right: 40 },
+      }
   );
 
   const [analysisData, setAnalysisData] = useState<AiAnalysis | null>(initialAnalysis);
