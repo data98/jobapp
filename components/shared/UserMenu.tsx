@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import { useLocale } from 'next-intl';
+import { useTheme } from 'next-themes';
 import { signOut } from '@/lib/auth-client';
 import { useSession } from '@/hooks/use-session';
 import {
@@ -14,13 +15,14 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { LogOut, User } from 'lucide-react';
+import { LogOut, User, Sun, Moon, Monitor } from 'lucide-react';
 
 export function UserMenu() {
   const t = useTranslations('nav');
   const { user } = useSession();
   const router = useRouter();
   const locale = useLocale();
+  const { theme, setTheme } = useTheme();
 
   async function handleSignOut() {
     await signOut();
@@ -31,11 +33,11 @@ export function UserMenu() {
 
   const initials = user.name
     ? user.name
-        .split(' ')
-        .map((n: string) => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2)
+      .split(' ')
+      .map((n: string) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
     : user.email?.[0]?.toUpperCase() ?? 'U';
 
   return (
@@ -62,6 +64,19 @@ export function UserMenu() {
             <User className="h-4 w-4" />
             {t('settings')}
           </button>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="gap-2" onClick={() => setTheme('light')}>
+          <Sun className="h-4 w-4" />
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem className="gap-2" onClick={() => setTheme('dark')}>
+          <Moon className="h-4 w-4" />
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem className="gap-2" onClick={() => setTheme('system')}>
+          <Monitor className="h-4 w-4" />
+          System
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="gap-2 text-destructive focus:text-destructive" asChild>
