@@ -163,7 +163,7 @@ export function AddFromMasterModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
         <DialogHeader>
-          <DialogTitle>{t('addFromMaster')} — {sectionTitle}</DialogTitle>
+          <DialogTitle>{t('addFromMaster')} - {sectionTitle}</DialogTitle>
         </DialogHeader>
 
         <ScrollArea className="max-h-[400px] pr-2">

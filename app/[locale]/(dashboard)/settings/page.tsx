@@ -10,7 +10,7 @@ export default async function SettingsPage({
 
   return (
     <div>
-      <p className="text-muted-foreground">Settings — coming soon.</p>
+      <p className="text-muted-foreground">Settings - coming soon.</p>
     </div>
   );
 }
