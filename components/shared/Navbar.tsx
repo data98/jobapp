@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
 import { LocaleSwitcher } from './LocaleSwitcher';
+import { ThemeToggle } from './ThemeToggle';
 import { UserMenu } from './UserMenu';
 import { useBreadcrumbLabel } from './BreadcrumbContext';
 import { SidebarTrigger } from '@/components/ui/sidebar';
@@ -108,6 +109,7 @@ export function Navbar({ showSidebarTrigger = true }: NavbarProps) {
       <div className="flex-1" />
       <div className="flex items-center gap-2">
         <LocaleSwitcher />
+        <ThemeToggle />
         <UserMenu />
       </div>
     </header>
