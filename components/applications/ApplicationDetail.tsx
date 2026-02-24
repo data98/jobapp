@@ -94,7 +94,7 @@ export function ApplicationDetail({ application, atsScore }: ApplicationDetailPr
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-5xl mx-auto">
       <div className="flex items-start justify-between">
         {/* Quick actions */}
         <div className="flex items-center gap-3">

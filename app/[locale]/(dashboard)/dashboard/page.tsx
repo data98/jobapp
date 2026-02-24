@@ -16,7 +16,7 @@ export default async function DashboardPage({
   ]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-5xl mx-auto">
       <DashboardContent stats={stats} recentApplications={recentApps.slice(0, 5)} />
     </div>
   );

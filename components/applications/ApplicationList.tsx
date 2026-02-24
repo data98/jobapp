@@ -24,7 +24,7 @@ export function ApplicationList({ applications, atsScores }: ApplicationListProp
   }, [applications, statusFilter]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-5xl mx-auto">
       <div className="flex items-center justify-between">
         <StatusFilter value={statusFilter} onChange={setStatusFilter} />
         <Link href="/applications/new">
