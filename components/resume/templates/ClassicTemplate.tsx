@@ -63,7 +63,7 @@ export function ClassicTemplate({ data, labels }: ClassicTemplateProps) {
                             {showTitle && <span className="font-bold">{exp.title}</span>}
                             {showDates && (
                               <span style={{ fontSize: '0.75em', color: '#6b7280' }}>
-                                {!hf.includes('startDate') ? exp.startDate : ''}{!hf.includes('startDate') && !hf.includes('endDate') ? ' — ' : ''}{!hf.includes('endDate') ? (exp.current ? 'Present' : exp.endDate) : ''}
+                                {!hf.includes('startDate') ? exp.startDate : ''}{!hf.includes('startDate') && !hf.includes('endDate') ? ' - ' : ''}{!hf.includes('endDate') ? (exp.current ? 'Present' : exp.endDate) : ''}
                               </span>
                             )}
                           </div>
@@ -102,8 +102,8 @@ export function ClassicTemplate({ data, labels }: ClassicTemplateProps) {
             {visibleEdu.map((edu) => (
               <div key={edu.id} className="mb-2">
                 <div className="flex justify-between items-baseline">
-                  <span className="font-bold">{edu.degree} — {edu.field}</span>
-                  <span style={{ fontSize: '0.75em', color: '#6b7280' }}>{edu.startDate} — {edu.endDate}</span>
+                  <span className="font-bold">{edu.degree} - {edu.field}</span>
+                  <span style={{ fontSize: '0.75em', color: '#6b7280' }}>{edu.startDate} - {edu.endDate}</span>
                 </div>
                 <div style={{ fontSize: '0.75em', color: '#4b5563' }}>
                   {edu.institution}{edu.gpa && <span> | GPA: {edu.gpa}</span>}
@@ -140,7 +140,7 @@ export function ClassicTemplate({ data, labels }: ClassicTemplateProps) {
               {labels.languages}
             </h2>
             <div className="flex flex-wrap gap-x-6 gap-y-1" style={{ fontSize: '0.75em' }}>
-              {visibleLangs.map((l) => <span key={l.id}>{l.language} — {l.proficiency}</span>)}
+              {visibleLangs.map((l) => <span key={l.id}>{l.language} - {l.proficiency}</span>)}
             </div>
           </section>
         );
@@ -156,7 +156,7 @@ export function ClassicTemplate({ data, labels }: ClassicTemplateProps) {
             {visibleCerts.map((cert) => (
               <div key={cert.id} style={{ fontSize: '0.75em' }} className="mb-1">
                 <span className="font-bold">{cert.name}</span>
-                {cert.issuer && <span> — {cert.issuer}</span>}
+                {cert.issuer && <span> - {cert.issuer}</span>}
                 {cert.date && <span style={{ color: '#6b7280' }}> ({cert.date})</span>}
               </div>
             ))}

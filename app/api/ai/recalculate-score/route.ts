@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
 
     if (!analysis?.ideal_resume) {
       return NextResponse.json(
-        { error: 'No ideal resume found — run full analysis first' },
+        { error: 'No ideal resume found - run full analysis first' },
         { status: 400 }
       );
     }

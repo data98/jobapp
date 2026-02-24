@@ -70,7 +70,7 @@ export function MinimalTemplate({ data, labels }: MinimalTemplateProps) {
                           )}
                           {showDates && (
                             <span className="shrink-0" style={{ fontSize: '0.75em', color: accentColor }}>
-                              {!hf.includes('startDate') ? exp.startDate : ''}{!hf.includes('startDate') && !hf.includes('endDate') ? ' — ' : ''}{!hf.includes('endDate') ? (exp.current ? 'Present' : exp.endDate) : ''}
+                              {!hf.includes('startDate') ? exp.startDate : ''}{!hf.includes('startDate') && !hf.includes('endDate') ? ' - ' : ''}{!hf.includes('endDate') ? (exp.current ? 'Present' : exp.endDate) : ''}
                             </span>
                           )}
                         </div>
@@ -112,7 +112,7 @@ export function MinimalTemplate({ data, labels }: MinimalTemplateProps) {
                   <span style={{ color: '#6b7280' }}>{edu.institution}</span>
                 </div>
                 <span className="shrink-0" style={{ fontSize: '0.75em', color: accentColor }}>
-                  {edu.startDate} — {edu.endDate}
+                  {edu.startDate} - {edu.endDate}
                 </span>
               </div>
             ))}
@@ -157,7 +157,7 @@ export function MinimalTemplate({ data, labels }: MinimalTemplateProps) {
             </h2>
             <div style={{ fontSize: '0.75em', color: '#4b5563' }} className="space-y-0.5">
               {visibleCerts.map((cert) => (
-                <p key={cert.id}>{cert.name}{cert.issuer ? ` — ${cert.issuer}` : ''}</p>
+                <p key={cert.id}>{cert.name}{cert.issuer ? ` - ${cert.issuer}` : ''}</p>
               ))}
             </div>
           </section>

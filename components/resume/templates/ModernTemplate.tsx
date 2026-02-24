@@ -65,7 +65,7 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
             </h2>
             <div className="space-y-1" style={{ fontSize: '0.75em' }}>
               {visibleLangs.map((l) => (
-                <p key={l.id}>{l.language} <span style={{ opacity: 0.7 }}>— {l.proficiency}</span></p>
+                <p key={l.id}>{l.language} <span style={{ opacity: 0.7 }}>- {l.proficiency}</span></p>
               ))}
             </div>
           </div>
@@ -123,7 +123,7 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
                             {showTitle && <span className="font-bold" style={{ fontSize: '1em' }}>{exp.title}</span>}
                             {showDates && (
                               <span style={{ fontSize: '0.75em', color: '#9ca3af' }}>
-                                {!hf.includes('startDate') ? exp.startDate : ''}{!hf.includes('startDate') && !hf.includes('endDate') ? ' — ' : ''}{!hf.includes('endDate') ? (exp.current ? 'Present' : exp.endDate) : ''}
+                                {!hf.includes('startDate') ? exp.startDate : ''}{!hf.includes('startDate') && !hf.includes('endDate') ? ' - ' : ''}{!hf.includes('endDate') ? (exp.current ? 'Present' : exp.endDate) : ''}
                               </span>
                             )}
                           </div>
@@ -157,8 +157,8 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
             {visibleEdu.map((edu) => (
               <div key={edu.id} className="mb-2">
                 <div className="flex justify-between items-baseline">
-                  <span className="font-bold">{edu.degree} — {edu.field}</span>
-                  <span style={{ fontSize: '0.75em', color: '#9ca3af' }}>{edu.startDate} — {edu.endDate}</span>
+                  <span className="font-bold">{edu.degree} - {edu.field}</span>
+                  <span style={{ fontSize: '0.75em', color: '#9ca3af' }}>{edu.startDate} - {edu.endDate}</span>
                 </div>
                 <p style={{ fontSize: '0.75em', color: '#6b7280' }}>{edu.institution}</p>
               </div>

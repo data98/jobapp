@@ -90,7 +90,7 @@ export function ClassicPDF({ data, labels }: ClassicPDFProps) {
                     const showLocation = !hf.includes('location') && exp.location;
                     const showDesc = !hf.includes('description') && exp.description;
                     const companyLocation = [showCompany ? exp.company : '', showLocation ? exp.location : ''].filter(Boolean).join(' · ');
-                    const dateStr = [!hf.includes('startDate') ? exp.startDate : '', !hf.includes('endDate') ? (exp.current ? 'Present' : exp.endDate) : ''].filter(Boolean).join(' — ');
+                    const dateStr = [!hf.includes('startDate') ? exp.startDate : '', !hf.includes('endDate') ? (exp.current ? 'Present' : exp.endDate) : ''].filter(Boolean).join(' - ');
                     return (
                       <>
                         {(showTitle || showDates) && (
@@ -124,8 +124,8 @@ export function ClassicPDF({ data, labels }: ClassicPDFProps) {
             {visibleEdu.map((edu) => (
               <View key={edu.id} style={{ marginBottom: 4 }}>
                 <View style={styles.entryRow}>
-                  <Text style={styles.entryTitle}>{edu.degree} — {edu.field}</Text>
-                  <Text style={styles.entryMeta}>{edu.startDate} — {edu.endDate}</Text>
+                  <Text style={styles.entryTitle}>{edu.degree} - {edu.field}</Text>
+                  <Text style={styles.entryMeta}>{edu.startDate} - {edu.endDate}</Text>
                 </View>
                 <Text style={styles.entryMeta}>{edu.institution}{edu.gpa ? ` | GPA: ${edu.gpa}` : ''}</Text>
               </View>
@@ -155,7 +155,7 @@ export function ClassicPDF({ data, labels }: ClassicPDFProps) {
             <Text style={styles.sectionTitle}>{labels.languages}</Text>
             <View style={styles.langRow}>
               {visibleLangs.map((l) => (
-                <Text key={l.id}>{l.language} — {l.proficiency}</Text>
+                <Text key={l.id}>{l.language} - {l.proficiency}</Text>
               ))}
             </View>
           </View>
@@ -169,7 +169,7 @@ export function ClassicPDF({ data, labels }: ClassicPDFProps) {
             <Text style={styles.sectionTitle}>{labels.certifications}</Text>
             {visibleCerts.map((cert) => (
               <Text key={cert.id} style={styles.certLine}>
-                {cert.name}{cert.issuer ? ` — ${cert.issuer}` : ''}{cert.date ? ` (${cert.date})` : ''}
+                {cert.name}{cert.issuer ? ` - ${cert.issuer}` : ''}{cert.date ? ` (${cert.date})` : ''}
               </Text>
             ))}
           </View>
