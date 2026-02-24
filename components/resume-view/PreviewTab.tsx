@@ -282,6 +282,30 @@ export function PreviewTab({
                   <Input value={personalInfo.location} onChange={(e) => onPersonalInfoChange({ ...personalInfo, location: e.target.value })} />
                 </div>
 
+                {/* LinkedIn */}
+                <div className={`space-y-1 ${isFieldHidden('linkedIn') ? 'opacity-50' : ''}`}>
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      checked={!isFieldHidden('linkedIn')}
+                      onCheckedChange={() => togglePersonalField('linkedIn')}
+                    />
+                    <Label className="text-xs">{t('linkedIn')}</Label>
+                  </div>
+                  <Input value={personalInfo.linkedIn} onChange={(e) => onPersonalInfoChange({ ...personalInfo, linkedIn: e.target.value })} />
+                </div>
+
+                {/* Portfolio */}
+                <div className={`space-y-1 ${isFieldHidden('portfolio') ? 'opacity-50' : ''}`}>
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      checked={!isFieldHidden('portfolio')}
+                      onCheckedChange={() => togglePersonalField('portfolio')}
+                    />
+                    <Label className="text-xs">{t('portfolio')}</Label>
+                  </div>
+                  <Input value={personalInfo.portfolio} onChange={(e) => onPersonalInfoChange({ ...personalInfo, portfolio: e.target.value })} />
+                </div>
+
                 {/* Summary */}
                 <div className={`space-y-1 ${isFieldHidden('summary') ? 'opacity-50' : ''}`}>
                   <div className="flex items-center justify-between">
@@ -438,6 +462,8 @@ export function PreviewTab({
                       <Input placeholder={t('degree')} value={edu.degree} onChange={(e) => onEducationChange(education.map((x, i) => i === idx ? { ...x, degree: e.target.value } : x))} />
                       <Input placeholder={t('fieldOfStudy')} value={edu.field} onChange={(e) => onEducationChange(education.map((x, i) => i === idx ? { ...x, field: e.target.value } : x))} />
                       <Input placeholder={t('gpa')} value={edu.gpa} onChange={(e) => onEducationChange(education.map((x, i) => i === idx ? { ...x, gpa: e.target.value } : x))} />
+                      <Input type="month" placeholder={t('startDate')} value={edu.startDate} onChange={(e) => onEducationChange(education.map((x, i) => i === idx ? { ...x, startDate: e.target.value } : x))} />
+                      <Input type="month" placeholder={t('endDate')} value={edu.endDate} onChange={(e) => onEducationChange(education.map((x, i) => i === idx ? { ...x, endDate: e.target.value } : x))} />
                     </div>
                   </div>
                 ))}
@@ -554,6 +580,8 @@ export function PreviewTab({
                     <div className="grid grid-cols-2 gap-2 flex-1">
                       <Input placeholder={t('certName')} value={cert.name} onChange={(e) => onCertificationsChange(certifications.map((c, i) => i === idx ? { ...c, name: e.target.value } : c))} />
                       <Input placeholder={t('issuer')} value={cert.issuer} onChange={(e) => onCertificationsChange(certifications.map((c, i) => i === idx ? { ...c, issuer: e.target.value } : c))} />
+                      <Input type="month" placeholder={t('certDate')} value={cert.date} onChange={(e) => onCertificationsChange(certifications.map((c, i) => i === idx ? { ...c, date: e.target.value } : c))} />
+                      <Input placeholder={t('certUrl')} value={cert.url} onChange={(e) => onCertificationsChange(certifications.map((c, i) => i === idx ? { ...c, url: e.target.value } : c))} />
                     </div>
                   </div>
                 ))}

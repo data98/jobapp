@@ -414,6 +414,14 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
                       <Label htmlFor={`current-${exp.id}`}>{t('currentRole')}</Label>
                     </div>
                   </div>
+                  <div className="space-y-2">
+                    <Label>{t('description')}</Label>
+                    <Textarea
+                      value={exp.description ?? ''}
+                      onChange={(e) => updateExperience(expIdx, 'description', e.target.value)}
+                      rows={2}
+                    />
+                  </div>
                   <Separator />
                   <div className="space-y-2">
                     <Label>{t('bulletPoints')}</Label>

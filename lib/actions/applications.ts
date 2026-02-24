@@ -7,6 +7,7 @@ import type {
   JobApplication,
   ApplicationStatus,
   ResumeVariant,
+  ResumeSection,
 } from '@/types';
 
 async function getAuthUserId(): Promise<string> {
@@ -91,6 +92,15 @@ export async function createApplication(input: {
     .single();
 
   if (masterResume) {
+    const allSections: ResumeSection[] = [
+      'personal_info',
+      'experience',
+      'education',
+      'skills',
+      'languages',
+      'certifications',
+      'projects',
+    ];
     await supabase.from('resume_variant').insert({
       job_application_id: data.id,
       user_id: userId,
@@ -102,6 +112,8 @@ export async function createApplication(input: {
       languages: masterResume.languages,
       certifications: masterResume.certifications,
       projects: masterResume.projects,
+      included_sections: allSections,
+      section_order: allSections,
     });
   }
 
