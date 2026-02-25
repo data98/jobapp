@@ -219,6 +219,16 @@ export interface KeywordMap {
   action_verbs: KeywordEntry[];
 }
 
+export interface RequiredSkillEntry {
+  keyword: string;
+  frequency: number;
+}
+
+export interface PreferredSkillEntry {
+  keyword: string;
+  frequency: number;
+}
+
 export interface IdealStructure {
   section_order: string[];
   bullet_count_per_experience: number;
@@ -236,6 +246,10 @@ export interface IdealResume {
   keyword_map: KeywordMap;
   ideal_measurable_results_count: number;
   ideal_structure: IdealStructure;
+  // V3 fields
+  jd_job_title: string;
+  required_hard_skills: RequiredSkillEntry[];
+  preferred_hard_skills: PreferredSkillEntry[];
 }
 
 // ─── ATS Suggestion Types ────────────────────────────────────────────────────
@@ -278,6 +292,13 @@ export interface ATSSuggestion {
 
 // ─── Detailed Scores ─────────────────────────────────────────────────────────
 
+export interface DetailedJobTitleMatch {
+  score: number;
+  jd_title: string;
+  matched_title: string | null;
+  matched_recency: 'recent' | 'older' | 'none';
+}
+
 export interface DetailedKeywordUsage {
   score: number;
   matched_keywords: {
@@ -298,6 +319,9 @@ export interface DetailedKeywordUsage {
     found: string;
     section: string;
   }[];
+  required_skills_score: number;
+  preferred_skills_score: number;
+  context_depth_score: number;
 }
 
 export interface DetailedMeasurableResults {
@@ -336,11 +360,13 @@ export interface DetailedStructure {
 }
 
 export interface DetailedScores {
+  job_title_match: DetailedJobTitleMatch;
   keyword_usage: DetailedKeywordUsage;
   measurable_results: DetailedMeasurableResults;
   structure: DetailedStructure;
   composite: number;
   max_achievable: number;
+  anti_spam_penalty: number;
 }
 
 // ─── Extended AI Analysis ────────────────────────────────────────────────────
@@ -364,14 +390,21 @@ export interface AiAnalysis {
   max_achievable_score: number | null;
   detailed_scores: DetailedScores | null;
   dismissed_suggestions: string[];
+  // V3 fields
+  job_title_match_score: number | null;
+  anti_spam_penalty: number | null;
+  client_baseline_scores: ClientScoreResult | null;
 }
 
 // ─── Client-Side Scoring ─────────────────────────────────────────────────────
 
 export interface ClientScoreResult {
+  job_title_match_score: number;
   keyword_score: number;
   measurable_results_score: number;
   structure_score: number;
+  context_depth_score: number;
+  anti_spam_penalty: number;
   composite: number;
   max_achievable: number | null;
   is_estimate: true;
