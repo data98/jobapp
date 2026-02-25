@@ -158,32 +158,26 @@ export function ApplicationForm() {
             </CardContent>
           </Card>
         ) : (
-          <Collapsible open={manualOpen} onOpenChange={setManualOpen}>
-            <Card>
-              <CollapsibleTrigger asChild>
-                <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
-                  <CardTitle className="flex items-center justify-between">
-                    <span>{t('orEnterManually')}</span>
-                    <ChevronDown
-                      className={`h-5 w-5 text-muted-foreground transition-transform ${
-                        manualOpen ? 'rotate-180' : ''
-                      }`}
-                    />
-                  </CardTitle>
-                </CardHeader>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <CardContent className="space-y-4">
+          <Card>
+            <CardContent>
+              <Collapsible open={manualOpen} onOpenChange={setManualOpen} className="rounded-md">
+                <CollapsibleTrigger asChild>
+                  <Button variant="ghost" className="group w-full justify-between">
+                    {t('orEnterManually')}
+                    <ChevronDown className="h-5 w-5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="space-y-4 p-2.5">
                   <FormFields form={form} setForm={setForm} t={t} />
                   <FormActions
                     submitting={submitting}
                     tc={tc}
                     onCancel={() => router.push('/applications')}
                   />
-                </CardContent>
-              </CollapsibleContent>
-            </Card>
-          </Collapsible>
+                </CollapsibleContent>
+              </Collapsible>
+            </CardContent>
+          </Card>
         )}
       </form>
     </div>
