@@ -45,10 +45,10 @@ export function ClassicTemplate({ data, labels }: ClassicTemplateProps) {
             <h2 className="font-bold uppercase tracking-widest pb-1 mb-3" style={{ fontSize: '0.875em', borderBottom: `1px solid ${accentColor}40` }}>
               {labels.experience}
             </h2>
-            {visibleExp.map((exp) => {
+            {visibleExp.map((exp, idx) => {
               const visibleBullets = exp.bullets.filter((b, i) => Boolean(b) && !exp.hiddenBullets?.includes(i));
               return (
-                <div key={exp.id} className="mb-3">
+                <div key={`${exp.id}-${idx}`} className="mb-3">
                   {(() => {
                     const hf = exp.hiddenFields ?? [];
                     const showTitle = !hf.includes('title');
@@ -99,8 +99,8 @@ export function ClassicTemplate({ data, labels }: ClassicTemplateProps) {
             <h2 className="font-bold uppercase tracking-widest pb-1 mb-3" style={{ fontSize: '0.875em', borderBottom: `1px solid ${accentColor}40` }}>
               {labels.education}
             </h2>
-            {visibleEdu.map((edu) => (
-              <div key={edu.id} className="mb-2">
+            {visibleEdu.map((edu, idx) => (
+              <div key={`${edu.id}-${idx}`} className="mb-2">
                 <div className="flex justify-between items-baseline">
                   <span className="font-bold">{edu.degree} - {edu.field}</span>
                   <span style={{ fontSize: '0.75em', color: '#6b7280' }}>{edu.startDate} - {edu.endDate}</span>
@@ -122,8 +122,8 @@ export function ClassicTemplate({ data, labels }: ClassicTemplateProps) {
               {labels.skills}
             </h2>
             <div className="flex flex-wrap gap-2">
-              {visibleSkills.map((skill) => (
-                <span key={skill.id} className="rounded" style={{ fontSize: '0.75em', backgroundColor: '#f3f4f6', padding: '1px 8px' }}>
+              {visibleSkills.map((skill, idx) => (
+                <span key={`${skill.id}-${idx}`} className="rounded" style={{ fontSize: '0.75em', backgroundColor: '#f3f4f6', padding: '1px 8px' }}>
                   {skill.name}
                 </span>
               ))}
@@ -140,7 +140,7 @@ export function ClassicTemplate({ data, labels }: ClassicTemplateProps) {
               {labels.languages}
             </h2>
             <div className="flex flex-wrap gap-x-6 gap-y-1" style={{ fontSize: '0.75em' }}>
-              {visibleLangs.map((l) => <span key={l.id}>{l.language} - {l.proficiency}</span>)}
+              {visibleLangs.map((l, idx) => <span key={`${l.id}-${idx}`}>{l.language} - {l.proficiency}</span>)}
             </div>
           </section>
         );
@@ -153,8 +153,8 @@ export function ClassicTemplate({ data, labels }: ClassicTemplateProps) {
             <h2 className="font-bold uppercase tracking-widest pb-1 mb-3" style={{ fontSize: '0.875em', borderBottom: `1px solid ${accentColor}40` }}>
               {labels.certifications}
             </h2>
-            {visibleCerts.map((cert) => (
-              <div key={cert.id} style={{ fontSize: '0.75em' }} className="mb-1">
+            {visibleCerts.map((cert, idx) => (
+              <div key={`${cert.id}-${idx}`} style={{ fontSize: '0.75em' }} className="mb-1">
                 <span className="font-bold">{cert.name}</span>
                 {cert.issuer && <span> - {cert.issuer}</span>}
                 {cert.date && <span style={{ color: '#6b7280' }}> ({cert.date})</span>}
@@ -171,10 +171,10 @@ export function ClassicTemplate({ data, labels }: ClassicTemplateProps) {
             <h2 className="font-bold uppercase tracking-widest pb-1 mb-3" style={{ fontSize: '0.875em', borderBottom: `1px solid ${accentColor}40` }}>
               {labels.projects}
             </h2>
-            {visibleProjects.map((proj) => {
+            {visibleProjects.map((proj, idx) => {
               const visibleBullets = proj.bullets.filter((b, i) => Boolean(b) && !proj.hiddenBullets?.includes(i));
               return (
-                <div key={proj.id} className="mb-2">
+                <div key={`${proj.id}-${idx}`} className="mb-2">
                   <span className="font-bold" style={{ fontSize: '0.75em' }}>{proj.name}</span>
                   {proj.url && <span style={{ fontSize: '0.75em', color: '#6b7280' }} className="ml-2">{proj.url}</span>}
                   {proj.description && <p style={{ fontSize: '0.75em', color: '#374151' }} className="mt-0.5">{proj.description}</p>}
