@@ -11,6 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Plus, RotateCcw, CheckCircle2, AlertTriangle, ChevronDown } from 'lucide-react';
 import { hasMeasurableResult } from '@/lib/ats-scoring/client';
 
@@ -60,14 +61,27 @@ interface PreviewTabProps {
 function BulletIndicator({ text }: { text: string }) {
   const t = useTranslations('resumeView.preview');
   const has = hasMeasurableResult(text);
-  return has ? (
-    <span title={t('hasMeasurableResult')}>
-      <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0" />
-    </span>
-  ) : (
-    <span title={t('noMeasurableResult')}>
-      <AlertTriangle className="h-3.5 w-3.5 text-yellow-500 shrink-0" />
-    </span>
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div className="inline-flex items-center justify-center cursor-help">
+            {has ? (
+              <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0" />
+            ) : (
+              <AlertTriangle className="h-3.5 w-3.5 text-yellow-500 shrink-0" />
+            )}
+          </div>
+        </TooltipTrigger>
+        <TooltipContent
+          side="right"
+          className={has ? 'bg-green-600 text-white border-green-700' : 'bg-yellow-400 text-yellow-950 border-yellow-600'}
+          arrowClassName={has ? 'fill-green-600 bg-green-600' : 'fill-yellow-400 bg-yellow-400'}
+        >
+          <p>{has ? t('hasMeasurableResult') : t('noMeasurableResult')}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
