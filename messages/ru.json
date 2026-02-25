@@ -228,7 +228,14 @@
     "parsing": "Анализируем ваше резюме...",
     "parseError": "Не удалось извлечь данные из файла. Заполните вручную.",
     "uploadPdfOnly": "Поддерживаются только PDF файлы",
-    "uploadTooLarge": "Файл слишком большой (максимум 5 МБ)"
+    "uploadTooLarge": "Файл слишком большой (максимум 5 МБ)",
+    "importResume": "Импорт резюме",
+    "importResumeDesc": "Выберите способ импорта данных резюме",
+    "importFromPdf": "Загрузить PDF",
+    "importFromPdfDesc": "Извлечь данные из PDF файла",
+    "importFromLinkedin": "Профиль LinkedIn",
+    "importFromLinkedinDesc": "Импорт напрямую из профиля LinkedIn",
+    "comingSoon": "Скоро"
   },
   "analysis": {
     "title": "ИИ-анализ",

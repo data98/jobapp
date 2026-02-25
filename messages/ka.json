@@ -228,7 +228,14 @@
     "parsing": "რეზიუმე მუშავდება...",
     "parseError": "ვერ მოხერხდა მონაცემების ამოღება. გთხოვთ შეავსოთ ხელით.",
     "uploadPdfOnly": "დაშვებულია მხოლოდ PDF ფაილები",
-    "uploadTooLarge": "ფაილი ძალიან დიდია (მაქს. 5MB)"
+    "uploadTooLarge": "ფაილი ძალიან დიდია (მაქს. 5MB)",
+    "importResume": "რეზიუმეს იმპორტი",
+    "importResumeDesc": "აირჩიეთ იმპორტის მეთოდი",
+    "importFromPdf": "PDF ატვირთვა",
+    "importFromPdfDesc": "ამოიღეთ მონაცემები PDF ფაილიდან",
+    "importFromLinkedin": "LinkedIn პროფილი",
+    "importFromLinkedinDesc": "იმპორტი LinkedIn პროფილიდან",
+    "comingSoon": "მალე"
   },
   "analysis": {
     "title": "AI ანალიზი",

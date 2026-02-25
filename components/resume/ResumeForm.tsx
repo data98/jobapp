@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Plus, Trash2, Save } from 'lucide-react';
 import { saveMasterResume } from '@/lib/actions/resume';
-import { ResumeUploader } from './ResumeUploader';
+import { ResumeImportDialog } from './ResumeImportDialog';
 import type { ParsedResumeData } from './ResumeUploader';
 import type {
   PersonalInfo,
@@ -252,9 +252,6 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
 
-
-      <ResumeUploader onParsed={handleParsed} />
-
       <Tabs defaultValue="personal" className="space-y-4">
         <div className="flex items-center justify-between">
           <TabsList className="flex flex-wrap h-auto gap-1">
@@ -266,7 +263,8 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
             <TabsTrigger value="certifications">{t('certifications')}</TabsTrigger>
             <TabsTrigger value="projects">{t('projects')}</TabsTrigger>
           </TabsList>
-          <div className="flex items-center justify-end">
+          <div className="flex items-center gap-2 justify-end">
+            <ResumeImportDialog onParsed={handleParsed} />
             <Button onClick={handleSave} disabled={saving}>
               <Save className="mr-2 h-4 w-4" />
               {saving ? tc('saving') : tc('save')}

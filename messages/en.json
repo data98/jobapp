@@ -228,7 +228,14 @@
     "parsing": "Analyzing your resume...",
     "parseError": "Couldn't extract data from this file. Please fill in manually.",
     "uploadPdfOnly": "Only PDF files are supported",
-    "uploadTooLarge": "File is too large (max 5MB)"
+    "uploadTooLarge": "File is too large (max 5MB)",
+    "importResume": "Import Resume",
+    "importResumeDesc": "Choose how you'd like to import your resume data",
+    "importFromPdf": "Upload PDF",
+    "importFromPdfDesc": "Parse your existing resume from a PDF file",
+    "importFromLinkedin": "LinkedIn Profile",
+    "importFromLinkedinDesc": "Import directly from your LinkedIn profile",
+    "comingSoon": "Coming Soon"
   },
   "analysis": {
     "title": "AI Analysis",
