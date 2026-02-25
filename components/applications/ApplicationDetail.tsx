@@ -95,7 +95,7 @@ export function ApplicationDetail({ application, atsScore }: ApplicationDetailPr
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
-      <div className="flex items-start justify-between">
+      <div className="flex items-center justify-between">
         {/* Quick actions */}
         <div className="flex items-center gap-3">
           <Link href={`/applications/${app.id}/resume`}>
