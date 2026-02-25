@@ -371,7 +371,9 @@
       "moreItems": "+{count} more",
       "at": "at",
       "includeInResume": "Include in resume",
-      "hiddenFromResume": "Hidden from resume"
+      "hiddenFromResume": "Hidden from resume",
+      "saveResume": "Save Resume",
+      "savedLocally": "Resume saved locally"
     }
   }
 }
