@@ -75,7 +75,7 @@ export function SuggestionCard({ suggestion, onAccept, onDismiss, isAccepted }: 
               <p className="text-xs text-muted-foreground">{suggestion.original_text}</p>
             </div>
             {!editing ? (
-              <div className="bg-green-600 border border-green-200 rounded p-2">
+              <div className="border border-green-300 rounded p-2">
                 <p className="text-xs">{suggestion.suggested_text}</p>
               </div>
             ) : (
