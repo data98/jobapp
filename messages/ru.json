@@ -357,7 +357,6 @@
       "bullets": "{current} из {ideal} пунктов"
     },
     "preview": {
-      "addFromMaster": "Добавить из основного резюме",
       "hasMeasurableResult": "Есть измеримый результат",
       "noMeasurableResult": "Добавьте количественный результат",
       "withinIdealRange": "В пределах рекомендуемой длины",
@@ -370,9 +369,6 @@
       "showPreview": "Показать предпросмотр",
       "hidePreview": "Скрыть предпросмотр",
       "wordCount": "{count} слов",
-      "selectItems": "Выберите элементы для добавления",
-      "addSelected": "Добавить выбранное",
-      "noItemsToAdd": "Все элементы уже добавлены в резюме",
       "exportPdf": "Экспорт в PDF",
       "saveAndExport": "Сохранить и экспорт в PDF",
       "present": "По настоящее время",

@@ -357,7 +357,6 @@
       "bullets": "{current} დან {ideal} პუნქტი"
     },
     "preview": {
-      "addFromMaster": "დამატება მთავარი რეზიუმედან",
       "hasMeasurableResult": "აქვს გაზომვადი შედეგი",
       "noMeasurableResult": "დაამატეთ გაზომვადი შედეგი",
       "withinIdealRange": "იდეალურ ფარგლებშია",
@@ -370,9 +369,6 @@
       "showPreview": "წინასწარი ნახვა",
       "hidePreview": "დამალვა",
       "wordCount": "{count} სიტყვა",
-      "selectItems": "აირჩიეთ დასამატებლად",
-      "addSelected": "არჩეულის დამატება",
-      "noItemsToAdd": "ყველა ელემენტი უკვე რეზიუმეშია",
       "exportPdf": "PDF ექსპორტი",
       "saveAndExport": "შენახვა და PDF ექსპორტი",
       "present": "აქამდე",

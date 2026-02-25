@@ -11,9 +11,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Plus, RotateCcw, CheckCircle2, AlertTriangle, PackagePlus, ChevronDown } from 'lucide-react';
+import { Plus, RotateCcw, CheckCircle2, AlertTriangle, ChevronDown } from 'lucide-react';
 import { hasMeasurableResult } from '@/lib/ats-scoring/client';
-import { AddFromMasterModal } from './AddFromMasterModal';
+
 import type {
   PersonalInfo,
   PersonalInfoField,
@@ -25,7 +25,7 @@ import type {
   CertificationEntry,
   ProjectEntry,
   ResumeSection,
-  MasterResume,
+
   AiAnalysis,
   IdealResume,
   KeywordMap,
@@ -45,7 +45,7 @@ interface PreviewTabProps {
   projects: ProjectEntry[];
   includedSections: ResumeSection[];
   sectionOrder: ResumeSection[];
-  masterResume: MasterResume | null;
+
   analysisData: AiAnalysis | null;
   onPersonalInfoChange: (v: PersonalInfo) => void;
   onExperienceChange: (v: ExperienceEntry[]) => void;
@@ -114,7 +114,7 @@ export function PreviewTab({
   projects,
   includedSections,
   sectionOrder,
-  masterResume,
+
   analysisData,
   onPersonalInfoChange,
   onExperienceChange,
@@ -128,8 +128,7 @@ export function PreviewTab({
   const t = useTranslations('resume');
   const tv = useTranslations('resumeView.preview');
   const tc = useTranslations('common');
-  const [masterModalOpen, setMasterModalOpen] = useState(false);
-  const [masterModalSection, setMasterModalSection] = useState<'skills' | 'experience' | 'certifications' | 'projects' | 'languages'>('skills');
+
 
   const idealResume = analysisData?.ideal_resume as IdealResume | null;
   const keywordMap = idealResume?.keyword_map;
@@ -214,12 +213,6 @@ export function PreviewTab({
           <RotateCcw className="mr-1.5 h-3.5 w-3.5" />
           {tv('resetToMaster')}
         </Button>
-        {masterResume && (
-          <Button variant="outline" size="sm" onClick={() => { setMasterModalSection('skills'); setMasterModalOpen(true); }}>
-            <PackagePlus className="mr-1.5 h-3.5 w-3.5" />
-            {tv('addFromMaster')}
-          </Button>
-        )}
       </div>
 
       {/* Personal Info */}
@@ -486,18 +479,10 @@ export function PreviewTab({
                 </Button>
               </CollapsibleTrigger>
               <CollapsibleContent className="space-y-3 pt-2">
-                <div className="flex gap-2">
-                  {masterResume && (
-                    <Button variant="outline" size="sm" onClick={() => { setMasterModalSection('skills'); setMasterModalOpen(true); }}>
-                      <PackagePlus className="mr-1 h-3 w-3" />
-                      {tv('addFromMaster')}
-                    </Button>
-                  )}
-                  <Button variant="outline" size="sm" onClick={() => onSkillsChange([{ id: generateId(), name: '' }, ...skills])}>
-                    <Plus className="mr-1 h-3 w-3" />
-                    {t('addEntry', { section: t('skills') })}
-                  </Button>
-                </div>
+                <Button variant="outline" size="sm" onClick={() => onSkillsChange([{ id: generateId(), name: '' }, ...skills])}>
+                  <Plus className="mr-1 h-3 w-3" />
+                  {t('addEntry', { section: t('skills') })}
+                </Button>
                 <div className="flex flex-wrap gap-2">
                   {skills.map((skill, idx) => (
                     <div key={`${skill.id}-${idx}`} className={`flex items-center gap-1.5 border rounded-full px-3 py-1 text-sm ${skill.hidden ? 'opacity-50' : getSkillColor(skill.name, keywordMap)}`}>
@@ -649,26 +634,7 @@ export function PreviewTab({
         </Card>
       )}
 
-      {/* Add from Master Modal */}
-      {masterResume && (
-        <AddFromMasterModal
-          open={masterModalOpen}
-          onOpenChange={setMasterModalOpen}
-          section={masterModalSection}
-          masterResume={masterResume}
-          currentSkills={skills}
-          currentExperience={experience}
-          currentCertifications={certifications}
-          currentProjects={projects}
-          currentLanguages={languages}
-          keywordMap={keywordMap ?? null}
-          onAddSkills={(newSkills) => onSkillsChange([...skills, ...newSkills])}
-          onAddExperience={(entries) => onExperienceChange([...experience, ...entries])}
-          onAddCertifications={(entries) => onCertificationsChange([...certifications, ...entries])}
-          onAddProjects={(entries) => onProjectsChange([...projects, ...entries])}
-          onAddLanguages={(entries) => onLanguagesChange([...languages, ...entries])}
-        />
-      )}
+
     </div>
   );
 }

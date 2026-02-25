@@ -357,7 +357,6 @@
       "bullets": "{current} of {ideal} bullets"
     },
     "preview": {
-      "addFromMaster": "Add from Master Resume",
       "hasMeasurableResult": "Has measurable result",
       "noMeasurableResult": "Consider adding a quantified achievement",
       "withinIdealRange": "Within ideal length",
@@ -370,9 +369,6 @@
       "showPreview": "Show Preview",
       "hidePreview": "Hide Preview",
       "wordCount": "{count} words",
-      "selectItems": "Select items to add",
-      "addSelected": "Add Selected",
-      "noItemsToAdd": "All items are already in your resume",
       "exportPdf": "Export PDF",
       "saveAndExport": "Save & Export PDF",
       "present": "Present",
