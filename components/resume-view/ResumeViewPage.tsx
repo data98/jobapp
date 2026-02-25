@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Eye, EyeOff, Download } from 'lucide-react';
+import { Eye, EyeOff, Download, Save } from 'lucide-react';
 import { ResumePreview } from '@/components/resume/ResumePreview';
 import { PreviewTab } from './PreviewTab';
 import { DesignTab } from './DesignTab';
@@ -93,6 +93,29 @@ export function ResumeViewPage({
 
   // Track if scores are stale (edits since last analysis)
   const [scoresStale, setScoresStale] = useState(false);
+
+  // ─── Fetch saved state on mount ───────────────────────────────────
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(`resume_state_${application.id}`);
+      if (saved) {
+        const parsed = JSON.parse(saved) as ResumeVariant;
+        if (parsed.template_id) setTemplateId(parsed.template_id);
+        if (parsed.personal_info) setPersonalInfo(parsed.personal_info);
+        if (parsed.experience) setExperience(parsed.experience);
+        if (parsed.education) setEducation(parsed.education);
+        if (parsed.skills) setSkills(parsed.skills);
+        if (parsed.languages) setLanguages(parsed.languages);
+        if (parsed.certifications) setCertifications(parsed.certifications);
+        if (parsed.projects) setProjects(parsed.projects);
+        if (parsed.included_sections) setIncludedSections(parsed.included_sections);
+        if (parsed.section_order?.length) setSectionOrder(parsed.section_order);
+        if (parsed.design_settings) setDesignSettings(parsed.design_settings);
+      }
+    } catch (e) {
+      console.error('Failed to parse saved resume state:', e);
+    }
+  }, [application.id]);
 
   // ─── Computed current data ──────────────────────────────────────────
   const currentData: ResumeVariant = useMemo(
@@ -190,6 +213,16 @@ export function ResumeViewPage({
     }
   }, [application.id, templateId, personalInfo, experience, education, skills, languages, certifications, projects, includedSections, sectionOrder, designSettings, tc]);
 
+  const handleSaveResumeState = useCallback(() => {
+    try {
+      localStorage.setItem(`resume_state_${application.id}`, JSON.stringify(currentData));
+      toast.success(t('preview.savedLocally'));
+      setIsDirty(false);
+    } catch (e) {
+      toast.error(tc('error'));
+    }
+  }, [application.id, currentData, t, tc]);
+
   // ─── State setters that mark dirty ─────────────────────────────────
   const updatePersonalInfo = useCallback((v: PersonalInfo) => { setPersonalInfo(v); markDirty(); }, [markDirty]);
   const updateExperience = useCallback((v: ExperienceEntry[]) => { setExperience(v); markDirty(); }, [markDirty]);
@@ -218,7 +251,11 @@ export function ResumeViewPage({
               {t('preview.unsavedChanges')}
             </Badge>
           )}
-          <Button size="sm" variant="outline" onClick={handleSaveAndExport} disabled={exporting}>
+          <Button size="sm" variant="outline" onClick={handleSaveResumeState}>
+            <Save className="mr-1.5 h-3.5 w-3.5" />
+            {t('preview.saveResume')}
+          </Button>
+          <Button size="sm" variant="default" onClick={handleSaveAndExport} disabled={exporting}>
             <Download className="mr-1.5 h-3.5 w-3.5" />
             {exporting ? tc('saving') : t('preview.saveAndExport')}
           </Button>
