@@ -172,6 +172,7 @@
   },
   "resume": {
     "title": "მთავარი რეზიუმე",
+    "tailoredTitle": "მორგებული რეზიუმე",
     "uploadTab": "ატვირთვა",
     "formTab": "ხელით შევსება",
     "personalInfo": "პირადი ინფორმაცია",

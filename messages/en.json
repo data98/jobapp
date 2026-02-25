@@ -172,6 +172,7 @@
   },
   "resume": {
     "title": "Master Resume",
+    "tailoredTitle": "Tailored Resume",
     "uploadTab": "Upload & Parse",
     "formTab": "Build Manually",
     "personalInfo": "Personal Information",
