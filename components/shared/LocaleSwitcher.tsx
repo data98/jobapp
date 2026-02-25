@@ -11,7 +11,7 @@ export function LocaleSwitcher() {
   const pathname = usePathname();
 
   function switchLocale(next: string) {
-    router.replace(pathname, { locale: next as 'en' | 'ru' });
+    router.replace(pathname, { locale: next as any });
   }
 
   return (
