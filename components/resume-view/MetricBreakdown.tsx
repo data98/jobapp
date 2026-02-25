@@ -86,13 +86,12 @@ export function MetricBreakdown({
                       <Badge
                         key={i}
                         variant="outline"
-                        className={`text-xs ${
-                          kw.importance === 'critical'
+                        className={`text-xs ${kw.importance === 'critical'
                             ? 'text-red-700 border-red-300 bg-red-50'
                             : kw.importance === 'important'
-                            ? 'text-orange-700 border-orange-300 bg-orange-50'
-                            : 'text-gray-600 border-gray-300'
-                        }`}
+                              ? 'text-orange-700 border-orange-300 bg-orange-50'
+                              : 'text-gray-600 border-gray-300'
+                          }`}
                       >
                         {kw.keyword}
                         {kw.in_master_resume && (

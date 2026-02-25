@@ -288,6 +288,7 @@
     "matching": {
       "atsScore": "ATS-рейтинг",
       "maxAchievable": "Максимально достижимый",
+      "jobTitle": "Должность",
       "keywords": "Ключевые слова",
       "keywordUsage": "Использование ключевых слов",
       "measurableResults": "Измеримые результаты",

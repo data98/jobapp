@@ -5,7 +5,6 @@ import { createServerClient } from '@/lib/supabase/server';
 import type {
   ATSSuggestion,
   ResumeVariant,
-  SkillEntry,
   ResumeSection,
 } from '@/types';
 
@@ -109,17 +108,22 @@ export async function POST(req: NextRequest) {
       }
 
       case 'keyword_addition': {
-        if (textToApply) {
+        // Add each keyword from keywords_addressed as a skill entry
+        const keywordsToAdd = suggestion.keywords_addressed ?? [];
+        if (keywordsToAdd.length > 0) {
           const skills = [...variant.skills];
-          const exists = skills.some(
-            (s) => s.name.toLowerCase() === textToApply.toLowerCase()
-          );
-          if (!exists) {
-            const newSkill: SkillEntry = {
-              id: crypto.randomUUID(),
-              name: textToApply,
-            };
-            skills.push(newSkill);
+          for (const keyword of keywordsToAdd) {
+            const exists = skills.some(
+              (s) => s.name.toLowerCase() === keyword.toLowerCase()
+            );
+            if (!exists) {
+              skills.push({
+                id: crypto.randomUUID(),
+                name: keyword,
+              });
+            }
+          }
+          if (skills.length !== variant.skills.length) {
             updates.skills = skills;
           }
         }
@@ -153,16 +157,22 @@ export async function POST(req: NextRequest) {
       }
 
       case 'master_resume_content': {
-        // For master_resume_content, the suggested_text contains what to add
-        // The target_section tells us where
-        if (suggestion.target_section === 'skills' && textToApply) {
-          const skills = [...variant.skills];
-          const exists = skills.some(
-            (s) => s.name.toLowerCase() === textToApply.toLowerCase()
-          );
-          if (!exists) {
-            skills.push({ id: crypto.randomUUID(), name: textToApply });
-            updates.skills = skills;
+        // For master_resume_content targeting skills, use keywords_addressed
+        if (suggestion.target_section === 'skills') {
+          const keywordsToAdd = suggestion.keywords_addressed ?? [];
+          if (keywordsToAdd.length > 0) {
+            const skills = [...variant.skills];
+            for (const keyword of keywordsToAdd) {
+              const exists = skills.some(
+                (s) => s.name.toLowerCase() === keyword.toLowerCase()
+              );
+              if (!exists) {
+                skills.push({ id: crypto.randomUUID(), name: keyword });
+              }
+            }
+            if (skills.length !== variant.skills.length) {
+              updates.skills = skills;
+            }
           }
         }
         break;

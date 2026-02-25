@@ -7,7 +7,9 @@ import {
   AI_ANALYSIS_V2_PROMPT,
   IDEAL_RESUME_PROMPT,
 } from '@/constants/prompts';
-import type { AiAnalysis, IdealResume } from '@/types';
+import { calculateATSScore } from '@/lib/ats-scoring/client';
+import { computeAllSuggestionImpacts } from '@/lib/ats-scoring/simulate';
+import type { AiAnalysis, IdealResume, ResumeVariant, MasterResume, ATSSuggestion } from '@/types';
 
 export async function POST(req: NextRequest) {
   try {
@@ -122,14 +124,14 @@ export async function POST(req: NextRequest) {
 
     const masterJson = masterResume
       ? JSON.stringify({
-          personal_info: masterResume.personal_info,
-          experience: masterResume.experience,
-          education: masterResume.education,
-          skills: masterResume.skills,
-          languages: masterResume.languages,
-          certifications: masterResume.certifications,
-          projects: masterResume.projects,
-        })
+        personal_info: masterResume.personal_info,
+        experience: masterResume.experience,
+        education: masterResume.education,
+        skills: masterResume.skills,
+        languages: masterResume.languages,
+        certifications: masterResume.certifications,
+        projects: masterResume.projects,
+      })
       : '{}';
 
     // Build the analysis prompt
@@ -157,6 +159,14 @@ export async function POST(req: NextRequest) {
 
     const result = JSON.parse(rawContent);
 
+    // Guarantee unique IDs for all suggestions, as AI might return placeholders like "uuid" or "<uuid>"
+    if (Array.isArray(result.suggestions)) {
+      result.suggestions = result.suggestions.map((s: any) => ({
+        ...s,
+        id: crypto.randomUUID()
+      }));
+    }
+
     // Map suggestions to rewrite_suggestions format for backward compatibility
     const rewriteSuggestions = (result.suggestions || [])
       .filter(
@@ -173,6 +183,29 @@ export async function POST(req: NextRequest) {
         keywords_addressed: s.keywords_addressed ?? [],
         accepted: false,
       }));
+
+    // Compute client-side baseline scores for delta-based scoring after edits
+    const clientBaseline = calculateATSScore(
+      resumeData as ResumeVariant,
+      idealResume,
+      masterResume as MasterResume | undefined
+    );
+
+    // Compute accurate estimated_score_impact for each suggestion
+    const suggestions: ATSSuggestion[] = result.suggestions ?? [];
+    if (suggestions.length > 0) {
+      computeAllSuggestionImpacts(
+        resumeData as ResumeVariant,
+        idealResume,
+        suggestions,
+        clientBaseline.composite,
+        masterResume as MasterResume | undefined,
+        result.scores?.composite ?? 0,
+        result.scores?.max_achievable ?? null
+      );
+      // Write back the updated impacts into raw_response
+      result.suggestions = suggestions;
+    }
 
     // Prepare upsert data
     const upsertData = {
@@ -191,6 +224,10 @@ export async function POST(req: NextRequest) {
       structure_score: result.scores?.structure?.score ?? null,
       max_achievable_score: result.scores?.max_achievable ?? null,
       detailed_scores: result.scores ?? null,
+      // V3 fields
+      job_title_match_score: result.scores?.job_title_match?.score ?? null,
+      anti_spam_penalty: result.scores?.anti_spam_penalty ?? 0,
+      client_baseline_scores: clientBaseline,
     };
 
     let savedAnalysis: AiAnalysis;

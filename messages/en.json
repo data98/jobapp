@@ -288,6 +288,7 @@
     "matching": {
       "atsScore": "ATS Score",
       "maxAchievable": "Max Achievable",
+      "jobTitle": "Job Title",
       "keywords": "Keywords",
       "keywordUsage": "Keyword Usage",
       "measurableResults": "Measurable Results",

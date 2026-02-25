@@ -7,7 +7,9 @@ import {
   calculateMeasurableResultsScore,
   calculateStructureScore,
   calculateCompositeScore,
-  calculateATSScore,
+  calculateJobTitleMatchScore,
+  calculateContextDepthScore,
+  calculateAntiSpamPenalty,
 } from '@/lib/ats-scoring/client';
 import type { ResumeVariant, IdealResume } from '@/types';
 
@@ -69,8 +71,16 @@ export async function POST(req: NextRequest) {
 
     const idealResume = analysis.ideal_resume as IdealResume;
 
-    // Run scoring functions (pure functions, no OpenAI call)
+    // Run current client-side scoring
+    const jobTitleResult = calculateJobTitleMatchScore(
+      variant,
+      idealResume.jd_job_title ?? ''
+    );
     const keywordResult = calculateKeywordScore(
+      variant,
+      idealResume.keyword_map
+    );
+    const contextDepthResult = calculateContextDepthScore(
       variant,
       idealResume.keyword_map
     );
@@ -82,33 +92,89 @@ export async function POST(req: NextRequest) {
       variant,
       idealResume.ideal_structure
     );
+    const antiSpamResult = calculateAntiSpamPenalty(variant);
 
-    const composite = calculateCompositeScore(
+    const clientComposite = calculateCompositeScore(
+      jobTitleResult.score,
       keywordResult.score,
       measurableResult.score,
-      structureResult.score
+      structureResult.score,
+      antiSpamResult.penalty
     );
 
-    // Calculate max achievable if master resume available
-    let maxAchievable: number | null = null;
-    if (masterResume) {
-      const fullResult = calculateATSScore(variant, idealResume, masterResume);
-      maxAchievable = fullResult.max_achievable;
+    // ── Delta-based scoring ──────────────────────────────────────────
+    // Use the baseline snapshot taken at analysis time to compute deltas
+    // displayed = AI_score + (client_current - client_baseline)
+    const baseline = analysis.client_baseline_scores as {
+      keyword_score?: number;
+      measurable_results_score?: number;
+      structure_score?: number;
+      job_title_match_score?: number;
+      composite?: number;
+      anti_spam_penalty?: number;
+    } | null;
+
+    const clamp = (v: number) => Math.max(0, Math.min(100, Math.round(v)));
+
+    let finalComposite: number;
+    let finalKeyword: number;
+    let finalMeasurable: number;
+    let finalStructure: number;
+    let finalJobTitle: number;
+    let finalAntiSpam: number;
+
+    if (baseline) {
+      // Delta approach: AI score + (current - baseline)
+      const aiComposite = analysis.ats_score ?? 0;
+      const aiKeyword = analysis.keyword_score ?? 0;
+      const aiMeasurable = analysis.measurable_results_score ?? 0;
+      const aiStructure = analysis.structure_score ?? 0;
+      const aiJobTitle = analysis.job_title_match_score ?? 0;
+      const aiAntiSpam = analysis.anti_spam_penalty ?? 0;
+
+      finalComposite = clamp(aiComposite + (clientComposite - (baseline.composite ?? 0)));
+      finalKeyword = clamp(aiKeyword + (keywordResult.score - (baseline.keyword_score ?? 0)));
+      finalMeasurable = clamp(aiMeasurable + (measurableResult.score - (baseline.measurable_results_score ?? 0)));
+      finalStructure = clamp(aiStructure + (structureResult.score - (baseline.structure_score ?? 0)));
+      finalJobTitle = clamp(aiJobTitle + (jobTitleResult.score - (baseline.job_title_match_score ?? 0)));
+      finalAntiSpam = antiSpamResult.penalty; // penalty is absolute, not delta
+    } else {
+      // No baseline (old analysis) — fall back to raw client scores
+      finalComposite = clientComposite;
+      finalKeyword = keywordResult.score;
+      finalMeasurable = measurableResult.score;
+      finalStructure = structureResult.score;
+      finalJobTitle = jobTitleResult.score;
+      finalAntiSpam = antiSpamResult.penalty;
     }
+
+    // Preserve the AI's original max_achievable — it doesn't change when accepting suggestions
+    const maxAchievable: number | null = analysis.max_achievable_score ?? null;
 
     // Update ai_analysis scores
     const updatedScores = {
-      ats_score: composite,
-      keyword_score: keywordResult.score,
-      measurable_results_score: measurableResult.score,
-      structure_score: structureResult.score,
+      ats_score: finalComposite,
+      keyword_score: finalKeyword,
+      measurable_results_score: finalMeasurable,
+      structure_score: finalStructure,
+      job_title_match_score: finalJobTitle,
+      anti_spam_penalty: finalAntiSpam,
       max_achievable_score: maxAchievable,
       detailed_scores: {
+        job_title_match: {
+          score: jobTitleResult.score,
+          jd_title: jobTitleResult.jd_title,
+          matched_title: jobTitleResult.matched_title,
+          matched_recency: jobTitleResult.matched_recency,
+        },
         keyword_usage: {
           score: keywordResult.score,
           matched_keywords: keywordResult.matched,
           missing_keywords: keywordResult.missing,
           synonym_matches: [],
+          required_skills_score: 0,
+          preferred_skills_score: 0,
+          context_depth_score: contextDepthResult.score,
         },
         measurable_results: {
           score: measurableResult.score,
@@ -134,8 +200,9 @@ export async function POST(req: NextRequest) {
           estimated_pages: structureResult.estimated_pages,
           ideal_pages: structureResult.ideal_pages,
         },
-        composite,
-        max_achievable: maxAchievable ?? composite,
+        composite: finalComposite,
+        max_achievable: maxAchievable ?? finalComposite,
+        anti_spam_penalty: finalAntiSpam,
       },
     };
 
@@ -147,10 +214,13 @@ export async function POST(req: NextRequest) {
     if (updateError) throw updateError;
 
     return NextResponse.json({
-      keyword_score: keywordResult.score,
-      measurable_results_score: measurableResult.score,
-      structure_score: structureResult.score,
-      composite,
+      job_title_match_score: finalJobTitle,
+      keyword_score: finalKeyword,
+      measurable_results_score: finalMeasurable,
+      structure_score: finalStructure,
+      context_depth_score: contextDepthResult.score,
+      anti_spam_penalty: finalAntiSpam,
+      composite: finalComposite,
       max_achievable: maxAchievable,
     });
   } catch (error) {
@@ -161,3 +231,4 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+

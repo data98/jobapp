@@ -4,6 +4,9 @@ export {
   calculateStructureScore,
   calculateCompositeScore,
   calculateATSScore,
+  calculateJobTitleMatchScore,
+  calculateContextDepthScore,
+  calculateAntiSpamPenalty,
   checkKeywordInMasterResume,
   hasMeasurableResult,
 } from './client';
@@ -15,4 +18,7 @@ export type {
   MeasurableResultsScoreResult,
   BulletAssessment,
   StructureScoreResult,
+  JobTitleMatchResult,
+  ContextDepthResult,
+  AntiSpamResult,
 } from './client';
