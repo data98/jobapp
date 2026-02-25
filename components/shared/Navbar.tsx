@@ -61,7 +61,7 @@ function useBreadcrumbs(): BreadcrumbEntry[] {
     return [
       { label: tApps('title'), href: '/applications' },
       { label: appLabel, href: `/applications/${resumeMatch[1]}` },
-      { label: tResume('title') },
+      { label: tResume('tailoredTitle') },
     ];
   }
 
