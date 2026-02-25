@@ -11,7 +11,6 @@ import { ResumePreview } from '@/components/resume/ResumePreview';
 import { PreviewTab } from './PreviewTab';
 import { DesignTab } from './DesignTab';
 import { JobMatchingTab } from './JobMatchingTab';
-import { BottomScoreBar } from './BottomScoreBar';
 import { saveResumeVariant, resetVariantToMaster } from '@/lib/actions/applications';
 import { calculateATSScore } from '@/lib/ats-scoring/client';
 import type {
@@ -236,14 +235,40 @@ export function ResumeViewPage({
   const updateDesignSettings = useCallback((v: DesignSettings) => { setDesignSettings(v); markDirty(); }, [markDirty]);
   const updateTemplateId = useCallback((v: TemplateId) => { setTemplateId(v); markDirty(); }, [markDirty]);
 
+  // ─── Score Computation ──────────────────────────────────────────
+  const score = analysisData?.ats_score ?? clientScores?.composite ?? 0;
+  const isEstimate = !analysisData?.detailed_scores && !!clientScores;
+  const antiSpamPenalty = analysisData?.anti_spam_penalty ?? clientScores?.anti_spam_penalty ?? 0;
+  const scoreColor =
+    score >= 75 ? 'text-green-600' :
+      score >= 60 ? 'text-yellow-500' :
+        score >= 40 ? 'text-orange-500' :
+          'text-red-600';
+
   return (
-    <div className="flex flex-col h-[calc(100vh-8rem)]">
+    <div className="flex flex-col h-[calc(100vh-6rem)]">
       {/* Header */}
       <div className="flex items-center justify-between gap-4 pb-3 shrink-0">
-        <div className="min-w-0">
+        <div className="min-w-0 flex items-center gap-4">
           <h1 className="text-lg font-semibold truncate">
             {application.job_title} <span className="text-muted-foreground font-normal">{t('preview.at')}</span> {application.company}
           </h1>
+          {(analysisData || clientScores) ? (
+            <div className="flex items-center gap-2 border-l border-border pl-4">
+              <span className={`text-lg font-bold ${scoreColor}`}>{Math.round(score)}</span>
+              <span className="text-xs text-muted-foreground">{t('matching.atsScore')}</span>
+              {isEstimate && (
+                <Badge variant="outline" className="text-[10px] px-1 py-0">
+                  {t('matching.estimatedScore')}
+                </Badge>
+              )}
+              {antiSpamPenalty < 0 && (
+                <Badge variant="outline" className="text-[10px] px-1 py-0 text-red-600 border-red-300">
+                  {antiSpamPenalty}
+                </Badge>
+              )}
+            </div>
+          ) : null}
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {isDirty && (
@@ -352,13 +377,6 @@ export function ResumeViewPage({
           <ResumePreview data={currentData} labels={labels} />
         </div>
       </div>
-
-      {/* Bottom score bar */}
-      <BottomScoreBar
-        analysisData={analysisData}
-        clientScores={clientScores}
-        scoresStale={scoresStale}
-      />
     </div>
   );
 }
