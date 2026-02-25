@@ -356,7 +356,7 @@ export function PreviewTab({
                   {t('addEntry', { section: t('experience') })}
                 </Button>
                 {experience.map((exp, idx) => (
-                  <div key={exp.id} className={`border rounded-lg p-3 space-y-2 ${exp.hidden ? 'opacity-50' : ''}`}>
+                  <div key={`${exp.id}-${idx}`} className={`border rounded-lg p-3 space-y-2 ${exp.hidden ? 'opacity-50' : ''}`}>
                     <div className="flex items-center gap-2">
                       <Checkbox
                         checked={!exp.hidden}
@@ -449,7 +449,7 @@ export function PreviewTab({
                   {t('addEntry', { section: t('education') })}
                 </Button>
                 {education.map((edu, idx) => (
-                  <div key={edu.id} className={`border rounded-lg p-3 space-y-2 ${edu.hidden ? 'opacity-50' : ''}`}>
+                  <div key={`${edu.id}-${idx}`} className={`border rounded-lg p-3 space-y-2 ${edu.hidden ? 'opacity-50' : ''}`}>
                     <div className="flex items-center gap-2">
                       <Checkbox
                         checked={!edu.hidden}
@@ -500,7 +500,7 @@ export function PreviewTab({
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {skills.map((skill, idx) => (
-                    <div key={skill.id} className={`flex items-center gap-1.5 border rounded-full px-3 py-1 text-sm ${skill.hidden ? 'opacity-50' : getSkillColor(skill.name, keywordMap)}`}>
+                    <div key={`${skill.id}-${idx}`} className={`flex items-center gap-1.5 border rounded-full px-3 py-1 text-sm ${skill.hidden ? 'opacity-50' : getSkillColor(skill.name, keywordMap)}`}>
                       <Checkbox
                         className="h-3.5 w-3.5 shrink-0"
                         checked={!skill.hidden}
@@ -539,7 +539,7 @@ export function PreviewTab({
                   {t('addEntry', { section: t('languages') })}
                 </Button>
                 {languages.map((lang, idx) => (
-                  <div key={lang.id} className={`flex items-center gap-2 ${lang.hidden ? 'opacity-50' : ''}`}>
+                  <div key={`${lang.id}-${idx}`} className={`flex items-center gap-2 ${lang.hidden ? 'opacity-50' : ''}`}>
                     <Checkbox
                       checked={!lang.hidden}
                       onCheckedChange={() => toggleLangHidden(idx)}
@@ -572,7 +572,7 @@ export function PreviewTab({
                   {t('addEntry', { section: t('certifications') })}
                 </Button>
                 {certifications.map((cert, idx) => (
-                  <div key={cert.id} className={`flex items-center gap-2 ${cert.hidden ? 'opacity-50' : ''}`}>
+                  <div key={`${cert.id}-${idx}`} className={`flex items-center gap-2 ${cert.hidden ? 'opacity-50' : ''}`}>
                     <Checkbox
                       checked={!cert.hidden}
                       onCheckedChange={() => toggleCertHidden(idx)}
@@ -609,7 +609,7 @@ export function PreviewTab({
                   {t('addEntry', { section: t('projects') })}
                 </Button>
                 {projects.map((proj, idx) => (
-                  <div key={proj.id} className={`border rounded-lg p-3 space-y-2 ${proj.hidden ? 'opacity-50' : ''}`}>
+                  <div key={`${proj.id}-${idx}`} className={`border rounded-lg p-3 space-y-2 ${proj.hidden ? 'opacity-50' : ''}`}>
                     <div className="flex items-center gap-2">
                       <Checkbox
                         checked={!proj.hidden}

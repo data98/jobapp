@@ -44,10 +44,10 @@ export function MinimalTemplate({ data, labels }: MinimalTemplateProps) {
             <h2 className="uppercase mb-4" style={{ fontSize: '0.75em', letterSpacing: '0.2em', color: accentColor }}>
               {labels.experience}
             </h2>
-            {visibleExp.map((exp) => {
+            {visibleExp.map((exp, idx) => {
               const visibleBullets = exp.bullets.filter((b, i) => Boolean(b) && !exp.hiddenBullets?.includes(i));
               return (
-                <div key={exp.id} className="mb-4">
+                <div key={`${exp.id}-${idx}`} className="mb-4">
                   {(() => {
                     const hf = exp.hiddenFields ?? [];
                     const showTitle = !hf.includes('title');
@@ -103,8 +103,8 @@ export function MinimalTemplate({ data, labels }: MinimalTemplateProps) {
             <h2 className="uppercase mb-4" style={{ fontSize: '0.75em', letterSpacing: '0.2em', color: accentColor }}>
               {labels.education}
             </h2>
-            {visibleEdu.map((edu) => (
-              <div key={edu.id} className="mb-2 flex justify-between">
+            {visibleEdu.map((edu, idx) => (
+              <div key={`${edu.id}-${idx}`} className="mb-2 flex justify-between">
                 <div>
                   <span className="font-medium">{edu.degree}</span>
                   {edu.field && <span style={{ color: '#6b7280' }}> in {edu.field}</span>}
@@ -156,8 +156,8 @@ export function MinimalTemplate({ data, labels }: MinimalTemplateProps) {
               {labels.certifications}
             </h2>
             <div style={{ fontSize: '0.75em', color: '#4b5563' }} className="space-y-0.5">
-              {visibleCerts.map((cert) => (
-                <p key={cert.id}>{cert.name}{cert.issuer ? ` - ${cert.issuer}` : ''}</p>
+              {visibleCerts.map((cert, idx) => (
+                <p key={`${cert.id}-${idx}`}>{cert.name}{cert.issuer ? ` - ${cert.issuer}` : ''}</p>
               ))}
             </div>
           </section>
@@ -171,10 +171,10 @@ export function MinimalTemplate({ data, labels }: MinimalTemplateProps) {
             <h2 className="uppercase mb-4" style={{ fontSize: '0.75em', letterSpacing: '0.2em', color: accentColor }}>
               {labels.projects}
             </h2>
-            {visibleProjects.map((proj) => {
+            {visibleProjects.map((proj, idx) => {
               const visibleBullets = proj.bullets.filter((b, i) => Boolean(b) && !proj.hiddenBullets?.includes(i));
               return (
-                <div key={proj.id} className="mb-3">
+                <div key={`${proj.id}-${idx}`} className="mb-3">
                   <span className="font-medium" style={{ fontSize: '0.75em' }}>{proj.name}</span>
                   {proj.description && <p style={{ fontSize: '0.75em', color: '#6b7280' }} className="mt-0.5">{proj.description}</p>}
                   {visibleBullets.length > 0 && (

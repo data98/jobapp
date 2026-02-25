@@ -351,7 +351,7 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
             </CardHeader>
             <CardContent className="space-y-6">
               {experience.map((exp, expIdx) => (
-                <div key={exp.id} className="space-y-4 rounded-lg border p-4">
+                <div key={`${exp.id}-${expIdx}`} className="space-y-4 rounded-lg border p-4">
                   <div className="flex justify-between items-start">
                     <span className="text-sm font-medium text-muted-foreground">
                       #{expIdx + 1}
@@ -468,7 +468,7 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
             </CardHeader>
             <CardContent className="space-y-6">
               {education.map((edu, eduIdx) => (
-                <div key={edu.id} className="space-y-4 rounded-lg border p-4">
+                <div key={`${edu.id}-${eduIdx}`} className="space-y-4 rounded-lg border p-4">
                   <div className="flex justify-between items-start">
                     <span className="text-sm font-medium text-muted-foreground">
                       #{eduIdx + 1}
@@ -550,7 +550,7 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
             </CardHeader>
             <CardContent className="space-y-3">
               {skills.map((skill, sIdx) => (
-                <div key={skill.id} className="flex gap-2 items-center">
+                <div key={`${skill.id}-${sIdx}`} className="flex gap-2 items-center">
                   <Input
                     value={skill.name}
                     onChange={(e) => updateSkill(sIdx, e.target.value)}
@@ -582,7 +582,7 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
             </CardHeader>
             <CardContent className="space-y-6">
               {languages.map((lang, lIdx) => (
-                <div key={lang.id} className="flex gap-4 items-end rounded-lg border p-4">
+                <div key={`${lang.id}-${lIdx}`} className="flex gap-4 items-end rounded-lg border p-4">
                   <div className="flex-1 space-y-2">
                     <Label>{t('language')}</Label>
                     <Input
@@ -624,7 +624,7 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
             </CardHeader>
             <CardContent className="space-y-6">
               {certifications.map((cert, cIdx) => (
-                <div key={cert.id} className="space-y-4 rounded-lg border p-4">
+                <div key={`${cert.id}-${cIdx}`} className="space-y-4 rounded-lg border p-4">
                   <div className="flex justify-between items-start">
                     <span className="text-sm font-medium text-muted-foreground">
                       #{cIdx + 1}
@@ -691,7 +691,7 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
             </CardHeader>
             <CardContent className="space-y-6">
               {projects.map((proj, pIdx) => (
-                <div key={proj.id} className="space-y-4 rounded-lg border p-4">
+                <div key={`${proj.id}-${pIdx}`} className="space-y-4 rounded-lg border p-4">
                   <div className="flex justify-between items-start">
                     <span className="text-sm font-medium text-muted-foreground">
                       #{pIdx + 1}

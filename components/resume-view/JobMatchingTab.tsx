@@ -277,9 +277,9 @@ export function JobMatchingTab({
 
         {/* Suggestion cards */}
         {visibleSuggestions.length > 0 ? (
-          visibleSuggestions.map((suggestion) => (
+          visibleSuggestions.map((suggestion, index) => (
             <SuggestionCard
-              key={suggestion.id}
+              key={`${suggestion.id}-${index}`}
               suggestion={suggestion}
               onAccept={handleAccept}
               onDismiss={handleDismiss}
@@ -296,9 +296,9 @@ export function JobMatchingTab({
           <div className="space-y-2 opacity-75">
             {allSuggestions
               .filter((s) => acceptedIds.has(s.id))
-              .map((s) => (
+              .map((s, index) => (
                 <SuggestionCard
-                  key={s.id}
+                  key={`${s.id}-${index}`}
                   suggestion={s}
                   onAccept={handleAccept}
                   onDismiss={handleDismiss}

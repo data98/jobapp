@@ -46,8 +46,8 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
               {labels.skills}
             </h2>
             <div className="flex flex-wrap gap-1.5">
-              {visibleSkills.map((skill) => (
-                <span key={skill.id} className="rounded" style={{ fontSize: '0.75em', backgroundColor: `${accentColor}20`, padding: '1px 8px' }}>
+              {visibleSkills.map((skill, idx) => (
+                <span key={`${skill.id}-${idx}`} className="rounded" style={{ fontSize: '0.75em', backgroundColor: `${accentColor}20`, padding: '1px 8px' }}>
                   {skill.name}
                 </span>
               ))}
@@ -64,8 +64,8 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
               {labels.languages}
             </h2>
             <div className="space-y-1" style={{ fontSize: '0.75em' }}>
-              {visibleLangs.map((l) => (
-                <p key={l.id}>{l.language} <span style={{ opacity: 0.7 }}>- {l.proficiency}</span></p>
+              {visibleLangs.map((l, idx) => (
+                <p key={`${l.id}-${idx}`}>{l.language} <span style={{ opacity: 0.7 }}>- {l.proficiency}</span></p>
               ))}
             </div>
           </div>
@@ -80,8 +80,8 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
               {labels.certifications}
             </h2>
             <div className="space-y-1.5" style={{ fontSize: '0.75em' }}>
-              {visibleCerts.map((cert) => (
-                <div key={cert.id}>
+              {visibleCerts.map((cert, idx) => (
+                <div key={`${cert.id}-${idx}`}>
                   <p className="font-semibold">{cert.name}</p>
                   {cert.issuer && <p style={{ opacity: 0.7 }}>{cert.issuer}</p>}
                 </div>
@@ -104,10 +104,10 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
             <h2 className="font-bold uppercase tracking-wider mb-3" style={{ fontSize: '0.75em', color: '#64748b' }}>
               {labels.experience}
             </h2>
-            {visibleExp.map((exp) => {
+            {visibleExp.map((exp, idx) => {
               const visibleBullets = exp.bullets.filter((b, i) => Boolean(b) && !exp.hiddenBullets?.includes(i));
               return (
-                <div key={exp.id} className="mb-3">
+                <div key={`${exp.id}-${idx}`} className="mb-3">
                   {(() => {
                     const hf = exp.hiddenFields ?? [];
                     const showTitle = !hf.includes('title');
@@ -154,8 +154,8 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
             <h2 className="font-bold uppercase tracking-wider mb-3" style={{ fontSize: '0.75em', color: '#64748b' }}>
               {labels.education}
             </h2>
-            {visibleEdu.map((edu) => (
-              <div key={edu.id} className="mb-2">
+            {visibleEdu.map((edu, idx) => (
+              <div key={`${edu.id}-${idx}`} className="mb-2">
                 <div className="flex justify-between items-baseline">
                   <span className="font-bold">{edu.degree} - {edu.field}</span>
                   <span style={{ fontSize: '0.75em', color: '#9ca3af' }}>{edu.startDate} - {edu.endDate}</span>
@@ -174,10 +174,10 @@ export function ModernTemplate({ data, labels }: ModernTemplateProps) {
             <h2 className="font-bold uppercase tracking-wider mb-3" style={{ fontSize: '0.75em', color: '#64748b' }}>
               {labels.projects}
             </h2>
-            {visibleProjects.map((proj) => {
+            {visibleProjects.map((proj, idx) => {
               const visibleBullets = proj.bullets.filter((b, i) => Boolean(b) && !proj.hiddenBullets?.includes(i));
               return (
-                <div key={proj.id} className="mb-2">
+                <div key={`${proj.id}-${idx}`} className="mb-2">
                   <span className="font-bold" style={{ fontSize: '0.75em' }}>{proj.name}</span>
                   {proj.description && <p style={{ fontSize: '0.75em', color: '#4b5563' }} className="mt-0.5">{proj.description}</p>}
                   {visibleBullets.length > 0 && (
