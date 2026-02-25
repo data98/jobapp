@@ -133,6 +133,7 @@ export async function updateApplication(
       | 'contact_name'
       | 'contact_email'
       | 'contact_phone'
+      | 'contact_linkedin'
       | 'notes'
       | 'salary_range'
       | 'location'

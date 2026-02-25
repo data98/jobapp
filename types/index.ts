@@ -109,6 +109,7 @@ export interface JobApplication {
   contact_name: string | null;
   contact_email: string | null;
   contact_phone: string | null;
+  contact_linkedin: string | null;
   notes: string | null;
   salary_range: string | null;
   location: string | null;
