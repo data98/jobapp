@@ -102,9 +102,12 @@ export async function dismissSuggestion(
 export async function recalculateScore(
   jobApplicationId: string
 ): Promise<{
+  job_title_match_score: number;
   keyword_score: number;
   measurable_results_score: number;
   structure_score: number;
+  context_depth_score: number;
+  anti_spam_penalty: number;
   composite: number;
   max_achievable: number | null;
 }> {

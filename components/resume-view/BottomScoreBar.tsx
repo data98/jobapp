@@ -23,22 +23,18 @@ export function BottomScoreBar({
   if (!analysisData && !clientScores) return null;
 
   const score = analysisData?.ats_score ?? clientScores?.composite ?? 0;
+  const jobTitleScore = analysisData?.job_title_match_score ?? clientScores?.job_title_match_score ?? 0;
   const keywordScore = analysisData?.keyword_score ?? clientScores?.keyword_score ?? 0;
   const measurableScore = analysisData?.measurable_results_score ?? clientScores?.measurable_results_score ?? 0;
   const structureScore = analysisData?.structure_score ?? clientScores?.structure_score ?? 0;
+  const antiSpamPenalty = analysisData?.anti_spam_penalty ?? clientScores?.anti_spam_penalty ?? 0;
   const isEstimate = !analysisData?.detailed_scores && !!clientScores;
 
   const scoreColor =
     score >= 75 ? 'text-green-600' :
-    score >= 60 ? 'text-yellow-600' :
-    score >= 40 ? 'text-orange-600' :
-    'text-red-600';
-
-  const progressColor =
-    score >= 75 ? '[&>div]:bg-green-500' :
-    score >= 60 ? '[&>div]:bg-yellow-500' :
-    score >= 40 ? '[&>div]:bg-orange-500' :
-    '[&>div]:bg-red-500';
+      score >= 60 ? 'text-yellow-600' :
+        score >= 40 ? 'text-orange-600' :
+          'text-red-600';
 
   return (
     <div className="shrink-0 border-t bg-background px-4 py-2 mt-2">
@@ -52,15 +48,21 @@ export function BottomScoreBar({
               {t('estimatedScore')}
             </Badge>
           )}
-          {scoresStale && (
+          {/* {scoresStale && (
             <Badge variant="outline" className="text-[10px] px-1 py-0 text-yellow-600 border-yellow-300">
               {t('staleScores')}
+            </Badge>
+          )} */}
+          {antiSpamPenalty < 0 && (
+            <Badge variant="outline" className="text-[10px] px-1 py-0 text-red-600 border-red-300">
+              {antiSpamPenalty}
             </Badge>
           )}
         </div>
 
         {/* Mini breakdowns */}
         <div className="flex-1 flex items-center gap-3">
+          <MiniMetric label={t('jobTitle')} score={jobTitleScore} />
           <MiniMetric label={t('keywords')} score={keywordScore} />
           <MiniMetric label={t('measurableResults')} score={measurableScore} />
           <MiniMetric label={t('structure')} score={structureScore} />
@@ -73,9 +75,9 @@ export function BottomScoreBar({
 function MiniMetric({ label, score }: { label: string; score: number }) {
   const barColor =
     score >= 75 ? '[&>div]:bg-green-500' :
-    score >= 60 ? '[&>div]:bg-yellow-500' :
-    score >= 40 ? '[&>div]:bg-orange-500' :
-    '[&>div]:bg-red-500';
+      score >= 60 ? '[&>div]:bg-yellow-500' :
+        score >= 40 ? '[&>div]:bg-orange-500' :
+          '[&>div]:bg-red-500';
 
   return (
     <div className="flex items-center gap-1.5 min-w-0">
@@ -85,3 +87,4 @@ function MiniMetric({ label, score }: { label: string; score: number }) {
     </div>
   );
 }
+

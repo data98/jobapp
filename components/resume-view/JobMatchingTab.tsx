@@ -99,7 +99,7 @@ export function JobMatchingTab({
         onVariantUpdate(updated);
         setAcceptedIds((prev) => new Set([...prev, suggestionId]));
 
-        // Background recalculate
+        // Background recalculate (delta-adjusted scores)
         setRecalculating(true);
         try {
           const scores = await recalculateScore(application.id);
@@ -110,6 +110,8 @@ export function JobMatchingTab({
               keyword_score: scores.keyword_score,
               measurable_results_score: scores.measurable_results_score,
               structure_score: scores.structure_score,
+              job_title_match_score: scores.job_title_match_score,
+              anti_spam_penalty: scores.anti_spam_penalty,
               max_achievable_score: scores.max_achievable,
             });
           }
@@ -197,7 +199,7 @@ export function JobMatchingTab({
   return (
     <div className="space-y-6">
       {/* Stale scores banner */}
-      {scoresStale && (
+      {/* {scoresStale && (
         <div className="flex items-center gap-2 bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2">
           <AlertTriangle className="h-4 w-4 text-yellow-600" />
           <span className="text-sm text-yellow-800 flex-1">{t('staleScores')}</span>
@@ -205,7 +207,7 @@ export function JobMatchingTab({
             {analyzing ? <Loader2 className="h-3 w-3 animate-spin" /> : t('reanalyze')}
           </Button>
         </div>
-      )}
+      )} */}
 
       {/* Score gauge + re-analyze */}
       <div className="flex items-start justify-between gap-4">
