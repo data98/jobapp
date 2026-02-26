@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
@@ -15,6 +16,7 @@ import {
   Send,
   ArrowRight,
   Star,
+  CheckCircle2,
 } from 'lucide-react';
 
 export default async function LandingPage({
@@ -27,12 +29,12 @@ export default async function LandingPage({
   const t = await getTranslations('landing');
 
   const features = [
-    { icon: Brain, title: t('featureAiTitle'), desc: t('featureAiDesc') },
-    { icon: Target, title: t('featureAtsTitle'), desc: t('featureAtsDesc') },
-    { icon: Sparkles, title: t('featureOptimizeTitle'), desc: t('featureOptimizeDesc') },
-    { icon: Download, title: t('featurePdfTitle'), desc: t('featurePdfDesc') },
-    { icon: Briefcase, title: t('featureTrackTitle'), desc: t('featureTrackDesc') },
-    { icon: LayoutTemplate, title: t('featureTemplatesTitle'), desc: t('featureTemplatesDesc') },
+    { icon: Brain, title: t('featureAiTitle'), desc: t('featureAiDesc'), colorClass: 'bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-400' },
+    { icon: Target, title: t('featureAtsTitle'), desc: t('featureAtsDesc'), colorClass: 'bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400' },
+    { icon: Sparkles, title: t('featureOptimizeTitle'), desc: t('featureOptimizeDesc'), colorClass: 'bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400' },
+    { icon: Download, title: t('featurePdfTitle'), desc: t('featurePdfDesc'), colorClass: 'bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-400' },
+    { icon: Briefcase, title: t('featureTrackTitle'), desc: t('featureTrackDesc'), colorClass: 'bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400' },
+    { icon: LayoutTemplate, title: t('featureTemplatesTitle'), desc: t('featureTemplatesDesc'), colorClass: 'bg-yellow-100 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-400' },
   ];
 
   const pillars = [
@@ -193,7 +195,7 @@ export default async function LandingPage({
       </section>
 
       {/* ═══════════ Platform Pillars ═══════════ */}
-      <section id="how-it-works" className="py-20 md:py-28 px-6 bg-muted/30">
+      {/* <section id="how-it-works" className="py-20 md:py-28 px-6 bg-muted/30">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
@@ -218,27 +220,146 @@ export default async function LandingPage({
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ═══════════ How It Works Steps ═══════════ */}
-      <section className="py-20 px-6">
-        <div className="mx-auto max-w-4xl">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12 tracking-tight">{t('howItWorks')}</h2>
-          <div className="grid gap-8 md:grid-cols-3">
-            {steps.map(({ title, desc, step }, idx) => (
-              <div key={step} className="flex flex-col items-center text-center gap-4">
-                <div className="relative">
-                  <div className="h-14 w-14 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center text-lg font-bold">
-                    {step}
-                  </div>
-                  {idx < steps.length - 1 && (
-                    <div className="hidden md:block absolute top-1/2 left-full w-[calc(100%+2rem)] border-t border-dashed border-border -translate-y-1/2" />
-                  )}
+      <section className="py-20 md:py-28 px-6 bg-background overflow-hidden relative">
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-3xl text-center mb-16 md:mb-24">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+              {t('howItWorks')}
+            </h2>
+          </div>
+
+          <div className="flex flex-col gap-16 md:gap-32">
+            {/* Step 1 */}
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-24 items-center relative">
+              <div className="flex flex-col gap-4 max-w-xl">
+                <div className="h-12 w-12 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-2">
+                  <FileText className="h-6 w-6 text-blue-600 dark:text-blue-500" />
                 </div>
-                <h3 className="text-lg font-semibold">{title}</h3>
-                <p className="text-muted-foreground text-sm">{desc}</p>
+                <h3 className="text-2xl sm:text-3xl font-bold">{t('step1Title')}</h3>
+                <p className="text-muted-foreground text-lg leading-relaxed">{t('step1Desc')}</p>
+                <ul className="mt-6 flex flex-col gap-4">
+                  {[
+                    t('step1Bullet1'),
+                    t('step1Bullet2'),
+                    t('step1Bullet3'),
+                  ].map((feat, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="h-6 w-6 text-blue-600 dark:text-blue-500 shrink-0" />
+                      <span className="text-md text-foreground">{feat}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            ))}
+              <div className="relative w-full">
+                <div className="w-full rounded-2xl bg-muted/30 p-[0.35rem] shadow-sm border md:rounded-3xl lg:w-[160%] z-10">
+                  <div className="relative w-full overflow-hidden rounded-xl md:rounded-2xl border bg-background shadow-sm">
+                    <img
+                      alt="Step 1 light mockup"
+                      src="/images/how-it-works/step1-light.png"
+                      width={3024}
+                      height={1888}
+                      className="w-full h-auto dark:hidden"
+                    />
+                    <img
+                      alt="Step 1 dark mockup"
+                      src="/images/how-it-works/step1-dark.png"
+                      width={3024}
+                      height={1888}
+                      className="w-full h-auto hidden dark:block"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-24 items-center relative">
+              <div className="flex flex-col gap-4 max-w-xl lg:order-last">
+                <div className="h-12 w-12 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-2">
+                  <Briefcase className="h-6 w-6 text-amber-600 dark:text-amber-500" />
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold">{t('step2Title')}</h3>
+                <p className="text-muted-foreground text-lg leading-relaxed">{t('step2Desc')}</p>
+                <ul className="mt-6 flex flex-col gap-4">
+                  {[
+                    t('step2Bullet1'),
+                    t('step2Bullet2'),
+                    t('step2Bullet3'),
+                  ].map((feat, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="h-6 w-6 text-amber-600 dark:text-amber-500 shrink-0" />
+                      <span className="text-md text-foreground">{feat}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="relative w-full">
+                <div className="w-full rounded-2xl bg-muted/30 p-[0.35rem] shadow-sm border md:rounded-3xl lg:w-[160%] lg:-ml-[60%] z-10">
+                  <div className="relative w-full overflow-hidden rounded-xl md:rounded-2xl border bg-background shadow-sm">
+                    <img
+                      alt="Step 2 light mockup"
+                      src="/images/how-it-works/step2-light.png"
+                      width={3024}
+                      height={1888}
+                      className="w-full h-auto dark:hidden"
+                    />
+                    <img
+                      alt="Step 2 dark mockup"
+                      src="/images/how-it-works/step2-dark.png"
+                      width={3024}
+                      height={1888}
+                      className="w-full h-auto hidden dark:block"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-24 items-center relative">
+              <div className="flex flex-col gap-4 max-w-xl">
+                <div className="h-12 w-12 rounded-2xl bg-green-500/10 flex items-center justify-center mb-2">
+                  <Sparkles className="h-6 w-6 text-green-600 dark:text-green-500" />
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold">{t('step3Title')}</h3>
+                <p className="text-muted-foreground text-lg leading-relaxed">{t('step3Desc')}</p>
+                <ul className="mt-6 flex flex-col gap-4">
+                  {[
+                    t('step3Bullet1'),
+                    t('step3Bullet2'),
+                    t('step3Bullet3'),
+                  ].map((feat, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="h-6 w-6 text-green-600 dark:text-green-500 shrink-0" />
+                      <span className="text-md text-foreground">{feat}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="relative w-full">
+                <div className="w-full rounded-2xl bg-muted/30 p-[0.35rem] shadow-sm border md:rounded-3xl lg:w-[160%] z-10">
+                  <div className="relative w-full overflow-hidden rounded-xl md:rounded-2xl border bg-background shadow-sm">
+                    <img
+                      alt="Step 3 light mockup"
+                      src="/images/how-it-works/step3-light.png"
+                      width={3024}
+                      height={1888}
+                      className="w-full h-auto dark:hidden"
+                    />
+                    <img
+                      alt="Step 3 dark mockup"
+                      src="/images/how-it-works/step3-dark.png"
+                      width={3024}
+                      height={1888}
+                      className="w-full h-auto hidden dark:block"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -253,13 +374,13 @@ export default async function LandingPage({
             <p className="text-muted-foreground text-lg">{t('featuresSubtitle')}</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map(({ icon: Icon, title, desc }) => (
+            {features.map(({ icon: Icon, title, desc, colorClass }) => (
               <div
                 key={title}
                 className="landing-card rounded-2xl bg-card border p-6 sm:p-8"
               >
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-muted">
-                  <Icon className="h-5 w-5 text-foreground" />
+                <div className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl ${colorClass}`}>
+                  <Icon className="h-5 w-5" />
                 </div>
                 <h3 className="text-base font-semibold mb-2">{title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
