@@ -630,8 +630,8 @@ export function PreviewTab({
                               checked={!bulletHidden}
                               onCheckedChange={() => toggleProjBulletHidden(idx, bIdx)}
                             />
-                            <BulletIndicator text={b} />
                             <Input value={b} className="text-xs" onChange={(e) => onProjectsChange(projects.map((p, i) => i === idx ? { ...p, bullets: p.bullets.map((bb, bi) => bi === bIdx ? e.target.value : bb) } : p))} />
+                            <BulletIndicator text={b} />
                           </div>
                         );
                       })}
