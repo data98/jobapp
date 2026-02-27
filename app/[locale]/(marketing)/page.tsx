@@ -3,7 +3,6 @@ import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import {
   Brain,
   Target,
@@ -11,13 +10,13 @@ import {
   Download,
   Briefcase,
   LayoutTemplate,
-  Search,
   Sparkles,
-  Send,
   ArrowRight,
   Star,
   CheckCircle2,
 } from 'lucide-react';
+import { HeroSection } from '@/components/landing/HeroSection';
+import { ResumeCompareSlider } from '@/components/landing/ResumeCompareSlider';
 
 export default async function LandingPage({
   params,
@@ -35,27 +34,6 @@ export default async function LandingPage({
     { icon: Download, title: t('featurePdfTitle'), desc: t('featurePdfDesc'), colorClass: 'bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-400' },
     { icon: Briefcase, title: t('featureTrackTitle'), desc: t('featureTrackDesc'), colorClass: 'bg-orange-100 text-orange-600 dark:bg-orange-500/20 dark:text-orange-400' },
     { icon: LayoutTemplate, title: t('featureTemplatesTitle'), desc: t('featureTemplatesDesc'), colorClass: 'bg-yellow-100 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-400' },
-  ];
-
-  const pillars = [
-    {
-      icon: Search,
-      title: t('pillar1Title'),
-      desc: t('pillar1Desc'),
-      accent: 'landing-pillar-accent-purple',
-    },
-    {
-      icon: Sparkles,
-      title: t('pillar2Title'),
-      desc: t('pillar2Desc'),
-      accent: 'landing-pillar-accent-blue',
-    },
-    {
-      icon: Send,
-      title: t('pillar3Title'),
-      desc: t('pillar3Desc'),
-      accent: 'landing-pillar-accent-teal',
-    },
   ];
 
   const stats = [
@@ -82,60 +60,13 @@ export default async function LandingPage({
     },
   ];
 
-  const steps = [
-    { title: t('step1Title'), desc: t('step1Desc'), step: '01' },
-    { title: t('step2Title'), desc: t('step2Desc'), step: '02' },
-    { title: t('step3Title'), desc: t('step3Desc'), step: '03' },
-  ];
-
   return (
     <>
       {/* ═══════════ Hero ═══════════ */}
-      <section className="landing-hero-gradient relative overflow-hidden h-[100vh]">
-        {/* Decorative blobs */}
-        <div className="absolute top-20 left-[10%] h-72 w-72 rounded-full bg-primary/5 blur-3xl" />
-        <div className="absolute bottom-10 right-[10%] h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
-
-        <div className="relative mx-auto max-w-4xl px-6 py-28 md:py-40 text-center">
-          <div className="landing-fade-in">
-            <Badge variant="secondary" className="mb-6 px-4 py-1.5 text-sm font-medium">
-              {t('badge')}
-            </Badge>
-          </div>
-
-          <h1 className="landing-fade-in landing-fade-in-delay-1 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl leading-[1.1]">
-            {t('heroTitle')}
-          </h1>
-
-          <p className="landing-fade-in landing-fade-in-delay-2 mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            {t('heroSubtitle')}
-          </p>
-
-          <div className="landing-fade-in landing-fade-in-delay-3 flex flex-wrap justify-center gap-3 mt-8">
-            <Button size="lg" className="h-12 px-8 text-base" asChild>
-              <Link href="/signup">
-                {t('ctaPrimary')}
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" className="h-12 px-8 text-base" asChild>
-              <a href="#how-it-works">{t('ctaSecondary')}</a>
-            </Button>
-          </div>
-
-          {/* Trust badges */}
-          <div className="landing-fade-in landing-fade-in-delay-4 flex flex-wrap items-center justify-center gap-2 mt-8 text-sm text-muted-foreground">
-            <span>{t('trustBadge1')}</span>
-            <span className="text-border">·</span>
-            <span>{t('trustBadge2')}</span>
-            <span className="text-border">·</span>
-            <span>{t('trustBadge3')}</span>
-          </div>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* ═══════════ Social Proof Stats ═══════════ */}
-      <section className="py-16 px-6 border-b">
+      {/* <section className="py-10 md:py-12 px-6 border-b">
         <div className="mx-auto max-w-4xl">
           <p className="text-center text-sm text-muted-foreground mb-8 uppercase tracking-wider font-medium">
             {t('socialProofHeading')}
@@ -149,89 +80,21 @@ export default async function LandingPage({
             ))}
           </div>
         </div>
-      </section>
-
-      {/* ═══════════ Value Proposition Cards ═══════════ */}
-      <section className="py-20 md:py-28 px-6">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-16 tracking-tight">
-            {t('valuePropHeading')}
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Card 1 */}
-            <div className="landing-value-card rounded-2xl bg-card p-8 md:p-10">
-              <p className="text-sm text-muted-foreground mb-2 uppercase tracking-wider font-medium">
-                {t('valueProp1Eyebrow')}
-              </p>
-              <h3 className="text-2xl font-bold mb-4">{t('valueProp1Title')}</h3>
-              <p className="text-muted-foreground leading-relaxed">{t('valueProp1Desc')}</p>
-              <div className="mt-6">
-                <Button variant="ghost" size="sm" className="group" asChild>
-                  <a href="#features">
-                    Learn more
-                    <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </a>
-                </Button>
-              </div>
-            </div>
-            {/* Card 2 */}
-            <div className="landing-value-card landing-value-card-alt rounded-2xl bg-card p-8 md:p-10">
-              <p className="text-sm text-muted-foreground mb-2 uppercase tracking-wider font-medium">
-                {t('valueProp2Eyebrow')}
-              </p>
-              <h3 className="text-2xl font-bold mb-4">{t('valueProp2Title')}</h3>
-              <p className="text-muted-foreground leading-relaxed">{t('valueProp2Desc')}</p>
-              <div className="mt-6">
-                <Button variant="ghost" size="sm" className="group" asChild>
-                  <a href="#features">
-                    Learn more
-                    <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </a>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════ Platform Pillars ═══════════ */}
-      {/* <section id="how-it-works" className="py-20 md:py-28 px-6 bg-muted/30">
-        <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-3xl text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-              {t('pillarsHeading')}
-            </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed">
-              {t('pillarsSubtitle')}
-            </p>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {pillars.map(({ icon: Icon, title, desc, accent }) => (
-              <div
-                key={title}
-                className={`landing-pillar-card ${accent} rounded-2xl bg-card p-8 shadow-sm`}
-              >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-muted">
-                  <Icon className="h-6 w-6 text-foreground" />
-                </div>
-                <h3 className="text-xl font-bold mb-3">{title}</h3>
-                <p className="text-muted-foreground leading-relaxed text-sm">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
       </section> */}
 
+      {/* ═══════════ Compare Slider ═══════════ */}
+      <ResumeCompareSlider />
+
       {/* ═══════════ How It Works Steps ═══════════ */}
-      <section className="py-20 md:py-28 px-6 bg-background overflow-hidden relative">
+      <section id="how-it-works" className="py-14 md:py-20 px-6 bg-background overflow-hidden relative">
         <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-3xl text-center mb-16 md:mb-24">
+          <div className="mx-auto max-w-3xl text-center mb-12 md:mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
               {t('howItWorks')}
             </h2>
           </div>
 
-          <div className="flex flex-col gap-16 md:gap-32">
+          <div className="flex flex-col gap-12 md:gap-24">
             {/* Step 1 */}
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-24 items-center relative">
               <div className="flex flex-col gap-4 max-w-xl">
@@ -365,9 +228,9 @@ export default async function LandingPage({
       </section>
 
       {/* ═══════════ Feature Bento Grid ═══════════ */}
-      <section id="features" className="py-20 md:py-28 px-6 bg-muted/30">
+      <section id="features" className="py-14 md:py-20 px-6 bg-muted/30">
         <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-2xl text-center mb-16">
+          <div className="mx-auto max-w-2xl text-center mb-10">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
               {t('featuresHeading')}
             </h2>
@@ -391,16 +254,21 @@ export default async function LandingPage({
       </section>
 
       {/* ═══════════ Testimonials ═══════════ */}
-      <section id="testimonials" className="py-20 md:py-28 px-6">
+      <section id="testimonials" className="py-14 md:py-20 px-6">
         <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-16 tracking-tight">
-            {t('testimonialsHeading')}
-          </h2>
+          <div className="text-center mb-10">
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+              {t('testimonialsHeading')}
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              {t('testimonialsSubtitle')}
+            </p>
+          </div>
           <div className="grid gap-6 md:grid-cols-3">
-            {testimonials.map(({ quote, author, role }) => (
+            {testimonials.map(({ quote, author, role }, idx) => (
               <div
                 key={author}
-                className="landing-testimonial-card rounded-2xl bg-card border p-8"
+                className={`landing-glass-card rounded-2xl p-8 ${idx === 0 ? 'md:row-span-1' : ''}`}
               >
                 <div className="flex gap-1 mb-4">
                   {[...Array(5)].map((_, i) => (
@@ -426,25 +294,47 @@ export default async function LandingPage({
       </section>
 
       {/* ═══════════ Final CTA ═══════════ */}
-      <section className="landing-cta-gradient py-20 md:py-28 px-6 text-center">
-        <div className="mx-auto max-w-2xl space-y-6">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+      <section className="py-14 md:py-20 px-6 text-center bg-background">
+        <div className="mx-auto max-w-3xl space-y-6">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
             {t('ctaHeading')}
           </h2>
-          <p className="text-white/70 text-lg leading-relaxed">
-            {t('ctaSubtitle')}
+          <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mx-auto">
+            {t('ctaSubtitleWithProof')}
           </p>
-          <Button
-            size="lg"
-            variant="secondary"
-            className="h-12 px-8 text-base"
-            asChild
-          >
-            <Link href="/signup">
-              {t('ctaPrimary')}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Button size="lg" className="h-12 px-8 text-base" asChild>
+              <Link href="/signup">
+                {t('ctaPrimary')}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button size="lg" variant="outline" className="h-12 px-8 text-base" asChild>
+              <a href="#features">{t('ctaLearnMore')}</a>
+            </Button>
+          </div>
+
+          {/* Dashboard mockup */}
+          <div className="mt-12 mx-auto max-w-4xl">
+            <div className="rounded-2xl border shadow-xl overflow-hidden bg-muted/30 p-1">
+              <div className="rounded-xl bg-background border overflow-hidden">
+                <Image
+                  src="/images/final-cta/dashboard-light.png"
+                  alt="Jobapp Dashboard"
+                  width={3024}
+                  height={1888}
+                  className="w-full h-auto dark:hidden"
+                />
+                <Image
+                  src="/images/final-cta/dashboard-dark.png"
+                  alt="Jobapp Dashboard"
+                  width={3024}
+                  height={1888}
+                  className="w-full h-auto hidden dark:block"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </>
