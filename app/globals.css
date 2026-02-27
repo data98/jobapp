@@ -333,3 +333,21 @@
 :is(.dark) .landing-cta-gradient {
   background: linear-gradient(135deg, oklch(0.25 0.06 280), oklch(0.20 0.04 260), oklch(0.15 0.02 240));
 }
+
+.landing-glass-card {
+  background: oklch(1 0 0 / 60%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid oklch(1 0 0 / 15%);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+:is(.dark) .landing-glass-card {
+  background: oklch(0.15 0 0 / 50%);
+  border: 1px solid oklch(1 0 0 / 8%);
+}
+
+.landing-glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px oklch(0 0 0 / 8%);
+}
