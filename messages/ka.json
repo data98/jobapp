@@ -479,7 +479,13 @@
       "includeInResume": "დამატება რეზიუმეში",
       "hiddenFromResume": "დამალული რეზიუმედან",
       "saveResume": "რეზიუმეს შენახვა",
-      "savedLocally": "რეზიუმე შენახულია ლოკალურად"
+      "savedLocally": "რეზიუმე შენახულია ლოკალურად",
+      "viewJobDescription": "პოზიციის აღწერა",
+      "jobDescription": "პოზიციის აღწერა",
+      "jobUrl": "პოზიციის ბმული",
+      "location": "ადგილმდებარეობა",
+      "salaryRange": "ხელფასი",
+      "noJobDescription": "პოზიციის აღწერა არ არის მითითებული."
     }
   }
 }
