@@ -12,11 +12,11 @@ import {
   LayoutTemplate,
   Sparkles,
   ArrowRight,
-  Star,
   CheckCircle2,
 } from 'lucide-react';
 import { HeroSection } from '@/components/landing/HeroSection';
 import { ResumeCompareSlider } from '@/components/landing/ResumeCompareSlider';
+import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
 
 export default async function LandingPage({
   params,
@@ -42,23 +42,6 @@ export default async function LandingPage({
     { value: t('stat3Value'), label: t('stat3Label') },
   ];
 
-  const testimonials = [
-    {
-      quote: t('testimonial1Quote'),
-      author: t('testimonial1Author'),
-      role: t('testimonial1Role'),
-    },
-    {
-      quote: t('testimonial2Quote'),
-      author: t('testimonial2Author'),
-      role: t('testimonial2Role'),
-    },
-    {
-      quote: t('testimonial3Quote'),
-      author: t('testimonial3Author'),
-      role: t('testimonial3Role'),
-    },
-  ];
 
   return (
     <>
@@ -92,6 +75,7 @@ export default async function LandingPage({
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
               {t('howItWorks')}
             </h2>
+            <p className="text-muted-foreground text-lg">{t('howItWorksSubtitle')}</p>
           </div>
 
           <div className="flex flex-col gap-12 md:gap-24">
@@ -254,44 +238,7 @@ export default async function LandingPage({
       </section>
 
       {/* ═══════════ Testimonials ═══════════ */}
-      <section id="testimonials" className="py-14 md:py-20 px-6">
-        <div className="mx-auto max-w-6xl">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-              {t('testimonialsHeading')}
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              {t('testimonialsSubtitle')}
-            </p>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            {testimonials.map(({ quote, author, role }, idx) => (
-              <div
-                key={author}
-                className={`landing-glass-card rounded-2xl p-8 ${idx === 0 ? 'md:row-span-1' : ''}`}
-              >
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-primary text-primary" />
-                  ))}
-                </div>
-                <blockquote className="text-sm leading-relaxed mb-6">
-                  &ldquo;{quote}&rdquo;
-                </blockquote>
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-sm font-semibold">
-                    {author.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold">{author}</p>
-                    <p className="text-xs text-muted-foreground">{role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <TestimonialsSection />
 
       {/* ═══════════ Final CTA ═══════════ */}
       <section className="py-14 md:py-20 px-6 text-center bg-background">

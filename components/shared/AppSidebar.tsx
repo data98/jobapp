@@ -3,6 +3,7 @@
 import { useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
+import Image from 'next/image';
 import {
   LayoutDashboard,
   Briefcase,
@@ -62,9 +63,7 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="/dashboard">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-                  <span className="text-xs font-bold">J</span>
-                </div>
+                <Image src="/images/logo.svg" alt="Jobapp" width={32} height={32} className="aspect-square size-8 rounded-md" />
                 <span className="font-semibold text-lg">Jobapp</span>
               </Link>
             </SidebarMenuButton>

@@ -351,3 +351,13 @@
   transform: translateY(-2px);
   box-shadow: 0 8px 32px oklch(0 0 0 / 8%);
 }
+
+/* Testimonial social cards */
+.testimonial-social-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-social-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px oklch(0 0 0 / 8%);
+}
