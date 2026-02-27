@@ -20,7 +20,7 @@ export function LandingNavbar() {
         <nav className="flex h-14 items-center justify-between rounded-2xl border bg-background/80 backdrop-blur-xl px-4 shadow-sm">
           {/* Left — Brand */}
           <Link href="/" className="flex items-center gap-2 font-semibold text-lg shrink-0">
-            <Image src="/images/logo.svg" alt="Jobapp" width={32} height={32} className="h-8 w-8 rounded-lg" />
+            <Image src="/images/logo.svg" alt="Jobapp" width={32} height={32} className="h-8 w-8 rounded-sm" />
             <span>Jobapp</span>
           </Link>
 
