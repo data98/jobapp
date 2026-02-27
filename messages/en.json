@@ -57,7 +57,9 @@
     "noAccount": "Don't have an account?",
     "hasAccount": "Already have an account?",
     "loginError": "Invalid email or password",
-    "signupError": "Could not create account"
+    "signupError": "Could not create account",
+    "googleSignIn": "Continue with Google",
+    "orContinueWith": "or"
   },
   "landing": {
     "heroTitle": "Land Your Dream Job, One Tailored Resume at a Time",

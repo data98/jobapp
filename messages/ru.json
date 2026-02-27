@@ -57,7 +57,9 @@
     "noAccount": "Нет аккаунта?",
     "hasAccount": "Уже есть аккаунт?",
     "loginError": "Неверный email или пароль",
-    "signupError": "Не удалось создать аккаунт"
+    "signupError": "Не удалось создать аккаунт",
+    "googleSignIn": "Войти через Google",
+    "orContinueWith": "или"
   },
   "landing": {
     "heroTitle": "Получите работу мечты - с резюме, подобранным под каждую вакансию",
