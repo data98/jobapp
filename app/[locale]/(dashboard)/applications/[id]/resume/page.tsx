@@ -2,7 +2,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { getApplication, getResumeVariant } from '@/lib/actions/applications';
-import { getAnalysis } from '@/lib/actions/analysis';
+import { getAnalysis, getV1Analysis } from '@/lib/actions/analysis';
 import { getMasterResume } from '@/lib/actions/resume';
 import { ResumeViewPage } from '@/components/resume-view/ResumeViewPage';
 import { SetBreadcrumbLabel } from '@/components/shared/SetBreadcrumbLabel';
@@ -18,9 +18,10 @@ export default async function ResumeVariantPage({
   const application = await getApplication(id);
   if (!application) notFound();
 
-  const [variant, analysis, masterResume] = await Promise.all([
+  const [variant, analysis, v1Analysis, masterResume] = await Promise.all([
     getResumeVariant(id),
     getAnalysis(id),
+    getV1Analysis(id),
     getMasterResume(),
   ]);
 
@@ -45,6 +46,7 @@ export default async function ResumeVariantPage({
           variant={variant}
           masterResume={masterResume}
           analysis={analysis}
+          v1Analysis={v1Analysis}
           labels={labels}
         />
       ) : (

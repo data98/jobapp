@@ -31,14 +31,16 @@ import {
   updateApplication,
   deleteApplication,
 } from '@/lib/actions/applications';
-import type { JobApplication, ApplicationStatus } from '@/types';
+import { JDProfileCard } from './JDProfileCard';
+import type { JobApplication, ApplicationStatus, JDProfile } from '@/types';
 
 interface ApplicationDetailProps {
   application: JobApplication;
   atsScore: number | null;
+  jdProfile?: JDProfile | null;
 }
 
-export function ApplicationDetail({ application, atsScore }: ApplicationDetailProps) {
+export function ApplicationDetail({ application, atsScore, jdProfile }: ApplicationDetailProps) {
   const t = useTranslations('applications');
   const ts = useTranslations('statuses');
   const tc = useTranslations('common');
@@ -388,6 +390,13 @@ export function ApplicationDetail({ application, atsScore }: ApplicationDetailPr
                 </div>
               </CardContent>
             </Card>
+
+            {/* JD Profile */}
+            <JDProfileCard
+              jobApplicationId={app.id}
+              hasJobDescription={!!app.job_description}
+              initialProfile={jdProfile ?? null}
+            />
           </>
         )}
       </div>

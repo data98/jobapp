@@ -5,6 +5,7 @@ import { auth } from '@/lib/auth';
 import { createServerClient } from '@/lib/supabase/server';
 import type {
   AiAnalysis,
+  ATSAnalysis,
   IdealResume,
   ResumeVariant,
   RewriteSuggestion,
@@ -188,18 +189,145 @@ export async function getAtsScoresForApplications(): Promise<Record<string, numb
 
   const appIds = apps.map((a) => a.id);
 
-  const { data: analyses } = await supabase
-    .from('ai_analysis')
-    .select('job_application_id, ats_score')
-    .in('job_application_id', appIds);
+  // Fetch from both old and new analysis tables
+  const [oldResult, newResult] = await Promise.all([
+    supabase
+      .from('ai_analysis')
+      .select('job_application_id, ats_score')
+      .in('job_application_id', appIds),
+    supabase
+      .from('ats_analysis')
+      .select('job_application_id, ats_score')
+      .in('job_application_id', appIds),
+  ]);
 
   const scores: Record<string, number> = {};
-  for (const a of analyses ?? []) {
+  // First populate from old analyses
+  for (const a of oldResult.data ?? []) {
+    if (a.ats_score != null) {
+      scores[a.job_application_id] = a.ats_score;
+    }
+  }
+  // Then override with V1 scores (preferred)
+  for (const a of newResult.data ?? []) {
     if (a.ats_score != null) {
       scores[a.job_application_id] = a.ats_score;
     }
   }
   return scores;
+}
+
+// ─── V1 ATS Scoring Actions ────────────────────────────────────────────────────
+
+export async function getV1Analysis(
+  jobApplicationId: string
+): Promise<ATSAnalysis | null> {
+  const userId = await getAuthUserId();
+  const supabase = createServerClient();
+
+  // Verify user owns this application
+  const { data: app } = await supabase
+    .from('job_application')
+    .select('id')
+    .eq('id', jobApplicationId)
+    .eq('user_id', userId)
+    .single();
+
+  if (!app) return null;
+
+  const { data, error } = await supabase
+    .from('ats_analysis')
+    .select('*')
+    .eq('job_application_id', jobApplicationId)
+    .single();
+
+  if (error && error.code !== 'PGRST116') {
+    throw new Error(error.message);
+  }
+  return data as ATSAnalysis | null;
+}
+
+export async function runV1Analysis(
+  jobApplicationId: string
+): Promise<ATSAnalysis> {
+  await getAuthUserId();
+  const authHeaders = await getAuthHeaders();
+
+  const res = await fetch(`${getBaseUrl()}/api/ai/analyze-resume`, {
+    method: 'POST',
+    headers: authHeaders,
+    body: JSON.stringify({ jobApplicationId }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'Failed to run V1 analysis');
+  }
+
+  return res.json();
+}
+
+export async function acceptV1Rewrite(
+  jobApplicationId: string,
+  suggestionId: string,
+  editedText?: string
+): Promise<ResumeVariant> {
+  await getAuthUserId();
+  const authHeaders = await getAuthHeaders();
+
+  const res = await fetch(`${getBaseUrl()}/api/ai/accept-v1-rewrite`, {
+    method: 'POST',
+    headers: authHeaders,
+    body: JSON.stringify({ jobApplicationId, suggestionId, editedText }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'Failed to accept rewrite');
+  }
+
+  return res.json();
+}
+
+export async function undoV1Rewrite(
+  jobApplicationId: string,
+  suggestionId: string
+): Promise<ResumeVariant> {
+  await getAuthUserId();
+  const authHeaders = await getAuthHeaders();
+
+  const res = await fetch(`${getBaseUrl()}/api/ai/undo-v1-rewrite`, {
+    method: 'POST',
+    headers: authHeaders,
+    body: JSON.stringify({ jobApplicationId, suggestionId }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'Failed to undo rewrite');
+  }
+
+  return res.json();
+}
+
+export async function acceptAllV1Rewrites(
+  jobApplicationId: string
+): Promise<ResumeVariant> {
+  await getAuthUserId();
+  const authHeaders = await getAuthHeaders();
+
+  const res = await fetch(`${getBaseUrl()}/api/ai/accept-all-v1-rewrites`, {
+    method: 'POST',
+    headers: authHeaders,
+    body: JSON.stringify({ jobApplicationId }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'Failed to accept all rewrites');
+  }
+
+  return res.json();
 }
 
 // ─── V1: Legacy Actions (backward compatibility) ─────────────────────────────
