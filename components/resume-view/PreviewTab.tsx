@@ -27,9 +27,6 @@ import type {
   ProjectEntry,
   ResumeSection,
 
-  AiAnalysis,
-  IdealResume,
-  KeywordMap,
 } from '@/types';
 
 function generateId(): string {
@@ -47,7 +44,6 @@ interface PreviewTabProps {
   includedSections: ResumeSection[];
   sectionOrder: ResumeSection[];
 
-  analysisData: AiAnalysis | null;
   onPersonalInfoChange: (v: PersonalInfo) => void;
   onExperienceChange: (v: ExperienceEntry[]) => void;
   onEducationChange: (v: EducationEntry[]) => void;
@@ -85,39 +81,6 @@ function BulletIndicator({ text }: { text: string }) {
   );
 }
 
-function SummaryQualityBadge({ summary, idealResume }: { summary: string; idealResume: IdealResume | null }) {
-  const t = useTranslations('resumeView.preview');
-  if (!idealResume) return null;
-
-  const wordCount = summary.split(/\s+/).filter(Boolean).length;
-  const [min, max] = idealResume.ideal_structure.summary_length_range;
-
-  if (wordCount === 0) return null;
-
-  if (wordCount < min) {
-    return <Badge variant="outline" className="text-yellow-600 border-yellow-300 text-xs">{t('tooShort')}</Badge>;
-  }
-  if (wordCount > max) {
-    return <Badge variant="outline" className="text-yellow-600 border-yellow-300 text-xs">{t('tooLong')}</Badge>;
-  }
-  return <Badge variant="outline" className="text-green-600 border-green-300 text-xs">{t('withinIdealRange')}</Badge>;
-}
-
-function getSkillColor(skillName: string, keywordMap: KeywordMap | undefined): string {
-  if (!keywordMap) return '';
-  const lower = skillName.toLowerCase();
-  for (const entries of Object.values(keywordMap)) {
-    for (const entry of entries) {
-      if (entry.keyword.toLowerCase() === lower) {
-        if (entry.importance === 'critical') return 'border-green-400/50';
-        if (entry.importance === 'important') return 'border-blue-400/50';
-        return 'border-gray-400';
-      }
-    }
-  }
-  return '';
-}
-
 export function PreviewTab({
   personalInfo,
   experience,
@@ -129,7 +92,6 @@ export function PreviewTab({
   includedSections,
   sectionOrder,
 
-  analysisData,
   onPersonalInfoChange,
   onExperienceChange,
   onEducationChange,
@@ -143,11 +105,6 @@ export function PreviewTab({
   const tv = useTranslations('resumeView.preview');
   const tc = useTranslations('common');
 
-
-  const idealResume = analysisData?.ideal_resume as IdealResume | null;
-  const keywordMap = idealResume?.keyword_map;
-
-  const summaryWordCount = personalInfo.summary.split(/\s+/).filter(Boolean).length;
 
   const hiddenFields = personalInfo.hiddenFields ?? [];
   const isFieldHidden = (field: PersonalInfoField) => hiddenFields.includes(field);
@@ -315,18 +272,12 @@ export function PreviewTab({
 
                 {/* Summary */}
                 <div className={`space-y-1 ${isFieldHidden('summary') ? 'opacity-50' : ''}`}>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Checkbox
-                        checked={!isFieldHidden('summary')}
-                        onCheckedChange={() => togglePersonalField('summary')}
-                      />
-                      <Label className="text-xs">{t('summary')}</Label>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground">{tv('wordCount', { count: summaryWordCount })}</span>
-                      <SummaryQualityBadge summary={personalInfo.summary} idealResume={idealResume} />
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      checked={!isFieldHidden('summary')}
+                      onCheckedChange={() => togglePersonalField('summary')}
+                    />
+                    <Label className="text-xs">{t('summary')}</Label>
                   </div>
                   <Textarea rows={3} value={personalInfo.summary} onChange={(e) => onPersonalInfoChange({ ...personalInfo, summary: e.target.value })} />
                 </div>
@@ -499,7 +450,7 @@ export function PreviewTab({
                 </Button>
                 <div className="flex flex-wrap gap-2">
                   {skills.map((skill, idx) => (
-                    <div key={`${skill.id}-${idx}`} className={`flex items-center gap-1.5 border rounded-full px-3 py-1 text-sm ${skill.hidden ? 'opacity-50' : getSkillColor(skill.name, keywordMap)}`}>
+                    <div key={`${skill.id}-${idx}`} className={`flex items-center gap-1.5 border rounded-full px-3 py-1 text-sm ${skill.hidden ? 'opacity-50' : ''}`}>
                       <Checkbox
                         className="h-3.5 w-3.5 shrink-0"
                         checked={!skill.hidden}
