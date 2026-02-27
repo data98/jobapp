@@ -63,7 +63,7 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="/dashboard">
-                <Image src="/images/logo.svg" alt="Jobapp" width={32} height={32} className="aspect-square size-8 rounded-md" />
+                <Image src="/images/logo.svg" alt="Jobapp" width={32} height={32} className="aspect-square size-8 rounded-sm" />
                 <span className="font-semibold text-lg">Jobapp</span>
               </Link>
             </SidebarMenuButton>
