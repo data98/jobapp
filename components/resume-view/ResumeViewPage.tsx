@@ -6,7 +6,14 @@ import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Eye, EyeOff, Download, Save } from 'lucide-react';
+import { Eye, EyeOff, Download, Save, FileText, ExternalLink, MapPin, DollarSign } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { ResumePreview } from '@/components/resume/ResumePreview';
 import { PreviewTab } from './PreviewTab';
 import { DesignTab } from './DesignTab';
@@ -258,6 +265,60 @@ export function ResumeViewPage({
           <h1 className="text-lg font-semibold truncate">
             {application.job_title} <span className="text-muted-foreground font-normal">{t('preview.at')}</span> {application.company}
           </h1>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button size="sm" variant="ghost" className="shrink-0 text-muted-foreground hover:text-foreground">
+                <FileText className="mr-1 h-3.5 w-3.5" />
+                {t('preview.viewJobDescription')}
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="w-xl lg:min-w-2xl max-h-[80vh] flex flex-col">
+              <DialogHeader>
+                <div className='flex items-center gap-4'>
+                  <DialogTitle>{t('preview.jobDescription')}</DialogTitle>
+                  {(application.location || application.salary_range || application.job_url) && (
+                    <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+                      {application.location && (
+                        <span className="flex items-center gap-1">
+                          <MapPin className="h-3.5 w-3.5" />
+                          {application.location}
+                        </span>
+                      )}
+                      {application.salary_range && (
+                        <span className="flex items-center gap-1">
+                          <DollarSign className="h-3.5 w-3.5" />
+                          {application.salary_range}
+                        </span>
+                      )}
+                      {application.job_url && (
+                        <a
+                          href={application.job_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 text-primary hover:underline"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" />
+                          {t('preview.jobUrl')}
+                        </a>
+                      )}
+                    </div>
+                  )}
+
+                </div>
+              </DialogHeader>
+              <div className="flex-1 overflow-y-auto space-y-4">
+                {application.job_description ? (
+                  <pre className="whitespace-pre-wrap text-sm font-sans leading-relaxed">
+                    {application.job_description}
+                  </pre>
+                ) : (
+                  <p className="text-sm text-muted-foreground italic">
+                    {t('preview.noJobDescription')}
+                  </p>
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
           {(analysisData || clientScores) ? (
             <div className="flex items-center gap-2 border-l border-border pl-4">
               <span className={`text-lg font-bold ${scoreColor}`}>{Math.round(score)}</span>

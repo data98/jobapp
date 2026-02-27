@@ -477,7 +477,15 @@
       "moreItems": "+{count} ещё",
       "at": "в",
       "includeInResume": "Включить в резюме",
-      "hiddenFromResume": "Скрыто из резюме"
+      "hiddenFromResume": "Скрыто из резюме",
+      "saveResume": "Сохранить резюме",
+      "savedLocally": "Резюме сохранено локально",
+      "viewJobDescription": "Описание",
+      "jobDescription": "Описание вакансии",
+      "jobUrl": "Ссылка на вакансию",
+      "location": "Местоположение",
+      "salaryRange": "Зарплата",
+      "noJobDescription": "Описание вакансии не указано."
     }
   }
 }

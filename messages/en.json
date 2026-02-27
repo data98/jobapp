@@ -479,7 +479,13 @@
       "includeInResume": "Include in resume",
       "hiddenFromResume": "Hidden from resume",
       "saveResume": "Save Resume",
-      "savedLocally": "Resume saved locally"
+      "savedLocally": "Resume saved locally",
+      "viewJobDescription": "View JD",
+      "jobDescription": "Job Description",
+      "jobUrl": "Job URL",
+      "location": "Location",
+      "salaryRange": "Salary Range",
+      "noJobDescription": "No job description provided."
     }
   }
 }
