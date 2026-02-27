@@ -385,7 +385,6 @@ export function ResumeViewPage({
                 projects={projects}
                 includedSections={includedSections}
                 sectionOrder={sectionOrder}
-                analysisData={analysisData}
                 onPersonalInfoChange={updatePersonalInfo}
                 onExperienceChange={updateExperience}
                 onEducationChange={updateEducation}
