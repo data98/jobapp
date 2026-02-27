@@ -5,7 +5,8 @@ import { Link } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { LocaleSwitcher } from '@/components/shared/LocaleSwitcher';
-import { FileText, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
 
 export function LandingNavbar() {
@@ -19,9 +20,7 @@ export function LandingNavbar() {
         <nav className="flex h-14 items-center justify-between rounded-2xl border bg-background/80 backdrop-blur-xl px-4 shadow-sm">
           {/* Left — Brand */}
           <Link href="/" className="flex items-center gap-2 font-semibold text-lg shrink-0">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <FileText className="h-4 w-4" />
-            </div>
+            <Image src="/images/logo.svg" alt="Jobapp" width={32} height={32} className="h-8 w-8 rounded-lg" />
             <span>Jobapp</span>
           </Link>
 
