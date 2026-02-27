@@ -410,3 +410,251 @@ export interface ClientScoreResult {
   max_achievable: number | null;
   is_estimate: true;
 }
+
+// ─── ATS Scoring V1 Types ──────────────────────────────────────────────────────
+
+export type V1SkillCategory = 'language' | 'framework' | 'tool' | 'platform' | 'methodology' | 'domain' | 'soft_skill';
+export type SeniorityLevel = 'intern' | 'junior' | 'mid' | 'senior' | 'lead' | 'principal' | 'manager' | 'director' | 'executive';
+export type V1EducationLevel = 'high_school' | 'associate' | 'bachelor' | 'master' | 'phd' | 'any';
+export type V1ImprovementType = 'missing_keyword' | 'quantification' | 'action_verb' | 'relevance';
+export type ScoreTier = 'excellent' | 'good' | 'needs_work' | 'poor';
+
+export interface SkillRequirement {
+  id: string;
+  name: string;
+  category: V1SkillCategory;
+  aliases: string[];
+  context: string;
+  importance: 'required' | 'preferred';
+}
+
+export interface V1EducationRequirement {
+  level: V1EducationLevel;
+  field: string | null;
+  importance: 'required' | 'preferred';
+}
+
+export interface JDProfile {
+  id: string;
+  job_application_id: string;
+  required_skills: SkillRequirement[];
+  preferred_skills: SkillRequirement[];
+  min_years_experience: number | null;
+  max_years_experience: number | null;
+  seniority_level: SeniorityLevel;
+  education_requirements: V1EducationRequirement[];
+  required_certifications: string[];
+  preferred_certifications: string[];
+  job_title_normalized: string;
+  department_function: string;
+  industry: string;
+  key_responsibilities: string[];
+  soft_skills: string[];
+  raw_jd_text: string;
+  ai_model_used: string;
+  user_edited: boolean;
+  user_edited_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// ─── V1 Stage 2: Matching Engine Results ────────────────────────────────────────
+
+export interface V1MatchLocation {
+  section: 'skills' | 'experience' | 'summary' | 'projects' | 'certifications' | 'education';
+  entry_index?: number;
+  bullet_index?: number;
+  match_type: 'exact' | 'alias' | 'fuzzy';
+  matched_text: string;
+}
+
+export interface V1SkillMatch {
+  skill: SkillRequirement;
+  found_in: V1MatchLocation[];
+}
+
+export interface V1KeywordMatchResult {
+  score: number;
+  required_matched: V1SkillMatch[];
+  required_missing: SkillRequirement[];
+  preferred_matched: V1SkillMatch[];
+  preferred_missing: SkillRequirement[];
+  total_required: number;
+  total_preferred: number;
+}
+
+export interface V1ExperienceScore {
+  entry_index: number;
+  company: string;
+  title: string;
+  title_relevance: number;
+  responsibility_overlap: number;
+  industry_match: number;
+  overall_relevance: number;
+  reasoning: string;
+}
+
+export interface V1ExperienceRelevanceResult {
+  score: number;
+  experience_scores: V1ExperienceScore[];
+  total_relevant_years: number;
+  seniority_match: 'under_qualified' | 'match' | 'over_qualified';
+  years_requirement_met: boolean;
+  career_trajectory_note: string;
+}
+
+export interface V1HardRequirementsResult {
+  score: number;
+  education: {
+    met: boolean;
+    required: V1EducationRequirement[];
+    candidate_has: EducationEntry[];
+    score: number;
+  };
+  certifications: {
+    matched: string[];
+    missing: string[];
+    total_required: number;
+    score: number;
+  };
+  years_of_experience: {
+    met: boolean;
+    required_min: number | null;
+    candidate_has: number;
+    score: number;
+  };
+}
+
+export interface V1BulletReference {
+  experience_index: number;
+  bullet_index: number;
+  text: string;
+}
+
+export interface V1ResumeQualityResult {
+  score: number;
+  checks: {
+    has_summary: { passed: boolean; score: number; detail: string };
+    quantified_achievements: {
+      passed: boolean;
+      score: number;
+      quantified_count: number;
+      total_bullets: number;
+      unquantified_bullets: V1BulletReference[];
+    };
+    bullet_density: { passed: boolean; score: number; avg_bullets: number };
+    skills_populated: { passed: boolean; score: number; count: number };
+    contact_complete: { passed: boolean; score: number; missing_fields: string[] };
+    action_verbs: {
+      passed: boolean;
+      score: number;
+      weak_bullets: V1BulletReference[];
+    };
+  };
+}
+
+export interface V1SkillEvidence {
+  skill_name: string;
+  evidence_level: 'claimed' | 'demonstrated' | 'proven';
+  locations: V1MatchLocation[];
+  points: number;
+}
+
+export interface V1SkillsDepthResult {
+  score: number;
+  skill_evidence: V1SkillEvidence[];
+}
+
+// ─── V1 Stage 3: Score Computation ──────────────────────────────────────────────
+
+export interface V1DimensionScore {
+  name: string;
+  score: number;
+  weight: number;
+  weighted_contribution: number;
+}
+
+export interface V1DimensionImpact {
+  name: string;
+  score: number;
+  weight: number;
+  impact: number;
+}
+
+// ─── V1 Stage 4: Recommendations ───────────────────────────────────────────────
+
+export interface V1RewriteSuggestion {
+  id: string;
+  type: 'bullet_rewrite' | 'summary_rewrite' | 'skill_addition';
+  section: 'experience' | 'summary' | 'skills' | 'projects';
+  experience_index: number | null;
+  bullet_index: number | null;
+  original_text: string;
+  suggested_text: string;
+  keywords_addressed: string[];
+  improvement_types: V1ImprovementType[];
+  impact_explanation: string;
+  estimated_score_impact: 'high' | 'medium' | 'low';
+  accepted: boolean;
+}
+
+export interface V1SummarySuggestion {
+  needed: boolean;
+  current: string | null;
+  suggested: string;
+  keywords_addressed: string[];
+}
+
+export interface V1SkillAddition {
+  name: string;
+  reason: string;
+  importance: 'required' | 'preferred';
+}
+
+export interface V1RecommendationsResult {
+  rewrite_suggestions: V1RewriteSuggestion[];
+  summary_suggestion: V1SummarySuggestion | null;
+  skills_to_add: V1SkillAddition[];
+  overall_strategy: string;
+}
+
+// ─── V1 Unified Analysis Record ─────────────────────────────────────────────────
+
+export interface ATSAnalysis {
+  id: string;
+  job_application_id: string;
+  jd_profile_id: string;
+  ats_score: number;
+  score_tier: ScoreTier;
+  scoring_version: number;
+  dimension_scores: V1DimensionScore[];
+  weakest_areas: V1DimensionImpact[];
+  keyword_match: V1KeywordMatchResult;
+  experience_relevance: V1ExperienceRelevanceResult;
+  hard_requirements: V1HardRequirementsResult;
+  resume_quality: V1ResumeQualityResult;
+  skills_depth: V1SkillsDepthResult;
+  recommendations: V1RecommendationsResult;
+  ai_models_used: { stage1?: string; stage2_experience?: string; stage4?: string };
+  total_ai_tokens_used: number | null;
+  processing_time_ms: number | null;
+  created_at: string;
+}
+
+// ─── V1 Gap Summary (internal, for Stage 4 input) ──────────────────────────────
+
+export interface V1GapSummary {
+  missing_required_skills: SkillRequirement[];
+  missing_preferred_skills: SkillRequirement[];
+  weakest_experience_entries: V1ExperienceScore[];
+  seniority_gap: string | null;
+  missing_certifications: string[];
+  education_gap: string | null;
+  years_gap: string | null;
+  unquantified_bullets: V1BulletReference[];
+  weak_verb_bullets: V1BulletReference[];
+  missing_summary: boolean;
+  claimed_only_skills: V1SkillEvidence[];
+  jd_profile: JDProfile;
+  resume: ResumeVariant;
+}

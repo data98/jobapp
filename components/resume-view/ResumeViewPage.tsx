@@ -11,6 +11,7 @@ import { ResumePreview } from '@/components/resume/ResumePreview';
 import { PreviewTab } from './PreviewTab';
 import { DesignTab } from './DesignTab';
 import { JobMatchingTab } from './JobMatchingTab';
+import { V1JobMatchingTab } from './v1/V1JobMatchingTab';
 import { saveResumeVariant, resetVariantToMaster } from '@/lib/actions/applications';
 import { calculateATSScore } from '@/lib/ats-scoring/client';
 import type {
@@ -18,6 +19,7 @@ import type {
   ResumeVariant,
   MasterResume,
   AiAnalysis,
+  ATSAnalysis,
   PersonalInfo,
   ExperienceEntry,
   EducationEntry,
@@ -37,6 +39,7 @@ interface ResumeViewPageProps {
   variant: ResumeVariant;
   masterResume: MasterResume | null;
   analysis: AiAnalysis | null;
+  v1Analysis: ATSAnalysis | null;
   labels: Record<string, string>;
 }
 
@@ -45,6 +48,7 @@ export function ResumeViewPage({
   variant,
   masterResume,
   analysis: initialAnalysis,
+  v1Analysis: initialV1Analysis,
   labels,
 }: ResumeViewPageProps) {
   const t = useTranslations('resumeView');
@@ -85,6 +89,7 @@ export function ResumeViewPage({
   );
 
   const [analysisData, setAnalysisData] = useState<AiAnalysis | null>(initialAnalysis);
+  const [v1AnalysisData, setV1AnalysisData] = useState<ATSAnalysis | null>(initialV1Analysis);
   const [activeTab, setActiveTab] = useState('preview');
   const [isDirty, setIsDirty] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
@@ -236,8 +241,8 @@ export function ResumeViewPage({
   const updateTemplateId = useCallback((v: TemplateId) => { setTemplateId(v); markDirty(); }, [markDirty]);
 
   // ─── Score Computation ──────────────────────────────────────────
-  const score = analysisData?.ats_score ?? clientScores?.composite ?? 0;
-  const isEstimate = !analysisData?.detailed_scores && !!clientScores;
+  const score = v1AnalysisData?.ats_score ?? analysisData?.ats_score ?? clientScores?.composite ?? 0;
+  const isEstimate = !v1AnalysisData && !analysisData?.detailed_scores && !!clientScores;
   const antiSpamPenalty = analysisData?.anti_spam_penalty ?? clientScores?.anti_spam_penalty ?? 0;
   const scoreColor =
     score >= 75 ? 'text-green-600' :
@@ -346,14 +351,11 @@ export function ResumeViewPage({
             </TabsContent>
 
             <TabsContent value="matching" className="flex-1 overflow-y-auto mt-3 pr-1">
-              <JobMatchingTab
+              <V1JobMatchingTab
                 application={application}
                 currentVariant={currentData}
-                masterResume={masterResume}
-                analysisData={analysisData}
-                clientScores={clientScores}
-                scoresStale={scoresStale}
-                onAnalysisUpdate={setAnalysisData}
+                v1Analysis={v1AnalysisData}
+                onV1AnalysisUpdate={setV1AnalysisData}
                 onVariantUpdate={(updated) => {
                   setPersonalInfo(updated.personal_info);
                   setExperience(updated.experience);
@@ -366,7 +368,6 @@ export function ResumeViewPage({
                   if (updated.section_order?.length) setSectionOrder(updated.section_order);
                   markDirty();
                 }}
-                onScoresStaleChange={setScoresStale}
               />
             </TabsContent>
           </Tabs>

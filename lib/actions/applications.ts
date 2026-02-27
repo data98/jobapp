@@ -3,6 +3,7 @@
 import { headers } from 'next/headers';
 import { auth } from '@/lib/auth';
 import { createServerClient } from '@/lib/supabase/server';
+import { analyzeJobDescription } from '@/lib/actions/jd-profile';
 import type {
   JobApplication,
   ApplicationStatus,
@@ -115,6 +116,13 @@ export async function createApplication(input: {
       included_sections: allSections,
       section_order: allSections,
     });
+  }
+
+  // Fire-and-forget: analyze JD in background
+  if (input.job_description && data.id) {
+    analyzeJobDescription(data.id).catch((err) =>
+      console.error('Background JD analysis failed:', err)
+    );
   }
 
   return data as JobApplication;

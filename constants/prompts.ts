@@ -325,3 +325,137 @@ MASTER RESUME:
 
 IDEAL RESUME BENCHMARK:
 {{ideal_resume_json}}`;
+
+// ─── ATS Scoring V1 Prompts ─────────────────────────────────────────────────────
+
+export const JD_ANALYSIS_PROMPT = `You are a job description analyst. Your task is to extract structured requirements from a job posting. Be precise and conservative — only mark something as "required" if the JD explicitly states it is mandatory (words like "must have", "required", "minimum", "X+ years"). If the JD says "preferred", "nice to have", "bonus", or "ideal", mark it as "preferred".
+
+For skills, generate reasonable aliases (e.g., "React" → ["React.js", "ReactJS"]). For seniority, infer from title + years + language used in the JD.
+
+Return ONLY valid JSON matching the provided schema. Do not include any text outside the JSON.
+
+Analyze this job description and extract all requirements.
+
+JOB DESCRIPTION:
+{{job_description}}
+
+Return JSON matching this exact schema:
+{
+  "required_skills": [
+    {
+      "name": "string",
+      "category": "language|framework|tool|platform|methodology|domain",
+      "aliases": ["string"],
+      "context": "brief reference to where this appeared in JD"
+    }
+  ],
+  "preferred_skills": [
+    {
+      "name": "string",
+      "category": "language|framework|tool|platform|methodology|domain",
+      "aliases": ["string"],
+      "context": "brief reference to where this appeared in JD"
+    }
+  ],
+  "min_years_experience": null,
+  "max_years_experience": null,
+  "seniority_level": "intern|junior|mid|senior|lead|principal|manager|director|executive",
+  "education_requirements": [
+    {
+      "level": "high_school|associate|bachelor|master|phd|any",
+      "field": "string or null",
+      "importance": "required|preferred"
+    }
+  ],
+  "required_certifications": ["string"],
+  "preferred_certifications": ["string"],
+  "job_title_normalized": "string",
+  "department_function": "string",
+  "industry": "string",
+  "key_responsibilities": ["string — top 5-8"],
+  "soft_skills": ["string"]
+}`;
+
+export const EXPERIENCE_RELEVANCE_PROMPT = `You are scoring resume experience relevance against a job description. For each experience entry, assess how relevant it is to the target role. Score strictly based on evidence. Return ONLY valid JSON.
+
+TARGET ROLE:
+- Title: {{job_title_normalized}}
+- Department: {{department_function}}
+- Industry: {{industry}}
+- Seniority: {{seniority_level}}
+- Key Responsibilities: {{key_responsibilities}}
+
+CANDIDATE EXPERIENCE:
+{{resume_experience_json}}
+
+For each experience entry, return:
+{
+  "experience_scores": [
+    {
+      "entry_index": 0,
+      "title_relevance": 0,
+      "responsibility_overlap": 0,
+      "industry_match": 0,
+      "overall_relevance": 0,
+      "reasoning": "1 sentence explanation"
+    }
+  ],
+  "total_relevant_years": 0,
+  "seniority_match": "under_qualified|match|over_qualified",
+  "career_trajectory_note": "1 sentence on career direction fit"
+}
+
+Score each field 0-100. Be strict and evidence-based.`;
+
+export const RECOMMENDATIONS_PROMPT = `You are a resume optimization specialist. You have been given a detailed gap analysis between a resume and a job description. Generate specific, actionable rewrite suggestions for the resume bullets that would have the highest impact on the ATS score.
+
+Rules:
+- Only suggest rewrites for bullets that need improvement.
+- Each rewrite MUST address at least one missing keyword naturally.
+- Do NOT keyword-stuff — the rewrite must read naturally and be truthful to the candidate's actual experience.
+- Prioritize addressing REQUIRED missing skills over preferred ones.
+- For bullets lacking quantification, suggest adding specific metrics (the candidate can fill in real numbers).
+- For bullets with weak action verbs, start with a stronger one.
+- If the summary is missing or weak, suggest a new one targeting this role.
+- Return ONLY valid JSON.
+
+GAP ANALYSIS:
+{{gap_summary_json}}
+
+CURRENT RESUME:
+{{resume_json}}
+
+TARGET JD PROFILE:
+{{jd_profile_json}}
+
+Generate rewrite suggestions. Return JSON:
+{
+  "rewrite_suggestions": [
+    {
+      "type": "bullet_rewrite|summary_rewrite|skill_addition",
+      "section": "experience|summary|skills|projects",
+      "experience_index": null,
+      "bullet_index": null,
+      "original_text": "the current text",
+      "suggested_text": "the improved version",
+      "keywords_addressed": ["keyword1", "keyword2"],
+      "improvement_types": ["missing_keyword|quantification|action_verb|relevance"],
+      "impact_explanation": "1 sentence on why this helps",
+      "estimated_score_impact": "high|medium|low"
+    }
+  ],
+  "summary_suggestion": {
+    "needed": true,
+    "current": "current summary or null",
+    "suggested": "new summary text targeting this role",
+    "keywords_addressed": ["keyword1", "keyword2"]
+  },
+  "skills_to_add": [
+    {
+      "name": "skill name",
+      "reason": "why this should be added",
+      "importance": "required|preferred"
+    }
+  ],
+  "overall_strategy": "2-3 sentence high-level recommendation"
+}`;
