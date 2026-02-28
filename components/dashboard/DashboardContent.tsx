@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Briefcase, TrendingUp, Calendar, CheckCircle, Plus } from 'lucide-react';
 import { ApplicationCard } from '@/components/applications/ApplicationCard';
-import type { JobApplication } from '@/types';
+import { StatusBreakdownBar } from '@/components/dashboard/StatusBreakdownBar';
+import type { JobApplication, ApplicationStatus } from '@/types';
 
 interface DashboardContentProps {
   stats: {
@@ -14,6 +15,7 @@ interface DashboardContentProps {
     active: number;
     interviews: number;
     accepted: number;
+    byStatus: Record<ApplicationStatus, number>;
   };
   recentApplications: JobApplication[];
 }
@@ -26,21 +28,29 @@ export function DashboardContent({ stats, recentApplications }: DashboardContent
       label: t('totalApplications'),
       value: stats.total,
       icon: Briefcase,
+      iconBg: 'bg-blue-500/10',
+      iconColor: 'text-blue-500',
     },
     {
       label: t('activeApplications'),
       value: stats.active,
       icon: TrendingUp,
+      iconBg: 'bg-amber-500/10',
+      iconColor: 'text-amber-500',
     },
     {
       label: t('interviewsScheduled'),
       value: stats.interviews,
       icon: Calendar,
+      iconBg: 'bg-violet-500/10',
+      iconColor: 'text-violet-500',
     },
     {
       label: t('acceptedOffers'),
       value: stats.accepted,
       icon: CheckCircle,
+      iconBg: 'bg-emerald-500/10',
+      iconColor: 'text-emerald-500',
     },
   ];
 
@@ -50,9 +60,9 @@ export function DashboardContent({ stats, recentApplications }: DashboardContent
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map((stat) => (
           <Card key={stat.label}>
-            <CardContent className="flex items-center gap-4 p-6">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                <stat.icon className="h-5 w-5 text-primary" />
+            <CardContent className="flex items-center gap-4 p-6 py-0">
+              <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${stat.iconBg}`}>
+                <stat.icon className={`h-5 w-5 ${stat.iconColor}`} />
               </div>
               <div>
                 <p className="text-2xl font-bold">{stat.value}</p>
@@ -62,6 +72,9 @@ export function DashboardContent({ stats, recentApplications }: DashboardContent
           </Card>
         ))}
       </div>
+
+      {/* Pipeline breakdown */}
+      <StatusBreakdownBar byStatus={stats.byStatus} total={stats.total} />
 
       {/* Recent applications */}
       <Card>

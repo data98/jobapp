@@ -154,7 +154,8 @@
     "noApplicationsYet": "განაცხადები არ არის",
     "getStarted": "დაიწყეთ პორველი განაცხადის დამატებით.",
     "addApplication": "აპლიკაციის დამატება",
-    "viewAll": "ყველას ნახვა"
+    "viewAll": "ყველას ნახვა",
+    "pipeline": "სტატუსები"
   },
   "statuses": {
     "bookmarked": "შენახული",

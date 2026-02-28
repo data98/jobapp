@@ -154,7 +154,8 @@
     "noApplicationsYet": "No applications yet",
     "getStarted": "Start by adding your first job application.",
     "addApplication": "Add Application",
-    "viewAll": "View All"
+    "viewAll": "View All",
+    "pipeline": "Pipeline"
   },
   "statuses": {
     "bookmarked": "Bookmarked",
