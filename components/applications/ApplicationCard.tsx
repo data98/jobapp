@@ -5,7 +5,32 @@ import { Link } from '@/i18n/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Briefcase } from 'lucide-react';
 import { StatusBadge } from './StatusBadge';
-import type { JobApplication } from '@/types';
+import { APPLICATION_STATUSES } from '@/constants/statuses';
+import type { JobApplication, ApplicationStatus } from '@/types';
+
+const iconBgMap: Record<string, string> = {
+  gray: 'bg-gray-500/10',
+  blue: 'bg-blue-500/10',
+  indigo: 'bg-indigo-500/10',
+  yellow: 'bg-yellow-500/10',
+  orange: 'bg-orange-500/10',
+  green: 'bg-green-500/10',
+  red: 'bg-red-500/10',
+};
+
+const iconColorMap: Record<string, string> = {
+  gray: 'text-gray-500',
+  blue: 'text-blue-500',
+  indigo: 'text-indigo-500',
+  yellow: 'text-yellow-500',
+  orange: 'text-orange-500',
+  green: 'text-green-500',
+  red: 'text-red-500',
+};
+
+function getStatusColor(status: ApplicationStatus): string {
+  return APPLICATION_STATUSES.find((s) => s.value === status)?.color ?? 'gray';
+}
 
 interface ApplicationCardProps {
   application: JobApplication;
@@ -18,9 +43,9 @@ export function ApplicationCard({ application, atsScore }: ApplicationCardProps)
   return (
     <Link href={`/applications/${application.id}`}>
       <Card className="transition-colors hover:bg-muted/50 cursor-pointer">
-        <CardContent className="flex items-center gap-4 p-4">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted">
-            <Briefcase className="h-5 w-5 text-muted-foreground" />
+        <CardContent className="flex items-center gap-4 p-4 py-0">
+          <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${iconBgMap[getStatusColor(application.status)]}`}>
+            <Briefcase className={`h-5 w-5 ${iconColorMap[getStatusColor(application.status)]}`} />
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-medium truncate">{application.job_title}</p>

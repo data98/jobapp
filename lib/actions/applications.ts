@@ -327,6 +327,7 @@ export async function getApplicationStats(): Promise<{
   active: number;
   interviews: number;
   accepted: number;
+  byStatus: Record<ApplicationStatus, number>;
 }> {
   const userId = await getAuthUserId();
   const supabase = createServerClient();
@@ -341,10 +342,25 @@ export async function getApplicationStats(): Promise<{
   const apps = data ?? [];
   const activeStatuses: ApplicationStatus[] = ['bookmarked', 'applying', 'applied', 'interviewing', 'negotiation'];
 
+  const byStatus: Record<ApplicationStatus, number> = {
+    bookmarked: 0,
+    applying: 0,
+    applied: 0,
+    interviewing: 0,
+    negotiation: 0,
+    accepted: 0,
+    rejected: 0,
+  };
+  for (const a of apps) {
+    const s = a.status as ApplicationStatus;
+    if (s in byStatus) byStatus[s]++;
+  }
+
   return {
     total: apps.length,
     active: apps.filter((a) => activeStatuses.includes(a.status as ApplicationStatus)).length,
     interviews: apps.filter((a) => a.status === 'interviewing').length,
     accepted: apps.filter((a) => a.status === 'accepted').length,
+    byStatus,
   };
 }

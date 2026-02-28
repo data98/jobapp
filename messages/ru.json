@@ -154,7 +154,8 @@
     "noApplicationsYet": "Заявок пока нет",
     "getStarted": "Начните с добавления первой заявки.",
     "addApplication": "Добавить заявку",
-    "viewAll": "Все заявки"
+    "viewAll": "Все заявки",
+    "pipeline": "Воронка"
   },
   "statuses": {
     "bookmarked": "В закладках",
