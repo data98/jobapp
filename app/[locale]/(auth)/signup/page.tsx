@@ -17,6 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Loader2 } from 'lucide-react';
 
 export default function SignupPage() {
   const t = useTranslations('auth');
@@ -93,7 +94,7 @@ export default function SignupPage() {
           disabled={isGoogleLoading || isLoading}
         >
           {isGoogleLoading ? (
-            <span className="animate-pulse">…</span>
+            <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
             <>
               <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -189,7 +190,7 @@ export default function SignupPage() {
           )}
 
           <Button type="submit" className="w-full" disabled={isLoading || isGoogleLoading}>
-            {isLoading ? <span className="animate-pulse">…</span> : t('signup')}
+            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : t('signup')}
           </Button>
         </form>
       </CardContent>
