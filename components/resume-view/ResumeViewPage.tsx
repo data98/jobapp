@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Eye, EyeOff, Download, Save, FileText, ExternalLink, MapPin, DollarSign } from 'lucide-react';
+import { Eye, EyeOff, Download, Save, FileText, ExternalLink, MapPin, Wallet } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -274,8 +274,8 @@ export function ResumeViewPage({
             </DialogTrigger>
             <DialogContent className="w-xl lg:min-w-2xl max-h-[80vh] flex flex-col">
               <DialogHeader>
+                <DialogTitle>{t('preview.jobDescription')}</DialogTitle>
                 <div className='flex items-center gap-4'>
-                  <DialogTitle>{t('preview.jobDescription')}</DialogTitle>
                   {(application.location || application.salary_range || application.job_url) && (
                     <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
                       {application.location && (
@@ -286,7 +286,7 @@ export function ResumeViewPage({
                       )}
                       {application.salary_range && (
                         <span className="flex items-center gap-1">
-                          <DollarSign className="h-3.5 w-3.5" />
+                          <Wallet className="h-3.5 w-3.5" />
                           {application.salary_range}
                         </span>
                       )}

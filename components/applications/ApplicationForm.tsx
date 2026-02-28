@@ -145,16 +145,16 @@ export function ApplicationForm() {
       <form onSubmit={handleSubmit}>
         {formFilled ? (
           <Card>
-            <CardHeader>
+            <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>{t('new')}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <FormFields form={form} setForm={setForm} t={t} />
               <FormActions
                 submitting={submitting}
                 tc={tc}
                 onCancel={() => router.push('/applications')}
               />
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <FormFields form={form} setForm={setForm} t={t} />
             </CardContent>
           </Card>
         ) : (
@@ -168,12 +168,12 @@ export function ApplicationForm() {
                   </Button>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="space-y-4 p-2.5">
-                  <FormFields form={form} setForm={setForm} t={t} />
                   <FormActions
                     submitting={submitting}
                     tc={tc}
                     onCancel={() => router.push('/applications')}
                   />
+                  <FormFields form={form} setForm={setForm} t={t} />
                 </CollapsibleContent>
               </Collapsible>
             </CardContent>
@@ -260,7 +260,7 @@ interface FormActionsProps {
 
 function FormActions({ submitting, tc, onCancel }: FormActionsProps) {
   return (
-    <div className="flex gap-3 justify-end pt-2">
+    <div className="flex gap-3 justify-end">
       <Button type="button" variant="outline" onClick={onCancel}>
         {tc('cancel')}
       </Button>
