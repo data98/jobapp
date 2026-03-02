@@ -26,13 +26,13 @@ export function LandingNavbar() {
 
           {/* Center — Nav links */}
           <div className="hidden md:flex items-center gap-6 text-sm absolute left-1/2 -translate-x-1/2">
-            <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#how-it-works" className="font-medium text-muted-foreground hover:text-foreground transition-colors">
               {t('navHowItWorks')}
             </a>
-            <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#features" className="font-medium text-muted-foreground hover:text-foreground transition-colors">
               {t('navFeatures')}
             </a>
-            <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#testimonials" className="font-medium text-muted-foreground hover:text-foreground transition-colors">
               {t('navTestimonials')}
             </a>
           </div>
