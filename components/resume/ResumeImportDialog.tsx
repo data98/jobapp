@@ -75,9 +75,9 @@ export function ResumeImportDialog({ onParsed }: ResumeImportDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="gap-2">
+        <Button variant="outline" size="icon" className="sm:size-auto sm:px-4 sm:py-2 gap-2">
           <Import className="h-4 w-4" />
-          {t('importResume')}
+          <span className="hidden sm:inline">{t('importResume')}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-lg">

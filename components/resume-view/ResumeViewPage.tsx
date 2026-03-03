@@ -260,19 +260,41 @@ export function ResumeViewPage({
   return (
     <div className="flex flex-col h-[calc(100vh-6rem)]">
       {/* Header */}
-      <div className="flex items-center justify-between gap-4 pb-3 shrink-0">
-        <div className="min-w-0 flex items-center gap-4">
-          <h1 className="text-lg font-semibold truncate">
+      <div className="space-y-2 pb-3 shrink-0">
+        {/* Row 1: title + ATS score */}
+        <div className="flex items-center gap-2 min-w-0">
+          <h1 className="text-base sm:text-lg font-semibold truncate">
             {application.job_title} <span className="text-muted-foreground font-normal">{t('preview.at')}</span> {application.company}
           </h1>
+          {(analysisData || clientScores) ? (
+            <div className="flex items-center gap-1.5 shrink-0 border-l border-border pl-2 sm:pl-4 sm:gap-2">
+              <span className={`text-base sm:text-lg font-bold ${scoreColor}`}>{Math.round(score)}</span>
+              <span className="text-xs text-muted-foreground hidden sm:inline">{t('matching.atsScore')}</span>
+              {isEstimate && (
+                <Badge variant="outline" className="text-[10px] px-1 py-0 hidden sm:inline-flex">
+                  {t('matching.estimatedScore')}
+                </Badge>
+              )}
+              {antiSpamPenalty < 0 && (
+                <Badge variant="outline" className="text-[10px] px-1 py-0 text-red-600 border-red-300">
+                  {antiSpamPenalty}
+                </Badge>
+              )}
+            </div>
+          ) : null}
+        </div>
+
+        {/* Row 2: actions */}
+        <div className="flex items-center gap-2 flex-wrap">
           <Dialog>
             <DialogTrigger asChild>
-              <Button size="sm" variant="ghost" className="shrink-0 text-muted-foreground hover:text-foreground">
+              <Button size="sm" variant="ghost" className="text-muted-foreground hover:text-foreground">
                 <FileText className="mr-1 h-3.5 w-3.5" />
-                {t('preview.viewJobDescription')}
+                <span className="hidden sm:inline">{t('preview.viewJobDescription')}</span>
+                <span className="sm:hidden">{t('preview.jobDescriptionShort')}</span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="w-xl lg:min-w-2xl max-h-[80vh] flex flex-col">
+            <DialogContent className="max-w-full h-full sm:max-w-xl sm:h-auto lg:min-w-2xl sm:max-h-[80vh] flex flex-col">
               <DialogHeader>
                 <DialogTitle>{t('preview.jobDescription')}</DialogTitle>
                 <div className='flex items-center gap-4'>
@@ -303,7 +325,6 @@ export function ResumeViewPage({
                       )}
                     </div>
                   )}
-
                 </div>
               </DialogHeader>
               <div className="flex-1 overflow-y-auto space-y-4">
@@ -319,47 +340,31 @@ export function ResumeViewPage({
               </div>
             </DialogContent>
           </Dialog>
-          {(analysisData || clientScores) ? (
-            <div className="flex items-center gap-2 border-l border-border pl-4">
-              <span className={`text-lg font-bold ${scoreColor}`}>{Math.round(score)}</span>
-              <span className="text-xs text-muted-foreground">{t('matching.atsScore')}</span>
-              {isEstimate && (
-                <Badge variant="outline" className="text-[10px] px-1 py-0">
-                  {t('matching.estimatedScore')}
-                </Badge>
-              )}
-              {antiSpamPenalty < 0 && (
-                <Badge variant="outline" className="text-[10px] px-1 py-0 text-red-600 border-red-300">
-                  {antiSpamPenalty}
-                </Badge>
-              )}
-            </div>
-          ) : null}
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
           {isDirty && (
-            <Badge variant="outline" className="text-yellow-600 border-yellow-300">
+            <Badge variant="outline" className="text-yellow-600 border-yellow-300 hidden sm:inline-flex">
               {t('preview.unsavedChanges')}
             </Badge>
           )}
-          <Button size="sm" variant="outline" onClick={handleSaveResumeState}>
-            <Save className="mr-1.5 h-3.5 w-3.5" />
-            {t('preview.saveResume')}
-          </Button>
-          <Button size="sm" variant="default" onClick={handleSaveAndExport} disabled={exporting}>
-            <Download className="mr-1.5 h-3.5 w-3.5" />
-            {exporting ? tc('saving') : t('preview.saveAndExport')}
-          </Button>
-          {/* Mobile preview toggle */}
-          <Button
-            size="sm"
-            variant="outline"
-            className="lg:hidden"
-            onClick={() => setShowPreview(!showPreview)}
-          >
-            {showPreview ? <EyeOff className="mr-1.5 h-3.5 w-3.5" /> : <Eye className="mr-1.5 h-3.5 w-3.5" />}
-            {showPreview ? t('preview.hidePreview') : t('preview.showPreview')}
-          </Button>
+          <div className="flex items-center gap-2 ml-auto">
+            <Button size="icon" variant="outline" className="h-8 w-8 sm:size-auto sm:px-3 sm:py-1" onClick={handleSaveResumeState}>
+              <Save className="h-3.5 w-3.5 sm:mr-1.5" />
+              <span className="hidden sm:inline">{t('preview.saveResume')}</span>
+            </Button>
+            <Button size="icon" variant="default" className="h-8 w-8 sm:size-auto sm:px-3 sm:py-1" onClick={handleSaveAndExport} disabled={exporting}>
+              <Download className="h-3.5 w-3.5 sm:mr-1.5" />
+              <span className="hidden sm:inline">{exporting ? tc('saving') : t('preview.saveAndExport')}</span>
+            </Button>
+            {/* Mobile preview toggle */}
+            <Button
+              size="icon"
+              variant="outline"
+              className="h-8 w-8 lg:hidden sm:size-auto sm:px-3 sm:py-1"
+              onClick={() => setShowPreview(!showPreview)}
+            >
+              {showPreview ? <EyeOff className="h-3.5 w-3.5 sm:mr-1.5" /> : <Eye className="h-3.5 w-3.5 sm:mr-1.5" />}
+              <span className="hidden sm:inline">{showPreview ? t('preview.hidePreview') : t('preview.showPreview')}</span>
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -374,7 +379,7 @@ export function ResumeViewPage({
               <TabsTrigger value="matching">{t('tabs.jobMatching')}</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="preview" className="flex-1 overflow-y-auto mt-3 pr-1">
+            <TabsContent value="preview" className="flex-1 overflow-y-auto overflow-x-hidden mt-3 pr-1">
               <PreviewTab
                 personalInfo={personalInfo}
                 experience={experience}
@@ -396,7 +401,7 @@ export function ResumeViewPage({
               />
             </TabsContent>
 
-            <TabsContent value="design" className="flex-1 overflow-y-auto mt-3 pr-1">
+            <TabsContent value="design" className="flex-1 overflow-y-auto overflow-x-hidden mt-3 pr-1">
               <DesignTab
                 templateId={templateId}
                 designSettings={designSettings}
@@ -410,7 +415,7 @@ export function ResumeViewPage({
               />
             </TabsContent>
 
-            <TabsContent value="matching" className="flex-1 overflow-y-auto mt-3 pr-1">
+            <TabsContent value="matching" className="flex-1 overflow-y-auto overflow-x-hidden mt-3 pr-1">
               <V1JobMatchingTab
                 application={application}
                 currentVariant={currentData}
@@ -434,7 +439,7 @@ export function ResumeViewPage({
         </div>
 
         {/* Right panel: live preview */}
-        <div className={`w-1/2 min-h-0 border rounded-lg bg-muted/30 overflow-y-auto p-4 ${showPreview ? '' : 'hidden lg:block'}`}>
+        <div className={`w-full lg:w-1/2 min-h-0 border rounded-lg bg-muted/30 overflow-y-auto p-2 sm:p-4 ${showPreview ? '' : 'hidden lg:block'}`}>
           <ResumePreview data={currentData} labels={labels} />
         </div>
       </div>

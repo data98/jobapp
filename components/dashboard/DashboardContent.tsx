@@ -57,12 +57,12 @@ export function DashboardContent({ stats, recentApplications }: DashboardContent
   return (
     <div className="space-y-6">
       {/* Stats grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {statCards.map((stat) => (
           <Card key={stat.label}>
-            <CardContent className="flex items-center gap-4 p-6 py-0">
-              <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${stat.iconBg}`}>
-                <stat.icon className={`h-5 w-5 ${stat.iconColor}`} />
+            <CardContent className="flex items-center gap-4 p-4 lg:p-6 py-0">
+              <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${stat.iconBg}`}>
+                <stat.icon className={`h-4 w-4 ${stat.iconColor}`} />
               </div>
               <div>
                 <p className="text-2xl font-bold">{stat.value}</p>
