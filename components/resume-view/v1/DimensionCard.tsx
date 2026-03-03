@@ -74,7 +74,7 @@ export function DimensionCard({
         </div>
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className="pl-10 pr-3 pb-3 pt-1">{children}</div>
+        <div className="pl-4 sm:pl-10 pr-3 pb-3 pt-1">{children}</div>
       </CollapsibleContent>
     </Collapsible>
   );

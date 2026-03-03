@@ -252,7 +252,7 @@ export function JDProfileCard({
                 <span className="ml-1 text-xs">{tc('edit')}</span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-3xl max-h-[85vh] flex flex-col overflow-hidden" showCloseButton={false}>
+            <DialogContent className="max-w-full h-full sm:max-w-3xl sm:h-auto sm:max-h-[85vh] flex flex-col overflow-hidden" showCloseButton={false}>
               <JDProfileEditForm
                 profile={profile}
                 onSave={async (updated) => {
@@ -476,9 +476,9 @@ function JDProfileEditForm({
   return (
     <>
       {/* Sticky header with title + Save/Cancel */}
-      <DialogHeader className="flex flex-row items-center justify-between border-b pb-4 space-y-0">
+      <DialogHeader className="flex flex-col gap-2 border-b pb-4 space-y-0 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2">
-          <DialogTitle>{t('editTitle')}</DialogTitle>
+          <DialogTitle className="text-base sm:text-lg">{t('editTitle')}</DialogTitle>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="outline" size="sm" disabled={loading}>
@@ -504,7 +504,7 @@ function JDProfileEditForm({
             </AlertDialogContent>
           </AlertDialog>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 ml-auto">
           <Button variant="outline" size="sm" onClick={onCancel}>
             {tc('cancel')}
           </Button>
@@ -518,7 +518,7 @@ function JDProfileEditForm({
       {/* Scrollable form body */}
       <div className="overflow-y-auto flex-1 pr-1 space-y-5">
         {/* Role Context */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <Label className="text-xs text-muted-foreground">
               {t('industry')}
@@ -632,7 +632,7 @@ function JDProfileEditForm({
           <p className="text-sm font-medium">{t('educationRequirements')}</p>
           {draft.education_requirements.map(
             (edu: V1EducationRequirement, idx: number) => (
-              <div key={idx} className="flex items-center flex-wrap gap-2">
+              <div key={idx} className="flex items-center gap-2">
                 <Select
                   value={edu.level}
                   onValueChange={(v) => {
@@ -641,7 +641,7 @@ function JDProfileEditForm({
                     update({ education_requirements: updated });
                   }}
                 >
-                  <SelectTrigger className="h-8 text-sm w-32">
+                  <SelectTrigger className="h-8 text-sm w-24 sm:w-32 shrink-0">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -663,18 +663,18 @@ function JDProfileEditForm({
                     };
                     update({ education_requirements: updated });
                   }}
-                  className="h-8 min-w-32 text-sm flex-1"
+                  className="h-8 text-sm flex-1 min-w-0"
                 />
                 <Badge
                   variant={edu.importance === 'required' ? 'default' : 'secondary'}
-                  className="text-xs"
+                  className="text-xs shrink-0 hidden sm:inline-flex"
                 >
                   {t(edu.importance)}
                 </Badge>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-6 w-6"
+                  className="h-6 w-6 shrink-0"
                   onClick={() => {
                     const updated = draft.education_requirements.filter(
                       (_: V1EducationRequirement, i: number) => i !== idx

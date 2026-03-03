@@ -162,15 +162,10 @@ export function ApplicationDetail({ application, atsScore, jdProfile }: Applicat
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between flex-wrap gap-3">
-        {/* Left: resume editor + ATS + status badge + created date */}
-        <div className="flex items-center gap-3 flex-wrap">
-          <Link href={`/applications/${app.id}/resume`}>
-            <Button>
-              <FileText className="mr-2 h-4 w-4" />
-              {t('openResumeEditor')}
-            </Button>
-          </Link>
+      <div className="space-y-3">
+        {/* Row 1: badges + date */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <StatusBadge status={app.status} />
           {atsScore != null && (
             <span
               className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${atsScore >= 75 ? 'bg-green-100 text-green-800' :
@@ -182,22 +177,28 @@ export function ApplicationDetail({ application, atsScore, jdProfile }: Applicat
               ATS {atsScore}
             </span>
           )}
-          <StatusBadge status={app.status} />
+          <span className="text-sm text-muted-foreground ml-auto">
+            {t('createdOn', {
+              date: format.dateTime(new Date(app.created_at), {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              }),
+            })}
+          </span>
         </div>
-        <span className="text-sm text-muted-foreground">
-          {t('createdOn', {
-            date: format.dateTime(new Date(app.created_at), {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-            }),
-          })}
-        </span>
 
-        {/* Right: status dropdown + edit/save/cancel + delete */}
-        <div className="flex items-center gap-3">
+        {/* Row 2: actions */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <Link href={`/applications/${app.id}/resume`}>
+            <Button size="sm">
+              <FileText className="mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">{t('openResumeEditor')}</span>
+              <span className="sm:hidden">{t('resumeShort')}</span>
+            </Button>
+          </Link>
           <Select value={app.status} onValueChange={(v) => handleStatusChange(v as ApplicationStatus)}>
-            <SelectTrigger className="w-[130px]">
+            <SelectTrigger className="w-auto h-8 text-sm">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -208,42 +209,44 @@ export function ApplicationDetail({ application, atsScore, jdProfile }: Applicat
               ))}
             </SelectContent>
           </Select>
-          {editingDetails ? (
-            <>
-              <Button variant="outline" onClick={handleCancelEditDetails}>
-                <X className="mr-2 h-4 w-4" />
-                {tc('cancel')}
+          <div className="flex items-center gap-2 ml-auto">
+            {editingDetails ? (
+              <>
+                <Button variant="outline" size="icon" className="h-8 w-8 sm:size-auto sm:px-3 sm:py-1" onClick={handleCancelEditDetails}>
+                  <X className="h-4 w-4" />
+                  <span className="hidden sm:inline ml-1">{tc('cancel')}</span>
+                </Button>
+                <Button size="icon" className="h-8 w-8 sm:size-auto sm:px-3 sm:py-1" onClick={handleSaveApplicationDetails}>
+                  <Check className="h-4 w-4" />
+                  <span className="hidden sm:inline ml-1">{tc('save')}</span>
+                </Button>
+              </>
+            ) : (
+              <Button variant="secondary" size="icon" className="h-8 w-8 sm:size-auto sm:px-3 sm:py-1" onClick={() => setEditingDetails(true)}>
+                <Pencil className="h-4 w-4" />
+                <span className="hidden sm:inline ml-1">{tc('edit')}</span>
               </Button>
-              <Button onClick={handleSaveApplicationDetails}>
-                <Check className="mr-2 h-4 w-4" />
-                {tc('save')}
-              </Button>
-            </>
-          ) : (
-            <Button variant="secondary" onClick={() => setEditingDetails(true)}>
-              <Pencil className="mr-2 h-4 w-4" />
-              {tc('edit')}
-            </Button>
-          )}
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive" size="icon">
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>{t('deleteTitle')}</AlertDialogTitle>
-                <AlertDialogDescription>{t('deleteDescription')}</AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>{tc('cancel')}</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDelete} disabled={deleting}>
-                  {deleting ? tc('deleting') : tc('delete')}
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+            )}
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" size="icon" className="h-8 w-8">
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t('deleteTitle')}</AlertDialogTitle>
+                  <AlertDialogDescription>{t('deleteDescription')}</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{tc('cancel')}</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleDelete} disabled={deleting}>
+                    {deleting ? tc('deleting') : tc('delete')}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </div>
       </div>
 

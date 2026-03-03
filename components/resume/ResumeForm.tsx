@@ -4,6 +4,13 @@ import { useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -249,25 +256,51 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
     );
   };
 
+  const resumeTabs = [
+    { value: 'personal', label: t('personalInfo') },
+    { value: 'experience', label: t('experience') },
+    { value: 'education', label: t('education') },
+    { value: 'skills', label: t('skills') },
+    { value: 'languages', label: t('languages') },
+    { value: 'certifications', label: t('certifications') },
+    { value: 'projects', label: t('projects') },
+  ];
+
+  const [activeTab, setActiveTab] = useState('personal');
+
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
 
-      <Tabs defaultValue="personal" className="space-y-4">
-        <div className="flex items-center justify-between">
-          <TabsList className="flex flex-wrap h-auto gap-1">
-            <TabsTrigger value="personal">{t('personalInfo')}</TabsTrigger>
-            <TabsTrigger value="experience">{t('experience')}</TabsTrigger>
-            <TabsTrigger value="education">{t('education')}</TabsTrigger>
-            <TabsTrigger value="skills">{t('skills')}</TabsTrigger>
-            <TabsTrigger value="languages">{t('languages')}</TabsTrigger>
-            <TabsTrigger value="certifications">{t('certifications')}</TabsTrigger>
-            <TabsTrigger value="projects">{t('projects')}</TabsTrigger>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <div className="flex items-center justify-between gap-2">
+          {/* Mobile: Select dropdown */}
+          <div className="sm:hidden flex-1">
+            <Select value={activeTab} onValueChange={setActiveTab}>
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {resumeTabs.map((tab) => (
+                  <SelectItem key={tab.value} value={tab.value}>
+                    {tab.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {/* Desktop: Tabs */}
+          <TabsList className="hidden sm:flex flex-wrap h-auto gap-1">
+            {resumeTabs.map((tab) => (
+              <TabsTrigger key={tab.value} value={tab.value}>
+                {tab.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
-          <div className="flex items-center gap-2 justify-end">
+          <div className="flex items-center gap-2 shrink-0">
             <ResumeImportDialog onParsed={handleParsed} />
-            <Button onClick={handleSave} disabled={saving}>
-              <Save className="mr-2 h-4 w-4" />
-              {saving ? tc('saving') : tc('save')}
+            <Button onClick={handleSave} disabled={saving} size="icon" className="sm:size-auto sm:px-4 sm:py-2 gap-2">
+              <Save className="h-4 w-4" />
+              <span className="hidden sm:inline">{saving ? tc('saving') : tc('save')}</span>
             </Button>
           </div>
         </div>
