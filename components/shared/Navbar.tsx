@@ -124,7 +124,9 @@ export function Navbar({ showSidebarTrigger = true }: NavbarProps) {
       <div className="flex-1" />
       <div className="flex items-center gap-2">
         <LocaleSwitcher />
-        <ThemeToggle />
+        <div className="hidden sm:block">
+          <ThemeToggle />
+        </div>
         <UserMenu />
       </div>
     </header>

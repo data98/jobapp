@@ -17,7 +17,6 @@ import {
 import { ResumePreview } from '@/components/resume/ResumePreview';
 import { PreviewTab } from './PreviewTab';
 import { DesignTab } from './DesignTab';
-import { JobMatchingTab } from './JobMatchingTab';
 import { V1JobMatchingTab } from './v1/V1JobMatchingTab';
 import { saveResumeVariant, resetVariantToMaster } from '@/lib/actions/applications';
 import { calculateATSScore } from '@/lib/ats-scoring/client';
@@ -95,15 +94,12 @@ export function ResumeViewPage({
       }
   );
 
-  const [analysisData, setAnalysisData] = useState<AiAnalysis | null>(initialAnalysis);
+  const [analysisData] = useState<AiAnalysis | null>(initialAnalysis);
   const [v1AnalysisData, setV1AnalysisData] = useState<ATSAnalysis | null>(initialV1Analysis);
   const [activeTab, setActiveTab] = useState('preview');
   const [isDirty, setIsDirty] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [clientScores, setClientScores] = useState<ClientScoreResult | null>(null);
-
-  // Track if scores are stale (edits since last analysis)
-  const [scoresStale, setScoresStale] = useState(false);
 
   // ─── Fetch saved state on mount ───────────────────────────────────
   useEffect(() => {
@@ -168,8 +164,7 @@ export function ResumeViewPage({
   // ─── Mark dirty on any content change ───────────────────────────────
   const markDirty = useCallback(() => {
     setIsDirty(true);
-    if (analysisData) setScoresStale(true);
-  }, [analysisData]);
+  }, []);
 
   // Beforeunload warning
   useEffect(() => {
@@ -294,7 +289,7 @@ export function ResumeViewPage({
                 <span className="sm:hidden">{t('preview.jobDescriptionShort')}</span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-full h-full sm:max-w-xl sm:h-auto lg:min-w-2xl sm:max-h-[80vh] flex flex-col">
+            <DialogContent className="max-w-[calc(100%-2rem)] max-h-[calc(100%-2rem)] rounded-lg sm:max-w-xl sm:h-auto lg:min-w-2xl sm:max-h-[80vh] flex flex-col">
               <DialogHeader>
                 <DialogTitle>{t('preview.jobDescription')}</DialogTitle>
                 <div className='flex items-center gap-4'>

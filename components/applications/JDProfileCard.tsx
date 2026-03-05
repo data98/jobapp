@@ -252,7 +252,7 @@ export function JDProfileCard({
                 <span className="ml-1 text-xs">{tc('edit')}</span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-full h-full sm:max-w-3xl sm:h-auto sm:max-h-[85vh] flex flex-col overflow-hidden" showCloseButton={false}>
+            <DialogContent className="max-w-[calc(100%-2rem)] max-h-[calc(100dvh-2rem)] sm:max-w-3xl sm:max-h-[85vh] flex flex-col overflow-hidden" showCloseButton={false}>
               <JDProfileEditForm
                 profile={profile}
                 onSave={async (updated) => {
