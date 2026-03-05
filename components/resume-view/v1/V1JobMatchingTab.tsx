@@ -255,7 +255,7 @@ export function V1JobMatchingTab({
     <div className="space-y-6">
       {/* Score gauge + tier + re-analyze */}
       <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 min-w-0">
           <ScoreGauge score={v1Analysis.ats_score} />
           <div className="space-y-1">
             <Badge
@@ -275,6 +275,7 @@ export function V1JobMatchingTab({
         <Button
           size="sm"
           variant="outline"
+          className="shrink-0"
           onClick={handleAnalyze}
           disabled={analyzing}
         >
