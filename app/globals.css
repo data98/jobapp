@@ -185,26 +185,38 @@
 }
 
 /* ─── Landing Page Utilities ─── */
+/* Mobile: static solid background for performance */
 .landing-hero-gradient {
-  background: linear-gradient(135deg,
-      oklch(0.92 0.05 280) 0%,
-      oklch(0.95 0.03 240) 25%,
-      oklch(0.97 0.003 90) 50%,
-      oklch(92.295% 0.0647 147.136) 75%,
-      oklch(0.91 0.06 300) 100%);
-  background-size: 300% 300%;
-  animation: gradient-shift 12s ease infinite;
+  background: oklch(0.95 0.02 260);
 }
 
 :is(.dark) .landing-hero-gradient {
-  background: linear-gradient(135deg,
-      oklch(0.20 0.04 280) 0%,
-      oklch(0.17 0.03 240) 25%,
-      oklch(0.145 0 0) 50%,
-      oklch(0.18 0.03 200) 75%,
-      oklch(0.21 0.05 300) 100%);
-  background-size: 300% 300%;
-  animation: gradient-shift 12s ease infinite;
+  background: oklch(0.16 0.02 260);
+}
+
+/* Desktop: animated gradient */
+@media (min-width: 768px) {
+  .landing-hero-gradient {
+    background: linear-gradient(135deg,
+        oklch(0.92 0.05 280) 0%,
+        oklch(0.95 0.03 240) 25%,
+        oklch(0.97 0.003 90) 50%,
+        oklch(92.295% 0.0647 147.136) 75%,
+        oklch(0.91 0.06 300) 100%);
+    background-size: 300% 300%;
+    animation: gradient-shift 12s ease infinite;
+  }
+
+  :is(.dark) .landing-hero-gradient {
+    background: linear-gradient(135deg,
+        oklch(0.20 0.04 280) 0%,
+        oklch(0.17 0.03 240) 25%,
+        oklch(0.145 0 0) 50%,
+        oklch(0.18 0.03 200) 75%,
+        oklch(0.21 0.05 300) 100%);
+    background-size: 300% 300%;
+    animation: gradient-shift 12s ease infinite;
+  }
 }
 
 .landing-fade-in {
