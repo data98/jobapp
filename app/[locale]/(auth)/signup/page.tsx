@@ -48,7 +48,7 @@ export default function SignupPage() {
       if (result.error) {
         setError(t('signupError'));
       } else {
-        router.push('/dashboard', { locale: locale as 'en' | 'ru' });
+        router.push('/dashboard', { locale: locale as 'en' | 'ka' });
       }
     } catch {
       setError(t('signupError'));

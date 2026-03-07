@@ -658,3 +658,106 @@ export interface V1GapSummary {
   jd_profile: JDProfile;
   resume: ResumeVariant;
 }
+
+// ─── User Roles ───────────────────────────────────────────────────────────────
+
+export type UserRole = 'seeker' | 'employer';
+
+// ─── Organization ─────────────────────────────────────────────────────────────
+
+export interface Organization {
+  id: string;
+  name: string;
+  slug: string;
+  website: string | null;
+  logo_url: string | null;
+  description: string | null;
+  industry: string | null;
+  company_size: '1-10' | '11-50' | '51-200' | '201-500' | '500+' | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type OrgMemberRole = 'owner' | 'admin' | 'recruiter' | 'viewer';
+
+export interface OrganizationMember {
+  id: string;
+  organization_id: string;
+  user_id: string;
+  role: OrgMemberRole;
+  invited_by: string | null;
+  joined_at: string;
+}
+
+// ─── Job Posting ──────────────────────────────────────────────────────────────
+
+export type JobPostingStatus = 'draft' | 'published' | 'paused' | 'closed' | 'archived';
+export type LocationType = 'remote' | 'hybrid' | 'onsite';
+export type EmploymentType = 'full-time' | 'part-time' | 'contract' | 'internship';
+
+export interface EducationRequirement {
+  level: V1EducationLevel;
+  field: string | null;
+  importance: 'required' | 'preferred';
+}
+
+export interface JobPosting {
+  id: string;
+  organization_id: string;
+  created_by: string;
+  title: string;
+  slug: string;
+  description: string;
+  short_description: string | null;
+  required_skills: SkillRequirement[];
+  preferred_skills: SkillRequirement[];
+  min_years_experience: number | null;
+  max_years_experience: number | null;
+  seniority_level: string | null;
+  education_requirements: EducationRequirement[];
+  key_responsibilities: string[];
+  soft_skills: string[];
+  location: string | null;
+  location_type: LocationType | null;
+  salary_min: number | null;
+  salary_max: number | null;
+  salary_currency: string;
+  show_salary: boolean;
+  employment_type: EmploymentType | null;
+  department: string | null;
+  status: JobPostingStatus;
+  published_at: string | null;
+  closes_at: string | null;
+  allow_external_apply: boolean;
+  jd_optimized: boolean;
+  ai_optimization_suggestions: unknown;
+  views_count: number;
+  applications_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+// ─── External Application ─────────────────────────────────────────────────────
+
+export type ExternalApplicationStatus =
+  'new' | 'reviewed' | 'shortlisted' | 'interviewing' |
+  'offer' | 'hired' | 'rejected' | 'withdrawn';
+
+export interface JobApplicationExternal {
+  id: string;
+  job_posting_id: string;
+  applicant_user_id: string | null;
+  applicant_name: string;
+  applicant_email: string;
+  applicant_phone: string | null;
+  applicant_linkedin: string | null;
+  cover_letter: string | null;
+  resume_file_url: string | null;
+  status: ExternalApplicationStatus;
+  employer_notes: string | null;
+  rating: number | null;
+  match_score: number | null;
+  match_details: unknown;
+  applied_at: string;
+  updated_at: string;
+}

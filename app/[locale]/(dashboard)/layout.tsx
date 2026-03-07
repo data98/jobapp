@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { headers, cookies } from 'next/headers';
 import { auth } from '@/lib/auth';
+import { createServerClient } from '@/lib/supabase/server';
 import { AppSidebar } from '@/components/shared/AppSidebar';
 import { Navbar } from '@/components/shared/Navbar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
@@ -20,6 +21,18 @@ export default async function DashboardLayout({
 
   if (!session) {
     redirect(`/${locale}/login`);
+  }
+
+  // Role check: verify this user is a seeker, not an employer
+  const supabase = createServerClient();
+  const { data: user } = await supabase
+    .from('user')
+    .select('role')
+    .eq('id', session.user.id)
+    .single();
+
+  if (user?.role === 'employer') {
+    redirect(`/${locale}/employer/dashboard`);
   }
 
   const cookieStore = await cookies();

@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useRouter } from '@/i18n/navigation';
+import { useRouter, usePathname } from '@/i18n/navigation';
 import { useLocale } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { signOut } from '@/lib/auth-client';
@@ -24,9 +24,12 @@ export function UserMenu() {
   const locale = useLocale();
   const { theme, setTheme } = useTheme();
 
+  const pathname = usePathname();
+  const isEmployer = pathname.startsWith('/employer');
+
   async function handleSignOut() {
     await signOut();
-    router.push('/login', { locale: locale as 'en' | 'ru' });
+    router.push(isEmployer ? '/employer/signup' : '/login', { locale: locale as 'en' | 'ka' });
   }
 
   if (!user) return null;
@@ -61,7 +64,7 @@ export function UserMenu() {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="gap-2" asChild>
-          <button className="w-full cursor-pointer" onClick={() => router.push('/settings', { locale: locale as 'en' | 'ru' })}>
+          <button className="w-full cursor-pointer" onClick={() => router.push(isEmployer ? '/employer/settings' : '/settings', { locale: locale as 'en' | 'ka' })}>
             <User className="h-4 w-4" />
             {t('settings')}
           </button>
