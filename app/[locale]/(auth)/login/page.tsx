@@ -40,7 +40,7 @@ export default function LoginPage() {
       if (result.error) {
         setError(t('loginError'));
       } else {
-        router.push('/dashboard', { locale: locale as 'en' | 'ru' });
+        router.push('/dashboard', { locale: locale as 'en' | 'ka' });
       }
     } catch {
       setError(t('loginError'));

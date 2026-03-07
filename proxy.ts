@@ -5,28 +5,38 @@ import { NextRequest, NextResponse } from 'next/server';
 const intlMiddleware = createMiddleware(routing);
 
 // Routes that require authentication (matched after stripping locale prefix)
-const protectedPaths = ['/dashboard', '/applications', '/resume', '/settings'];
+const seekerProtectedPaths = ['/dashboard', '/applications', '/resume', '/settings'];
+const employerProtectedPaths = ['/employer/dashboard', '/employer/jobs', '/employer/candidates',
+                                '/employer/analytics', '/employer/settings'];
+
+// Build locale regex from routing config
+const localePattern = routing.locales.join('|');
+const localeRegex = new RegExp(`^\\/(${localePattern})`);
 
 export default async function proxy(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
 
   // Strip locale prefix to get the path
-  const pathnameWithoutLocale = pathname.replace(/^\/(en|ru)/, '') || '/';
+  const pathnameWithoutLocale = pathname.replace(localeRegex, '') || '/';
+  const locale = pathname.match(localeRegex)?.[1] || 'en';
 
-  // Check if this path is protected
-  const isProtected = protectedPaths.some((p) =>
+  const isSeekerProtected = seekerProtectedPaths.some((p) =>
+    pathnameWithoutLocale.startsWith(p)
+  );
+  const isEmployerProtected = employerProtectedPaths.some((p) =>
     pathnameWithoutLocale.startsWith(p)
   );
 
-  if (isProtected) {
+  if (isSeekerProtected || isEmployerProtected) {
     // Check for Better Auth session cookie
     const sessionCookie =
       req.cookies.get('better-auth.session_token') ||
       req.cookies.get('__Secure-better-auth.session_token');
 
     if (!sessionCookie) {
-      const locale = pathname.match(/^\/(en|ru)/)?.[1] || 'en';
-      return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
+      // Redirect to the appropriate login page
+      const loginPath = isEmployerProtected ? '/employer/login' : '/login';
+      return NextResponse.redirect(new URL(`/${locale}${loginPath}`, req.url));
     }
   }
 
