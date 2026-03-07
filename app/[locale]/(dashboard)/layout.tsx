@@ -6,6 +6,7 @@ import { Navbar } from '@/components/shared/Navbar';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { Toaster } from '@/components/ui/sonner';
 import { BreadcrumbProvider } from '@/components/shared/BreadcrumbContext';
+import { NavigationGuardProvider } from '@/components/shared/NavigationGuardProvider';
 
 export default async function DashboardLayout({
   children,
@@ -25,17 +26,19 @@ export default async function DashboardLayout({
   const defaultOpen = cookieStore.get('sidebar_state')?.value === 'true';
 
   return (
-    <BreadcrumbProvider>
-      <SidebarProvider defaultOpen={defaultOpen}>
-        <AppSidebar />
-        <SidebarInset>
-          <Navbar />
-          <main className="flex-1 overflow-y-auto bg-muted/30 p-6 pb-2">
-            {children}
-          </main>
-        </SidebarInset>
-        <Toaster />
-      </SidebarProvider>
-    </BreadcrumbProvider>
+    <NavigationGuardProvider>
+      <BreadcrumbProvider>
+        <SidebarProvider defaultOpen={defaultOpen}>
+          <AppSidebar />
+          <SidebarInset>
+            <Navbar />
+            <main className="flex-1 overflow-y-auto bg-muted/30 p-6 pb-2">
+              {children}
+            </main>
+          </SidebarInset>
+          <Toaster />
+        </SidebarProvider>
+      </BreadcrumbProvider>
+    </NavigationGuardProvider>
   );
 }

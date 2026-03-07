@@ -25,7 +25,11 @@
     "all": "All",
     "date": "Date",
     "status": "Status",
-    "allRightsReserved": "All rights reserved."
+    "allRightsReserved": "All rights reserved.",
+    "unsavedChangesTitle": "Unsaved changes",
+    "unsavedChangesDescription": "You have unsaved changes. If you leave this page, your changes will be lost.",
+    "stayOnPage": "Stay on page",
+    "discardChanges": "Discard changes"
   },
   "footer": {
     "description": "AI-powered resume optimization platform. Tailor your resume for every job, maximize your ATS score, and land more interviews.",
