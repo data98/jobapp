@@ -19,6 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Plus, Trash2, Save } from 'lucide-react';
 import { saveMasterResume } from '@/lib/actions/resume';
+import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import { ResumeImportDialog } from './ResumeImportDialog';
 import type { ParsedResumeData } from './ResumeUploader';
 import type {
@@ -77,6 +78,9 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
     initialData?.projects ?? []
   );
 
+  const formData = { personalInfo, experience, education, skills, languages, certifications, projects };
+  const { markSaved } = useUnsavedChanges(formData);
+
   const handleParsed = useCallback((data: ParsedResumeData) => {
     // Regenerate all IDs to guarantee uniqueness — the AI may return
     // placeholder strings like "uuid" instead of actual UUIDs.
@@ -101,13 +105,14 @@ export function ResumeForm({ initialData }: ResumeFormProps) {
         certifications,
         projects,
       });
+      markSaved();
       toast.success(t('resumeSaved'));
     } catch {
       toast.error(tc('error'));
     } finally {
       setSaving(false);
     }
-  }, [personalInfo, experience, education, skills, languages, certifications, projects, t, tc]);
+  }, [personalInfo, experience, education, skills, languages, certifications, projects, t, tc, markSaved]);
 
   // --- Experience helpers ---
   const addExperience = () => {

@@ -49,6 +49,7 @@ import {
   deleteApplication,
 } from '@/lib/actions/applications';
 import { JDProfileCard } from './JDProfileCard';
+import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import type { JobApplication, ApplicationStatus, JDProfile } from '@/types';
 
 interface ApplicationDetailProps {
@@ -88,6 +89,10 @@ export function ApplicationDetail({ application, atsScore, jdProfile }: Applicat
     notes: app.notes ?? '',
   });
 
+  // Track unsaved changes only when in edit mode
+  const trackedData = editingDetails ? editDetailsForm : null;
+  const { markSaved } = useUnsavedChanges(trackedData);
+
   const handleStatusChange = async (newStatus: ApplicationStatus) => {
     try {
       const updated = await updateApplication(app.id, {
@@ -123,6 +128,7 @@ export function ApplicationDetail({ application, atsScore, jdProfile }: Applicat
       });
       setApp(updated);
       setEditingDetails(false);
+      markSaved();
       toast.success(t('applicationUpdated'));
     } catch {
       toast.error(tc('error'));
@@ -144,6 +150,7 @@ export function ApplicationDetail({ application, atsScore, jdProfile }: Applicat
       notes: app.notes ?? '',
     });
     setEditingDetails(false);
+    markSaved();
   };
 
   const [deleting, setDeleting] = useState(false);
